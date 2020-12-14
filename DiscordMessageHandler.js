@@ -7,6 +7,7 @@ module.exports = class DiscordMessageHandler {
     }
 
     handleMessage = async (msg) => {
+        if (msg.author.bot) return;
         if (!msg.content.startsWith('!')) return;
 
         const parts = msg.content.split(' ');
