@@ -15,7 +15,7 @@ const share = async (msg) => {
         await airtable.create([
             { fields: { name: msg.author.username, link } },
         ]);
-        msg.reply(`Content successfully shared. Thanks ${msg.author}`);
+        msg.reply(`Content successfully shared. Thanks!`);
     } catch (err) {
         console.error(err);
     }
