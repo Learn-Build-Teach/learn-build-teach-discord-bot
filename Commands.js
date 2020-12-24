@@ -1,4 +1,4 @@
-const { table: airtable } = require('./Airtable');
+const { table: airtable } = require('./utils/Airtable');
 const { isValidUrl } = require('./Utils');
 
 const share = async (msg) => {
