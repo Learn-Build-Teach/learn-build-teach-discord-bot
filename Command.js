@@ -1,3 +1,4 @@
+const logger = require('./Logger');
 class Command {
     constructor(text, callback, channel) {
         this.text = text;
@@ -12,7 +13,7 @@ class Command {
 
             this.callback(msg);
         } catch (err) {
-            console.error(err);
+            logger.error(err);
         }
     }
 }
