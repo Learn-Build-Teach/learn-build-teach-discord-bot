@@ -1,12 +1,12 @@
-name: "Ping LBT Discord Bot"
+name: "LBT Discord Bot"
 
 on:
     schedule:
-        - cron: "*/5 * * * *""
+        - cron: "*/5 * * * *"
 
 jobs:
     ping:
-        name: "ping-lbt"
+        name: "Ping LBT Bot Server"
         runs-on: ubuntu-latest
         steps:
             - name: "🎣 webhook"
