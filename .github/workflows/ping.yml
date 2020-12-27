@@ -1,15 +1,15 @@
 name: "LBT Discord Bot"
 
 on:
-    schedule:
-        - cron: "*/6 * * * *"
+  schedule:
+    - cron: "*/6 * * * *"
 
 jobs:
-    ping:
-        name: "Ping LBT Bot Server"
-        runs-on: ubuntu-latest
-        steps:
-            - name: "webhook ping"
-              uses: joelwmale/webhook-action@2.0.2
-              with:
-                  url: https://learn-build-teach-discord-bot.herokuapp.com/ping
+  ping:
+    name: "Ping LBT Bot Server"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "webhook ping"
+        uses: joelwmale/webhook-action@2.0.2
+        with:
+          url: https://learn-build-teach-discord-bot.herokuapp.com/ping
