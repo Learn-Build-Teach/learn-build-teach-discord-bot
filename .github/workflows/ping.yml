@@ -2,7 +2,7 @@ name: 'Ping LBT Discord Bot'
 
 on:
     schedule:
-        - cron: '0,10,20,30,40,50 * * * *'
+        - cron: '*/5 * * * *'
 
 jobs:
     ping:
