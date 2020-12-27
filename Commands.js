@@ -1,6 +1,5 @@
 const { table: airtable } = require('./utils/Airtable');
 const { isValidUrl } = require('./Utils');
-const logger = require('./Logger');
 const share = async (msg) => {
     const parts = msg.content.split(' ');
     if (parts.length !== 2) return;
@@ -17,7 +16,7 @@ const share = async (msg) => {
         ]);
         msg.reply(`Content successfully shared. Thanks!`);
     } catch (err) {
-        logger.error(err);
+        console.error(err);
     }
 };
 

@@ -1,5 +1,4 @@
 const express = require('express');
-const logger = require('./Logger');
 const app = express();
 
 app.get('/', (req, res) => {
@@ -9,5 +8,5 @@ app.get('/', (req, res) => {
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-    logger.info(`listening on port, ${port}`);
+    console.log(`listening on port, ${port}`);
 });

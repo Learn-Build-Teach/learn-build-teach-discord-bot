@@ -1,5 +1,3 @@
-const logger = require('./Logger');
-
 module.exports = class DiscordMessageHandler {
     constructor(commands) {
         this.commands = {};
@@ -9,7 +7,7 @@ module.exports = class DiscordMessageHandler {
     }
 
     handleMessage = async (msg) => {
-        logger.info(`${msg.author.username}: ${msg.content}`);
+        console.info(`${msg.author.username}: ${msg.content}`);
         if (msg.author.bot) return;
         if (!msg.content.startsWith('!')) return;
 

@@ -1,6 +1,5 @@
 require('dotenv').config();
 const Twitter = require('twitter');
-const logger = require('../Logger');
 var twitterClient = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -12,7 +11,7 @@ const axios = require('axios');
 const sendTweet = async (status, imageUrl) => {
     if (!imageUrl) {
         await twitterClient.post('statuses/update', { status });
-        logger.info('tweet sent', status);
+        console.log('tweet sent', status);
         return;
     }
     const imageData = await getRemoteImageInB64(imageUrl);
@@ -25,7 +24,7 @@ const sendTweet = async (status, imageUrl) => {
         media_ids: media.media_id_string,
     };
     await twitterClient.post('statuses/update', status);
-    logger.info('Tweet sent', status);
+    console.log('Tweet sent', status);
 };
 
 const getRemoteImageInB64 = async (imageUrl) => {
@@ -36,7 +35,7 @@ const getRemoteImageInB64 = async (imageUrl) => {
         let returnedB64 = Buffer.from(image.data).toString('base64');
         return returnedB64;
     } catch (err) {
-        logger.error(err);
+        console.error(err);
         return null;
     }
 };
