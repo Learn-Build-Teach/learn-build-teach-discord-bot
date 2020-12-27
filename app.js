@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.get('/ping', (req, res) => {
+app.post('/ping', (req, res) => {
     console.log('Server was pinged');
     res.send('Hello World');
 });
