@@ -9,7 +9,7 @@ jobs:
         name: "Ping LBT Bot Server"
         runs-on: ubuntu-latest
         steps:
-            - name: "🎣 webhook"
+            - name: "webhook ping"
               uses: joelwmale/webhook-action@2.0.2
               with:
                   url: https://learn-build-teach-discord-bot.herokuapp.com/ping
