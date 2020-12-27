@@ -9,7 +9,7 @@ module.exports = class DiscordMessageHandler {
     }
 
     handleMessage = async (msg) => {
-        logger.info(msg.author.username, msg.content, new Date());
+        logger.info(`${msg.author.username}: ${msg.content}`);
         if (msg.author.bot) return;
         if (!msg.content.startsWith('!')) return;
 

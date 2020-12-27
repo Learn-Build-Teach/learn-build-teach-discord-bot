@@ -32,9 +32,7 @@ const logger = winston.createLogger({
     transports: [
         errorTransport,
         infoTransport,
-        new winston.transports.Console({
-            format: winston.format.simple(),
-        }),
+        new winston.transports.Console(),
     ],
 });
 
