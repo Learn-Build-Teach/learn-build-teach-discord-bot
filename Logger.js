@@ -1,9 +1,10 @@
 const winston = require('winston');
 const { format, transports } = require('winston');
 require('winston-daily-rotate-file');
+const path = require('path');
 
 const errorTransport = new transports.DailyRotateFile({
-    filename: `${__dirname}/logs/error.log`,
+    filename: path.join(__dirname, '/logs/error.log'),
     datePattern: 'YYYY-MM-DD-HH',
     maxSize: '10m',
     maxFiles: '10d',
@@ -11,7 +12,7 @@ const errorTransport = new transports.DailyRotateFile({
 });
 
 const infoTransport = new transports.DailyRotateFile({
-    filename: `${__dirname}/logs/info.log`,
+    filename: path.join(__dirname, '/logs/info.log'),
     datePattern: 'YYYY-MM-DD-HH',
     maxSize: '10k',
     maxFiles: '10d',
