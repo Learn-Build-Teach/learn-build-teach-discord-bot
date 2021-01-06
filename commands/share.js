@@ -12,8 +12,14 @@ const shareHandler = async (msg) => {
     }
     try {
         //TODO: check to see when the last time they created a record was?
-        const { result } = await ogs({ url: link });
+        const { result, error } = await ogs({ url: link });
+
         const { ogUrl, ogTitle, ogDescription, ogType, ogImage } = result;
+        if (error || !ogTitle || !ogDescription || !ogImage) {
+            return msg.channel.send(
+                `Sorry, there was an issue scraping open graph data.`
+            );
+        }
         console.log({ ogUrl, ogTitle, ogDescription, ogType, ogImage });
 
         await shareTable.create([
