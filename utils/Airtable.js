@@ -3,7 +3,7 @@ const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
     process.env.AIRTABLE_BASE_ID
 );
 
-const table = base(process.env.AIRTABLE_TABLE_NAME);
+const shareTable = base(process.env.AIRTABLE_SHARE_TABLE_NAME);
 
 const minifyRecord = (record) => {
     if (!record.fields.completed) record.fields.completed = false;
@@ -16,4 +16,4 @@ const minifyRecord = (record) => {
 const minifyRecords = (records) =>
     records.map((record) => minifyRecord(record));
 
-module.exports = { table, minifyRecord, minifyRecords };
+module.exports = { shareTable, minifyRecord, minifyRecords };
