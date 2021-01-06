@@ -7,20 +7,30 @@ const shareHandler = async (msg) => {
     if (parts.length !== 2) return;
     const link = parts[1];
     if (!isValidUrl(link)) {
-        msg.channel.send('Please include a valid url');
-        return;
+        return msg.channel.send('Please include a valid url');
     }
+    //TODO: check to see when the last time they created a record was?
+    let ogResult;
     try {
-        //TODO: check to see when the last time they created a record was?
-        const { result, error } = await ogs({ url: link });
+        const data = await ogs({ url: link });
+        ogResults = data.result;
 
-        const { ogUrl, ogTitle, ogDescription, ogType, ogImage } = result;
-        if (error || !ogTitle || !ogDescription || !ogImage) {
+        if (!ogResult.ogTitle || !ogResult.ogDescription || !ogResult.ogImage) {
             return msg.channel.send(
-                `Sorry, there was an issue scraping open graph data.`
+                `Sorry, this site doesn't appeat to have og data.`
             );
         }
-        console.log({ ogUrl, ogTitle, ogDescription, ogType, ogImage });
+    } catch (err) {
+        console.error('Something went wrong while scraping data.');
+        console.error(err);
+        return msg.channel.send(
+            `Sorry, there was an issue scraping open graph data. Please make sure this site has appropriate og information set in the head.`
+        );
+    }
+
+    try {
+        const { ogTitle, ogDescription, ogImage } = ogResult;
+        console.log({ ogTitle, ogDescription, ogImage });
 
         await shareTable.create([
             {
@@ -36,8 +46,11 @@ const shareHandler = async (msg) => {
         await msg.react(`🔥`);
         await msg.reply(`Content successfully shared. Thanks!`);
     } catch (err) {
-        console.log('Something went wrong in share.');
+        console.error('Something went wrong in sharing to airtable.');
         console.error(err);
+        await msg.reply(
+            `Failed to save share record :(. @jamesqquick should take a look!`
+        );
     }
 };
 
