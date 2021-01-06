@@ -13,18 +13,18 @@ const shareHandler = async (msg) => {
     let ogResult;
     try {
         const data = await ogs({ url: link });
-        ogResults = data.result;
-
+        ogResult = data.result;
+        console.log(ogResult);
         if (!ogResult.ogTitle) {
             return msg.channel.send(
-                `Sorry, this site doesn't appeat to have og data.`
+                `Sorry, this site doesn't appear to have open graph (og) title property.`
             );
         }
     } catch (err) {
         console.error('Something went wrong while scraping data.');
         console.error(err);
         return msg.channel.send(
-            `Sorry, there was an issue scraping open graph data. Please make sure this site has appropriate og information set in the head.`
+            `Sorry, there was an issue scraping open graph data. Please make sure this site has og:title property set in the head.`
         );
     }
 
