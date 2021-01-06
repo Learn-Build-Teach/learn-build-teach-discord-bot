@@ -15,7 +15,7 @@ const shareHandler = async (msg) => {
         const data = await ogs({ url: link });
         ogResults = data.result;
 
-        if (!ogResult.ogTitle || !ogResult.ogDescription || !ogResult.ogImage) {
+        if (!ogResult.ogTitle) {
             return msg.channel.send(
                 `Sorry, this site doesn't appeat to have og data.`
             );
