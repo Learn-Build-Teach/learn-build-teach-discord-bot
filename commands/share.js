@@ -27,7 +27,7 @@ const shareHandler = async (msg) => {
                 },
             },
         ]);
-        await msg.react(`👍`);
+        await msg.react(`🔥`);
         await msg.reply(`Content successfully shared. Thanks!`);
     } catch (err) {
         console.error(err);
