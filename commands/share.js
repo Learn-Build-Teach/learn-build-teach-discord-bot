@@ -27,7 +27,7 @@ const shareHandler = async (msg) => {
                 },
             },
         ]);
-        msg.react(':fire:');
+        msg.react(`\:fire:`);
 
         msg.reply(`Content successfully shared. Thanks!`);
     } catch (err) {
