@@ -36,6 +36,7 @@ const shareHandler = async (msg) => {
         await msg.react(`🔥`);
         await msg.reply(`Content successfully shared. Thanks!`);
     } catch (err) {
+        console.log('Something went wrong in share.');
         console.error(err);
     }
 };
