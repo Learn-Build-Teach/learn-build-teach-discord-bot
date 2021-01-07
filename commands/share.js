@@ -14,7 +14,6 @@ const shareHandler = async (msg) => {
     try {
         const data = await ogs({ url: link });
         ogResult = data.result;
-        console.log(ogResult);
         if (!ogResult.ogTitle) {
             return msg.channel.send(
                 `Sorry, this site doesn't appear to have open graph (og) title property.`
@@ -31,7 +30,8 @@ const shareHandler = async (msg) => {
     try {
         const { ogTitle, ogDescription, ogImage } = ogResult;
         console.log({ ogTitle, ogDescription, ogImage });
-        const tweetAutomatically = ogDescription && ogImage;
+        const tweetAutomatically =
+            ogDescription !== undefined && ogImage !== undefined;
         await shareTable.create([
             {
                 fields: {
@@ -50,7 +50,7 @@ const shareHandler = async (msg) => {
         console.error('Something went wrong in sharing to airtable.');
         console.error(err);
         await msg.reply(
-            `Failed to save share record :(. @jamesqquick should take a look!`
+            `Failed to save share record 🤷‍♂️. <@&711379784680079480> should take a look!`
         );
     }
 };
