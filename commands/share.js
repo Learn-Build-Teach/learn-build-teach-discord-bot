@@ -30,7 +30,6 @@ const shareHandler = async (msg) => {
     try {
         const { ogTitle, ogDescription, ogImage } = ogResult;
         console.log({ ogTitle, ogDescription, ogImage });
-
         await shareTable.create([
             {
                 fields: {
@@ -49,7 +48,7 @@ const shareHandler = async (msg) => {
         console.error('Something went wrong in sharing to airtable.');
         console.error(err);
         await msg.reply(
-            `Failed to save share record 🤷‍♂️. <@&711379784680079480> should take a look!`
+            `Failed to save share record 🤷‍♂️. <@361868131997843456> should take a look!`
         );
     }
 };
