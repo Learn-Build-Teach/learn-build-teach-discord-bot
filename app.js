@@ -1,3 +1,10 @@
+//run the twitch bot
+require('./bot');
+
+//run the tweeter
+require('./tweeter');
+
+//run the express server
 const express = require('express');
 const app = express();
 

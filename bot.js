@@ -5,4 +5,5 @@ const bot = new QuickDiscordBot({
     botToken: process.env.DISCORD_BOT_TOKEN,
     commandsDir: path.join(__dirname, 'commands'),
 });
+
 bot.connect();

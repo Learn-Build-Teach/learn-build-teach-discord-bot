@@ -31,7 +31,7 @@ const shareHandler = async (msg) => {
     try {
         const { ogTitle, ogDescription, ogImage } = ogResult;
         console.log({ ogTitle, ogDescription, ogImage });
-
+        const tweetAutomatically = ogDescription && ogImage;
         await shareTable.create([
             {
                 fields: {
@@ -40,6 +40,7 @@ const shareHandler = async (msg) => {
                     title: ogTitle,
                     image: ogImage.url,
                     description: ogDescription,
+                    tweetable: tweetAutomatically,
                 },
             },
         ]);
