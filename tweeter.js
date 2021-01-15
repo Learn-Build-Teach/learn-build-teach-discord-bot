@@ -22,6 +22,7 @@ const tweetNextShare = async () => {
         console.log('Potential tweet', tweetText);
 
         if (process.env.SEND_TWEETS === 'TRUE') {
+            console.log('attempting to tweet', tweetText);
             sendTweet(tweetText, image);
             shareTable.update(shareId, {
                 tweeted: true,
