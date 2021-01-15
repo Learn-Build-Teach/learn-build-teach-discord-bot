@@ -35,5 +35,3 @@ const tweetNextShare = async () => {
 
 //tweet available share (if there is one) every morning at 8am GMT
 cron.schedule('0 8 * * *', tweetNextShare);
-
-tweetNextShare();
