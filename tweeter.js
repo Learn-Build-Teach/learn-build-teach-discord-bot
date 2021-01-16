@@ -9,7 +9,7 @@ const tweetNextShare = async () => {
             await shareTable
                 .select({
                     maxRecords: 1,
-                    filterByFormula: `{tweetable} = "1"`,
+                    filterByFormula: `AND({tweetable} = "1", {tweeted} != "1")`,
                 })
                 .firstPage()
         );
@@ -18,10 +18,12 @@ const tweetNextShare = async () => {
         console.log('Found this record to share', records[0]);
         const { title, link, image, discordUser } = records[0].fields;
 
-        if (process.env.SEND_TWEETS === 'TRUE') {
-            const tweetText = `Check out "${title}" from @${discordUser} of the #LearnBuildTeach community! \n\n ${link}`;
-            sendTweet(tweetText, image);
+        const tweetText = `Check out "${title}" from ${discordUser} of the #LearnBuildTeach community! \n\n ${link}`;
+        console.log('Potential tweet', tweetText);
 
+        if (process.env.SEND_TWEETS === 'TRUE') {
+            console.log('attempting to tweet', tweetText);
+            sendTweet(tweetText, image);
             shareTable.update(shareId, {
                 tweeted: true,
             });
