@@ -4,7 +4,7 @@ const ogs = require('open-graph-scraper');
 
 const shareHandler = async (msg) => {
     const parts = msg.content.split(' ');
-    if (parts.length !== 2) return;
+    if (parts.length < 2) return;
     const link = parts[1];
     if (!isValidUrl(link)) {
         return msg.channel.send('Please include a valid url');
@@ -30,6 +30,13 @@ const shareHandler = async (msg) => {
     try {
         const { ogTitle, ogDescription, ogImage } = ogResult;
         console.log({ ogTitle, ogDescription, ogImage });
+
+        //let's get the suggested tweet text if available
+        let tweetText;
+        if (parts.length > 2) {
+            tweetText = parts.slice(2).join(' ');
+        }
+        console.log(tweetText);
         await shareTable.create([
             {
                 fields: {
@@ -39,6 +46,7 @@ const shareHandler = async (msg) => {
                     image: ogImage.url,
                     description: ogDescription,
                     tweetable: false,
+                    ...(tweetText && { tweetText }),
                 },
             },
         ]);
