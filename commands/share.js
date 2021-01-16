@@ -3,6 +3,18 @@ const { isValidUrl } = require('../utils/Helpers');
 const ogs = require('open-graph-scraper');
 
 const shareHandler = async (msg) => {
+    if (
+        !msg ||
+        !msg.member ||
+        !msg.member.roles ||
+        !msg.member.roles.cache ||
+        !msg.member.roles.cache.get(process.env.DISCORD_ACTIVE_ROLE_ID)
+    ) {
+        return msg.channel.send(
+            `Sorry, you need an active role to be able to share. You automatically get the active role after you reach level 2. You can check your rank using the command \`!rank\``
+        );
+    }
+
     const parts = msg.content.split(' ');
     if (parts.length < 2) return;
     const link = parts[1];
