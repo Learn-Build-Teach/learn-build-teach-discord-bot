@@ -3,7 +3,7 @@ const isValidUrl = (str) => {
         const url = new URL(str);
         return true;
     } catch (err) {
-        console.error(err);
+        console.error(`${str} is not a valid url`);
         return false;
     }
 };

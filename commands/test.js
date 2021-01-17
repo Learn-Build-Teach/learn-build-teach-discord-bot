@@ -1,5 +1,7 @@
+const Discord = require('discord.js');
+
 module.exports = {
     callback: async (msg) => {
-        console.log('Test command');
+        console.log(msg.author.id);
     },
 };

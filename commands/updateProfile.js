@@ -4,7 +4,7 @@ const { isValidUrl } = require('../utils/Helpers');
 const validFlags = {
     '-twitter': { validate: (str) => !isValidUrl(str) },
     '-website': { validate: (str) => isValidUrl(str) },
-    '-youtube': { validate: (str) => isValidUrl(str) },
+    '-youtube': { validgstate: (str) => isValidUrl(str) },
     '-twitch': { validate: (str) => !isValidUrl(str) },
 };
 
@@ -19,8 +19,10 @@ const addTwitterToProfile = async (msg) => {
     }
 
     const discordUsername = msg.author.username;
+    const discordId = msg.author.id;
     const userUpdates = {
         discordUsername,
+        discordId,
     };
 
     for (let i = 1; i < parts.length; i += 2) {
