@@ -8,8 +8,7 @@ const getProfile = async (msg) => {
     if (parts.length === 2) {
         targetUsername = parts[1].replace('<@!', '').replace('>', '');
     }
-    console.log(targetUsername);
-    console.log(msg.content);
+    console.log(`Searching for user, ${targetUsername}`);
 
     try {
         const records = minifyRecords(
