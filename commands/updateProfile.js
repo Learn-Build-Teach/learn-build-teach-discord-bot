@@ -4,7 +4,7 @@ const { isValidUrl } = require('../utils/Helpers');
 const validFlags = {
     '-twitter': { validate: (str) => !isValidUrl(str) },
     '-website': { validate: (str) => isValidUrl(str) },
-    '-youtube': { validgstate: (str) => isValidUrl(str) },
+    '-youtube': { validate: (str) => isValidUrl(str) },
     '-twitch': { validate: (str) => !isValidUrl(str) },
 };
 
