@@ -3,17 +3,18 @@ const { isValidUrl } = require('../utils/Helpers');
 const ogs = require('open-graph-scraper');
 
 const shareHandler = async (msg) => {
-    if (
-        !msg ||
-        !msg.member ||
-        !msg.member.roles ||
-        !msg.member.roles.cache ||
-        !msg.member.roles.cache.get(process.env.DISCORD_ACTIVE_ROLE_ID)
-    ) {
-        return msg.channel.send(
-            `Sorry, you need an active role to be able to share. You automatically get the active role after you reach level 2. You can check your rank using the command \`!rank\``
-        );
-    }
+    //TODO: WHEN DOES THE CACHE GET ADDED?
+    // if (
+    //     !msg ||
+    //     !msg.member ||
+    //     !msg.member.roles ||
+    //     !msg.member.roles.cache ||
+    //     !msg.member.roles.cache.get(process.env.DISCORD_ACTIVE_ROLE_ID)
+    // ) {
+    //     return msg.channel.send(
+    //         `Sorry, you need an active role to be able to share. You automatically get the active role after you reach level 2. You can check your rank using the command \`!rank\``
+    //     );
+    // }
 
     const parts = msg.content.split(' ');
     if (parts.length < 2) return;
@@ -49,6 +50,12 @@ const shareHandler = async (msg) => {
             tweetText = parts.slice(2).join(' ');
         }
         console.log(tweetText);
+
+        if ((tweetText + link).length > 230) {
+            return msg.channel.send(
+                `Make sure that the length of the tweet text and the shared link is less than 240.`
+            );
+        }
         await shareTable.create([
             {
                 fields: {
