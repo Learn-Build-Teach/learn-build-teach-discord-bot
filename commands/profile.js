@@ -25,7 +25,7 @@ const getProfile = async (msg) => {
             const user = records[0];
             const commandsEmbed = new Discord.MessageEmbed()
                 .setColor('#de5254')
-                .setTitle('Profile for ${user.discordUsername}');
+                .setTitle(`Profile for ${user.discordUsername}`);
 
             user.fields.twitter &&
                 commandsEmbed.addFields({
