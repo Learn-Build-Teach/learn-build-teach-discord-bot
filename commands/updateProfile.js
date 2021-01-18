@@ -1,4 +1,4 @@
-const { userTable, minifyRecords } = require('../utils/Airtable');
+const { userTable, getDiscordUserById } = require('../utils/Airtable');
 const { isValidUrl } = require('../utils/Helpers');
 
 const validFlags = {
@@ -58,21 +58,13 @@ const updateProfile = async (msg) => {
 
         userUpdates[flagName.substring(1)] = value;
     }
-    console.log(userUpdates);
+    console.log('User updates', userUpdates);
 
     try {
-        const records = minifyRecords(
-            await userTable
-                .select({
-                    maxRecords: 1,
-                    filterByFormula: `{discordUsername} = "${discordUsername}"`,
-                })
-                .firstPage()
-        );
-
-        if (records.length === 1) {
+        const existingUser = await getDiscordUserById(discordId);
+        if (existingUser) {
             //user already exists so update
-            const userId = records[0].id;
+            const userId = existingUser.id;
             await userTable.update(userId, userUpdates);
             console.log('User successfully updated', userUpdates);
         } else {
