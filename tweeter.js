@@ -1,29 +1,40 @@
 const { sendTweet } = require('./utils/Twitter');
-const { shareTable, minifyRecords } = require('./utils/Airtable');
+const {
+    shareTable,
+    getDiscordUserById,
+    getShareRecordToTweet,
+} = require('./utils/Airtable');
 const cron = require('node-cron');
 
 const tweetNextShare = async () => {
     console.log('Looking for shares to tweet');
     try {
-        const records = minifyRecords(
-            await shareTable
-                .select({
-                    maxRecords: 1,
-                    filterByFormula: `AND({tweetable} = "1", {tweeted} != "1")`,
-                })
-                .firstPage()
-        );
-        if (records.length !== 1) return;
-        const shareId = records[0].id;
-        console.log('Found this record to share', records[0]);
-        const { title, link, image, discordUser } = records[0].fields;
+        const shareRecord = await getShareRecordToTweet();
+        if (!shareRecord) return;
+        console.log('Found this record to share', shareRecord);
+        const {
+            id: shareId,
+            title,
+            link,
+            image,
+            discordUser: discordUsername,
+            tweetText,
+            discordId,
+        } = shareRecord.fields;
 
-        const tweetText = `Check out "${title}" from ${discordUser} of the #LearnBuildTeach community! \n\n ${link}`;
-        console.log('Potential tweet', tweetText);
+        const tweet = await getTweetFromShare(
+            title,
+            link,
+            discordId,
+            discordUsername,
+            tweetText
+        );
+        if (!tweet) return;
+        console.log('Potential tweet', tweet);
 
         if (process.env.SEND_TWEETS === 'TRUE') {
-            console.log('attempting to tweet', tweetText);
-            sendTweet(tweetText, image);
+            console.log('attempting to tweet', tweet);
+            sendTweet(tweet, image);
             shareTable.update(shareId, {
                 tweeted: true,
             });
@@ -32,6 +43,28 @@ const tweetNextShare = async () => {
         console.error(err);
         console.error('Something went wrong trying to send a tweet');
     }
+};
+
+getTweetFromShare = async (
+    title,
+    link,
+    discordId,
+    discordUsername,
+    tweetText
+) => {
+    let tweet;
+    if (tweetText) {
+        tweet = `${tweetText} \n${link}`;
+    } else {
+        const existingUser = await getDiscordUserById(discordId);
+        const twitterUsername = existingUser && existingUser.fields.twitter;
+        const taggedUser = twitterUsername
+            ? `@${twitterUsername}`
+            : discordUsername;
+        tweet = `Check out "${title}" from ${taggedUser} of the #LearnBuildTeach community! \n\n ${link}`;
+        //? should we require people to update profile with twitter handle before sharing? Maybe? This would ensure that there is an existing user record in Airtable. This would also allow us to connect discordShares to discordUser in Airtable
+    }
+    return tweet;
 };
 
 //tweet available share (if there is one) every morning at 8am GMT
