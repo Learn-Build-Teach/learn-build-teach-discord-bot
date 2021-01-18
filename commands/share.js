@@ -63,11 +63,12 @@ const shareHandler = async (msg) => {
         }
         console.log(tweetText);
 
-        if ((tweetText + link).length > 230) {
+        if (tweetText && (tweetText + link).length > 230) {
             return msg.channel.send(
                 `Make sure that the length of the tweet text and the shared link is less than 240.`
             );
         }
+        console.log(ogImage);
         await shareTable.create([
             {
                 fields: {
@@ -75,7 +76,7 @@ const shareHandler = async (msg) => {
                     discordId: msg.author.id,
                     link,
                     title: ogTitle,
-                    ...(ogImage && { image: ogImage }),
+                    ...(ogImage && { image: ogImage.url }),
                     ...(ogDescription && { description: ogDescription }),
                     tweetable: false,
                     ...(tweetText && { tweetText }),
