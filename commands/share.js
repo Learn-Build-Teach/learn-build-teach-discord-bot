@@ -68,7 +68,6 @@ const shareHandler = async (msg) => {
                 `Make sure that the length of the tweet text and the shared link is less than 240.`
             );
         }
-        console.log(ogImage);
         await shareTable.create([
             {
                 fields: {
