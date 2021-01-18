@@ -22,31 +22,31 @@ const getProfile = async (msg) => {
 
         if (records.length === 1) {
             const user = records[0];
-            const commandsEmbed = new Discord.MessageEmbed()
+            const profileEmbed = new Discord.MessageEmbed()
                 .setColor('#de5254')
                 .setTitle(`Profile for ${user.fields.discordUsername}`);
 
             user.fields.twitter &&
-                commandsEmbed.addFields({
+                profileEmbed.addFields({
                     name: 'Twitter',
                     value: user.fields.twitter || '',
                 });
-            user.fields.twitter &&
-                commandsEmbed.addFields({
+            user.fields.youtube &&
+                profileEmbed.addFields({
                     name: 'YouTube',
                     value: user.fields.youtube || '',
                 });
             user.fields.website &&
-                commandsEmbed.addFields({
+                profileEmbed.addFields({
                     name: 'Website',
                     value: user.fields.website || '',
                 });
             user.fields.twitch &&
-                commandsEmbed.addFields({
+                profileEmbed.addFields({
                     name: 'Twitch',
                     value: user.fields.twitch || '',
                 });
-            msg.channel.send(commandsEmbed);
+            msg.channel.send(profileEmbed);
         } else {
             await msg.reply(`Couldn't find details on that user.`);
         }
