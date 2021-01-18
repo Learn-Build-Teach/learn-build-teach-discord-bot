@@ -2,10 +2,26 @@ const { userTable, minifyRecords } = require('../utils/Airtable');
 const { isValidUrl } = require('../utils/Helpers');
 
 const validFlags = {
-    '-twitter': { validate: (str) => !isValidUrl(str) },
-    '-website': { validate: (str) => isValidUrl(str) },
-    '-youtube': { validate: (str) => isValidUrl(str) },
-    '-twitch': { validate: (str) => !isValidUrl(str) },
+    '-twitter': {
+        validate: (str) => !isValidUrl(str),
+        validationMessage:
+            'Please make sure you enter just your handle (no @) for Twitter',
+    },
+    '-website': {
+        validate: (str) => isValidUrl(str),
+        validationMessage:
+            'Please make sure you enter a valid URL for your website.',
+    },
+    '-youtube': {
+        validate: (str) => isValidUrl(str),
+        validationMessage:
+            'Please make sure you enter the full URL to your YouTube channel.',
+    },
+    '-twitch': {
+        validate: (str) => !isValidUrl(str),
+        validationMessage:
+            'Please make sure you enter just your username for Twitch.',
+    },
 };
 
 const updateProfile = async (msg) => {
@@ -36,7 +52,7 @@ const updateProfile = async (msg) => {
         const value = parts[i + 1];
         if (!validFlags[flagName].validate(value)) {
             return await msg.reply(
-                `Please make sure you have passed an appropriate value for the ${flagName} flag.`
+                `Please make sure you have passed an appropriate value for the ${flagName} flag. ${validFlags[flagName].validationMessage}`
             );
         }
 
