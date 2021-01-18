@@ -19,8 +19,8 @@ const updateProfileText = `
 Update your profile with the following flags. I will use these pieces of information to help share your content.\n
     -twitter: your twitter handle
     -twitch: your Twitch username
-    -youtube: your YouTube url
-    -website: your personal website\n
+    -youtube: your YouTube URL
+    -website: your personal website URL\n
     ex. \`!updateProfile -twitter jamesqquick -youtube https://www.youtube.com/c/jamesqquick -website https://www.jamesqquick.com/\`
     \n`;
 

@@ -8,7 +8,7 @@ const validFlags = {
     '-twitch': { validate: (str) => !isValidUrl(str) },
 };
 
-const addTwitterToProfile = async (msg) => {
+const updateProfile = async (msg) => {
     const parts = msg.content.split(' ');
 
     const hasEvenArgs = (parts.length - 1) % 2 === 0;
@@ -83,5 +83,5 @@ const addTwitterToProfile = async (msg) => {
 
 module.exports = {
     text: '!updateProfile',
-    callback: addTwitterToProfile,
+    callback: updateProfile,
 };
