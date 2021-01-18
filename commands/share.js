@@ -1,4 +1,4 @@
-const { shareTable } = require('../utils/Airtable');
+const { shareTable, getDiscordUserById } = require('../utils/Airtable');
 const { isValidUrl } = require('../utils/Helpers');
 const ogs = require('open-graph-scraper');
 
@@ -15,6 +15,18 @@ const shareHandler = async (msg) => {
     //         `Sorry, you need an active role to be able to share. You automatically get the active role after you reach level 2. You can check your rank using the command \`!rank\``
     //     );
     // }
+
+    const discordId = msg.author.id;
+    try {
+        const existingUser = await getDiscordUserById(discordId);
+        if (!existingUser) {
+            return await msg.reply(
+                `Before you share, please make sure to update your profile using the \`!updateProfile -twitter <YOUR_TWITTER_HANDLE>\` command to include your Twitter handle`
+            );
+        }
+    } catch (err) {
+        return console.error(err);
+    }
 
     const parts = msg.content.split(' ');
     if (parts.length < 2) return;
@@ -60,10 +72,11 @@ const shareHandler = async (msg) => {
             {
                 fields: {
                     discordUser: msg.author.username,
+                    discordId: msg.author.id,
                     link,
                     title: ogTitle,
-                    image: ogImage.url,
-                    description: ogDescription,
+                    ...(ogImage && { image: ogImage }),
+                    ...(ogDescription && { description: ogDescription }),
                     tweetable: false,
                     ...(tweetText && { tweetText }),
                 },

@@ -14,7 +14,43 @@ const minifyRecord = (record) => {
     };
 };
 
+const getDiscordUserById = async (id) => {
+    const records = minifyRecords(
+        await userTable
+            .select({
+                maxRecords: 1,
+                filterByFormula: `{discordId} = "${id}"`,
+            })
+            .firstPage()
+    );
+
+    if (records.length !== 1) {
+        return null;
+    }
+    return records[0];
+};
+
+const getShareRecordToTweet = async () => {
+    const records = minifyRecords(
+        await shareTable
+            .select({
+                maxRecords: 1,
+                filterByFormula: `AND({tweetable} = "1", {tweeted} != "1")`,
+            })
+            .firstPage()
+    );
+    if (records.length !== 1) return null;
+    return records[0];
+};
+
 const minifyRecords = (records) =>
     records.map((record) => minifyRecord(record));
 
-module.exports = { shareTable, minifyRecord, minifyRecords, userTable };
+module.exports = {
+    shareTable,
+    minifyRecord,
+    minifyRecords,
+    userTable,
+    getDiscordUserById,
+    getShareRecordToTweet,
+};
