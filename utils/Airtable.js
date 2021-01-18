@@ -46,6 +46,10 @@ const getShareRecordToTweet = async () => {
 const minifyRecords = (records) =>
     records.map((record) => minifyRecord(record));
 
+const deleteUserRecord = async (discordId) => {
+    return userTable.destroy([discordId]);
+};
+
 module.exports = {
     shareTable,
     minifyRecord,
@@ -53,4 +57,5 @@ module.exports = {
     userTable,
     getDiscordUserById,
     getShareRecordToTweet,
+    deleteUserRecord,
 };
