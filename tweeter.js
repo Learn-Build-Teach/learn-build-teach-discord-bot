@@ -59,7 +59,7 @@ getTweetFromShare = async (
         const existingUser = await getDiscordUserById(discordId);
         const twitterUsername = existingUser && existingUser.fields.twitter;
         const taggedUser = twitterUsername
-            ? `@${twitterUsername}`
+            ? `@${twitterUsername.replace('@', '')}`
             : discordUsername;
         tweet = `Check out "${title}" from ${taggedUser} of the #LearnBuildTeach community! \n\n ${link}`;
         //? should we require people to update profile with twitter handle before sharing? Maybe? This would ensure that there is an existing user record in Airtable. This would also allow us to connect discordShares to discordUser in Airtable
