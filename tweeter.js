@@ -12,8 +12,9 @@ const tweetNextShare = async () => {
         const shareRecord = await getShareRecordToTweet();
         if (!shareRecord) return;
         console.log('Found this record to share', shareRecord);
+        const { id: shareId } = shareRecord;
+        console.log(shareId);
         const {
-            id: shareId,
             title,
             link,
             image,
@@ -33,8 +34,8 @@ const tweetNextShare = async () => {
         console.log('Potential tweet', tweet);
 
         if (process.env.SEND_TWEETS === 'TRUE') {
-            console.log('attempting to tweet', tweet);
-            sendTweet(tweet, image);
+            console.log('Sending tweet');
+            await sendTweet(tweet, image);
             shareTable.update(shareId, {
                 tweeted: true,
             });
@@ -66,6 +67,5 @@ getTweetFromShare = async (
     }
     return tweet;
 };
-
 //tweet available share (if there is one) every morning at 8am GMT
 cron.schedule('0 8 * * *', tweetNextShare);
