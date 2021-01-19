@@ -12,13 +12,13 @@
     "license": "ISC",
     "dependencies": {
         "airtable": "^0.10.1",
-        "axios": "^0.21.0",
+        "axios": "^0.21.1",
         "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "node-cron": "^2.0.3",
         "open-graph-scraper": "^4.7.1",
-        "quick-chat-bot": "^0.3.0",
+        "quick-chat-bot": "^0.6.0",
         "twitter": "^1.7.1"
     }
 }

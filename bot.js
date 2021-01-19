@@ -4,7 +4,8 @@ const path = require('path');
 const bot = new QuickDiscordBot({
     botToken: process.env.DISCORD_BOT_TOKEN,
     commandsDir: path.join(__dirname, 'commands'),
-    testChannel: process.env.TEST_CHANNEL,
+    testChannel: process.env.DISCORD_TEST_CHANNEL_NAME,
+    testMode: process.env.DISCORD_TEST_MODE === 'TRUE' ? true : false,
 });
 
 bot.connect();
