@@ -8,6 +8,7 @@ module.exports = {
             .addFields(
                 { name: '!updateProfile', value: updateProfileText },
                 { name: '!profile', value: profileText },
+                { name: '!resetProfile', value: resetProfileText },
                 { name: '!share', value: shareText },
                 { name: '!commands', value: commandsText }
             );
@@ -28,6 +29,12 @@ const profileText = `
 Get profile details about you or another discord member.
     
     ex. \`!profile\` for yourself or \`!profile @James Q Quick\` for someone else
+    \n`;
+
+const resetProfileText = `
+Clear your existing profile in case your display name has changed, you entered incorrect info, etc.
+    
+    ex. \`!resetProfile\`
     \n`;
 
 const shareText = `
