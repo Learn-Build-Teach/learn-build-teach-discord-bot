@@ -7,10 +7,10 @@ This bot allows [Learn Build Teach Discord](https://discord.gg/vM2bagU) members 
 **!updateProfile**
 Update your profile with the following flags. I will use these pieces of information to help share your content.
 
-`-twitter`: your Twitter handle
-`-twitch`: your Twitch username
-`-youtube`: your YouTube URL
-`-website`: your personal website URL
++ `-twitter`: your Twitter handle
++ `-twitch`: your Twitch username
++ `-youtube`: your YouTube URL
++ `-website`: your personal website URL
 
 ex. `!updateProfile -twitter jamesqquick -youtube https://www.youtube.com/c/jamesqquick -website https://www.jamesqquick.com/`
 
