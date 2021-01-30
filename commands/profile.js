@@ -29,7 +29,7 @@ const getProfile = async (msg) => {
             user.fields.twitter &&
                 profileEmbed.addFields({
                     name: 'Twitter',
-                    value: user.fields.twitter || '',
+                    value: `[${user.fields.twitter}](https://twitter.com/${user.fields.twitter})` || '',
                 });
             user.fields.youtube &&
                 profileEmbed.addFields({
@@ -44,7 +44,7 @@ const getProfile = async (msg) => {
             user.fields.twitch &&
                 profileEmbed.addFields({
                     name: 'Twitch',
-                    value: user.fields.twitch || '',
+                    value: `[${user.fields.twitch}](https://www.twitch.tv/${user.fields.twitch})` || '',
                 });
             msg.channel.send(profileEmbed);
         } else {
