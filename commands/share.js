@@ -21,7 +21,15 @@ const shareHandler = async (msg) => {
         const existingUser = await getDiscordUserById(discordId);
         if (!existingUser) {
             return await msg.reply(
-                `Before you share, please make sure to update your profile using the \`!updateProfile -twitter <YOUR_TWITTER_HANDLE>\` command to include your Twitter handle`
+                `Before you share, please make sure to update your profile with the following flags. I will use these pieces of information to help share your content.\n
+
+-twitter: your twitter handle
+-twitch: your Twitch username
+-youtube: your YouTube URL
+-website: your personal website URL\n
+
+ex. \`!updateProfile -twitter jamesqquick -youtube https://www.youtube.com/c/jamesqquick -website https://www.jamesqquick.com/\`
+\n`
             );
         }
     } catch (err) {
@@ -68,20 +76,20 @@ const shareHandler = async (msg) => {
                 `Make sure that the length of the tweet text and the shared link is less than 240.`
             );
         }
-        await shareTable.create([
-            {
-                fields: {
-                    discordUser: msg.author.username,
-                    discordId: msg.author.id,
-                    link,
-                    title: ogTitle,
-                    ...(ogImage && { image: ogImage.url }),
-                    ...(ogDescription && { description: ogDescription }),
-                    tweetable: false,
-                    ...(tweetText && { tweetText }),
-                },
-            },
-        ]);
+        // await shareTable.create([
+        //     {
+        //         fields: {
+        //             discordUser: msg.author.username,
+        //             discordId: msg.author.id,
+        //             link,
+        //             title: ogTitle,
+        //             ...(ogImage && { image: ogImage.url }),
+        //             ...(ogDescription && { description: ogDescription }),
+        //             tweetable: false,
+        //             ...(tweetText && { tweetText }),
+        //         },
+        //     },
+        // ]);
         await msg.react(`🔥`);
         await msg.reply(`Content successfully shared. Thanks!`);
     } catch (err) {
