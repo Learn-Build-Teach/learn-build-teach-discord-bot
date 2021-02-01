@@ -46,6 +46,11 @@ const getProfile = async (msg) => {
                     name: 'Twitch',
                     value: `[${user.fields.twitch}](https://www.twitch.tv/${user.fields.twitch})` || '',
                 });
+            user.fields.instagram &&
+                profileEmbed.addFields({
+                    name: 'Instagram',
+                    value: `[${user.fields.instagram}](https://www.instagram.com/${user.fields.instagram})` || '',
+                });
             msg.channel.send(profileEmbed);
         } else {
             await msg.reply(`Couldn't find details on that user.`);
