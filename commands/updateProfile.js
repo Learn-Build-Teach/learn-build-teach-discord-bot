@@ -22,6 +22,11 @@ const validFlags = {
         validationMessage:
             'Please make sure you enter just your username for Twitch.',
     },
+    '-instagram': {
+        validate: (str) => !isValidUrl(str),
+        validationMessage:
+            'Please make sure you enter just your username for Instagram.',
+    }
 };
 
 const updateProfile = async (msg) => {
