@@ -29,7 +29,9 @@ const getProfile = async (msg) => {
             user.fields.twitter &&
                 profileEmbed.addFields({
                     name: 'Twitter',
-                    value: `[${user.fields.twitter}](https://twitter.com/${user.fields.twitter})` || '',
+                    value:
+                        `[${user.fields.twitter}](https://twitter.com/${user.fields.twitter})` ||
+                        '',
                 });
             user.fields.youtube &&
                 profileEmbed.addFields({
@@ -44,12 +46,23 @@ const getProfile = async (msg) => {
             user.fields.twitch &&
                 profileEmbed.addFields({
                     name: 'Twitch',
-                    value: `[${user.fields.twitch}](https://www.twitch.tv/${user.fields.twitch})` || '',
+                    value:
+                        `[${user.fields.twitch}](https://www.twitch.tv/${user.fields.twitch})` ||
+                        '',
                 });
             user.fields.instagram &&
                 profileEmbed.addFields({
                     name: 'Instagram',
-                    value: `[${user.fields.instagram}](https://www.instagram.com/${user.fields.instagram})` || '',
+                    value:
+                        `[${user.fields.instagram}](https://www.instagram.com/${user.fields.instagram})` ||
+                        '',
+                });
+            user.fields.github &&
+                profileEmbed.addFields({
+                    name: 'Github',
+                    value:
+                        `[${user.fields.github}](https://www.github.com/${user.fields.github})` ||
+                        '',
                 });
             msg.channel.send(profileEmbed);
         } else {

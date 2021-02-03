@@ -26,7 +26,12 @@ const validFlags = {
         validate: (str) => !isValidUrl(str),
         validationMessage:
             'Please make sure you enter just your username for Instagram.',
-    }
+    },
+    '-github': {
+        validate: (str) => !isValidUrl(str),
+        validationMessage:
+            'Please make sure you enter just your username for Github.',
+    },
 };
 
 const updateProfile = async (msg) => {
