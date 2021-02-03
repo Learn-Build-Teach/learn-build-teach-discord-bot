@@ -11,6 +11,7 @@ Update your profile with the following flags. I will use these pieces of informa
 + `-twitch`: your Twitch username
 + `-youtube`: your YouTube URL
 + `-instagram`: your Instagram username
++ `-github`: your Github username
 + `-website`: your personal website URL
 
 ex. `!updateProfile -twitter jamesqquick -youtube https://www.youtube.com/c/jamesqquick -website https://www.jamesqquick.com/`

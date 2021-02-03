@@ -27,6 +27,7 @@ const shareHandler = async (msg) => {
 -twitch: your Twitch username
 -youtube: your YouTube URL
 -instagram: your Instagram username
+-github: your Github username
 -website: your personal website URL\n
 
 ex. \`!updateProfile -twitter jamesqquick -youtube https://www.youtube.com/c/jamesqquick -website https://www.jamesqquick.com/\`
