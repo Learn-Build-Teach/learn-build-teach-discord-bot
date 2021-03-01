@@ -78,20 +78,20 @@ ex. \`!updateProfile -twitter jamesqquick -youtube https://www.youtube.com/c/jam
                 `Make sure that the length of the tweet text and the shared link is less than 240.`
             );
         }
-        // await shareTable.create([
-        //     {
-        //         fields: {
-        //             discordUser: msg.author.username,
-        //             discordId: msg.author.id,
-        //             link,
-        //             title: ogTitle,
-        //             ...(ogImage && { image: ogImage.url }),
-        //             ...(ogDescription && { description: ogDescription }),
-        //             tweetable: false,
-        //             ...(tweetText && { tweetText }),
-        //         },
-        //     },
-        // ]);
+        await shareTable.create([
+            {
+                fields: {
+                    discordUser: msg.author.username,
+                    discordId: msg.author.id,
+                    link,
+                    title: ogTitle,
+                    ...(ogImage && { image: ogImage.url }),
+                    ...(ogDescription && { description: ogDescription }),
+                    tweetable: false,
+                    ...(tweetText && { tweetText }),
+                },
+            },
+        ]);
         await msg.react(`🔥`);
         await msg.reply(`Content successfully shared. Thanks!`);
     } catch (err) {
