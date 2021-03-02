@@ -12,6 +12,7 @@ const bot = new QuickDiscordBot({
     testChannel: process.env.DISCORD_TEST_CHANNEL_NAME,
     testMode: process.env.DISCORD_TEST_MODE === 'TRUE' ? true : false,
     ignoreChannels,
+    ignoreBots: false,
 });
 
 bot.connect();

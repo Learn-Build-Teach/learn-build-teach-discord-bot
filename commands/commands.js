@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 
 module.exports = {
     callback: async (msg) => {
+        if (msg.author.bot) return;
+
         const commandsEmbed = new Discord.MessageEmbed()
             .setColor('#de5254')
             .setTitle('LBT Bot Commands')

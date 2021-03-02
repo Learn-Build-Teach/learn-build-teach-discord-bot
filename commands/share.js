@@ -3,6 +3,8 @@ const { isValidUrl } = require('../utils/Helpers');
 const ogs = require('open-graph-scraper');
 
 const shareHandler = async (msg) => {
+    if (msg.author.bot) return;
+
     //TODO: WHEN DOES THE CACHE GET ADDED?
     // if (
     //     !msg ||

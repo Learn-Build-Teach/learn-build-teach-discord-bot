@@ -35,6 +35,8 @@ const validFlags = {
 };
 
 const updateProfile = async (msg) => {
+    if (msg.author.bot) return;
+
     const parts = msg.content.split(' ');
 
     const hasEvenArgs = (parts.length - 1) % 2 === 0;
