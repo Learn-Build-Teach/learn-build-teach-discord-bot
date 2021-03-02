@@ -3,6 +3,8 @@ const Discord = require('discord.js');
 const commands = require('./commands');
 
 const getProfile = async (msg) => {
+    if (msg.author.bot) return;
+
     let targetUsername = msg.author.id;
     const parts = msg.content.split(' ');
     if (parts.length === 2) {

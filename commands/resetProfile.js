@@ -1,5 +1,7 @@
 const { deleteUserRecord, getDiscordUserById } = require('../utils/Airtable');
 const resetProfile = async (msg) => {
+    if (msg.author.bot) return;
+
     const discordId = msg.author.id;
     try {
         const existingUser = await getDiscordUserById(discordId);
