@@ -66,7 +66,7 @@ ex. \`!updateProfile -twitter jamesqquick -youtube https://www.youtube.com/c/jam
 
     try {
         const { ogTitle, ogDescription, ogImage } = ogResult;
-        console.log({ ogTitle, ogDescription, ogImage });
+        console.log(ogResult);
 
         //let's get the suggested tweet text if available
         let tweetText;
