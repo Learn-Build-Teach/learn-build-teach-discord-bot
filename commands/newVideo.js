@@ -3,6 +3,7 @@ const { shareTable } = require('../utils/Airtable');
 module.exports = {
     callback: async (msg) => {
         console.log(msg);
+        return;
         if (!msg.embeds || !msg.embeds[0]) {
             return console.log(
                 'Ignoring !newVideo command since there is no embed data.'

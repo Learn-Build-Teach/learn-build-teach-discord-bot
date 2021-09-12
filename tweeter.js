@@ -13,7 +13,6 @@ const tweetNextShare = async () => {
         if (!shareRecord) return;
         console.log('Found this record to share', shareRecord);
         const { id: shareId } = shareRecord;
-        console.log(shareId);
         const {
             title,
             link,

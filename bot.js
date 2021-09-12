@@ -13,6 +13,7 @@ const bot = new QuickDiscordBot({
     testMode: process.env.DISCORD_TEST_MODE === 'TRUE' ? true : false,
     ignoreChannels,
     ignoreBots: false,
+    showLiveMessages: false
 });
 
 bot.connect();
