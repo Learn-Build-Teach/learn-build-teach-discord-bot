@@ -1,16 +1,11 @@
-const { userTable, minifyRecords } = require('../utils/Airtable');
-const Discord = require('discord.js');
-const commands = require('./commands');
+import { userTable, minifyRecords } from '../utils/Airtable.js'
 
-const getProfile = async (msg) => {
-    if (msg.author.bot) return;
-
-    let targetUsername = msg.author.id;
-    const parts = msg.content.split(' ');
-    if (parts.length === 2) {
-        targetUsername = parts[1].replace('<@!', '').replace('>', '');
-    }
-    console.log(`Searching for user, ${targetUsername}`);
+const getProfile = async (interaction, options) => {
+    let targetUsername = options
+        .getString('username')
+        .replace('<@!', '')
+        .replace('>', '')
+    console.log(`Searching for user, ${targetUsername}`)
 
     try {
         const records = minifyRecords(
@@ -20,67 +15,49 @@ const getProfile = async (msg) => {
                     filterByFormula: `{discordId} = "${targetUsername}"`,
                 })
                 .firstPage()
-        );
+        )
 
         if (records.length === 1) {
-            const user = records[0];
-            const profileEmbed = new Discord.MessageEmbed()
-                .setColor('#de5254')
-                .setTitle(`Profile for ${user.fields.discordUsername}`);
+            const user = records[0]
+            const content = `${targetUsername}'s Profile
+                Twitter - https://twitter.com/${user?.fields?.twitter || 'n/a'} 
+                YouTube - ${user?.fields?.youtube || 'n/a'}
+                Website - ${user?.fields?.website || 'n/a'}
+                Twitch - https://twitch.tv/${user?.fields?.twitch || 'n/a'}
+                Instagram - https://instagram.com/${
+                    user?.fields?.instagram || 'n/a'
+                }
+                Github - https://github.com/${user?.fields?.github || 'n/a'}`
 
-            user.fields.twitter &&
-                profileEmbed.addFields({
-                    name: 'Twitter',
-                    value:
-                        `[${user.fields.twitter}](https://twitter.com/${user.fields.twitter})` ||
-                        '',
-                });
-            user.fields.youtube &&
-                profileEmbed.addFields({
-                    name: 'YouTube',
-                    value: user.fields.youtube || '',
-                });
-            user.fields.website &&
-                profileEmbed.addFields({
-                    name: 'Website',
-                    value: user.fields.website || '',
-                });
-            user.fields.twitch &&
-                profileEmbed.addFields({
-                    name: 'Twitch',
-                    value:
-                        `[${user.fields.twitch}](https://www.twitch.tv/${user.fields.twitch})` ||
-                        '',
-                });
-            user.fields.instagram &&
-                profileEmbed.addFields({
-                    name: 'Instagram',
-                    value:
-                        `[${user.fields.instagram}](https://www.instagram.com/${user.fields.instagram})` ||
-                        '',
-                });
-            user.fields.github &&
-                profileEmbed.addFields({
-                    name: 'Github',
-                    value:
-                        `[${user.fields.github}](https://www.github.com/${user.fields.github})` ||
-                        '',
-                });
-            msg.channel.send(profileEmbed);
+            interaction.reply({ content, ephemeral: true })
         } else {
-            await msg.reply(`Couldn't find details on that user.`);
+            interaction.reply({
+                content: "Couldn't find details on that user",
+                ephemeral: true,
+            })
         }
     } catch (err) {
         console.error(
             `Something went wrong searching for user profile: ${targetUsername}.`
-        );
-        console.error(err);
-        return msg.channel.send(
-            `Something went wrong searching for user profile: ${targetUsername}.`
-        );
+        )
+        console.error(err)
+        return interaction.reply({
+            content: `Something went wrong searching for user profile ${targetUsername}`,
+            ephemeral: true,
+        })
     }
-};
+}
 
-module.exports = {
+export default {
     callback: getProfile,
-};
+    name: 'profile',
+    description: "Get a user's profile details",
+    options: [
+        {
+            name: 'username',
+            description: `Tag the user you are looking for.`,
+            required: true,
+            type: 'STRING',
+        },
+    ],
+}

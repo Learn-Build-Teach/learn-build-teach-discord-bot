@@ -1,5 +1,6 @@
-const { userTable, getDiscordUserById } = require('../utils/Airtable');
-const { isValidUrl } = require('../utils/Helpers');
+import { userTable, getDiscordUserById } from '../utils/Airtable.js'
+
+import { isValidUrl } from '../utils/Helpers.js'
 
 const validFlags = {
     '-twitter': {
@@ -32,76 +33,76 @@ const validFlags = {
         validationMessage:
             'Please make sure you enter just your username for Github.',
     },
-};
+}
 
 const updateProfile = async (msg) => {
-    if (msg.author.bot) return;
+    if (msg.author.bot) return
 
-    const parts = msg.content.split(' ');
+    const parts = msg.content.split(' ')
 
-    const hasEvenArgs = (parts.length - 1) % 2 === 0;
+    const hasEvenArgs = (parts.length - 1) % 2 === 0
     if (!hasEvenArgs) {
         return await msg.reply(
             `Please make sure you have passed the appropriate amount of arguments`
-        );
+        )
     }
 
-    const discordUsername = msg.author.username;
-    const discordId = msg.author.id;
+    const discordUsername = msg.author.username
+    const discordId = msg.author.id
     const userUpdates = {
         discordUsername,
         discordId,
-    };
+    }
 
     for (let i = 1; i < parts.length; i += 2) {
-        const flagName = parts[i];
+        const flagName = parts[i]
 
         if (!validFlags[flagName]) {
             return await msg.reply(
                 `Please make sure you have passed appropriate flags : [${flags}]`
-            );
+            )
         }
-        const value = parts[i + 1];
+        const value = parts[i + 1]
         if (!validFlags[flagName].validate(value)) {
             return await msg.reply(
                 `Please make sure you have passed an appropriate value for the ${flagName} flag. ${validFlags[flagName].validationMessage}`
-            );
+            )
         }
 
-        userUpdates[flagName.substring(1)] = value;
+        userUpdates[flagName.substring(1)] = value
     }
-    console.log('User updates', userUpdates);
+    console.log('User updates', userUpdates)
 
     try {
-        const existingUser = await getDiscordUserById(discordId);
+        const existingUser = await getDiscordUserById(discordId)
         if (existingUser) {
             //user already exists so update
-            const userId = existingUser.id;
-            await userTable.update(userId, userUpdates);
-            console.log('User successfully updated', userUpdates);
+            const userId = existingUser.id
+            await userTable.update(userId, userUpdates)
+            console.log('User successfully updated', userUpdates)
         } else {
             //user does not exist, so create
             const newUser = {
                 fields: {
                     ...userUpdates,
                 },
-            };
-            userTable.create([newUser]);
-            console.log('User successfully created', newUser);
+            }
+            userTable.create([newUser])
+            console.log('User successfully created', newUser)
         }
 
-        await msg.react(`🔥`);
-        await msg.reply(`Profile updated succcessful. Thanks!`);
+        await msg.react(`🔥`)
+        await msg.reply(`Profile updated succcessful. Thanks!`)
     } catch (err) {
-        console.error('Something went wrong while trying to update profile.');
-        console.error(err);
+        console.error('Something went wrong while trying to update profile.')
+        console.error(err)
         return msg.channel.send(
             `Sorry, something went wrong. We failed to update your profile.`
-        );
+        )
     }
-};
+}
 
-module.exports = {
+export default {
     text: '!updateProfile',
     callback: updateProfile,
-};
+}
