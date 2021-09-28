@@ -1,19 +1,57 @@
-require('dotenv').config();
-const { QuickDiscordBot } = require('quick-chat-bot');
-const path = require('path');
+import { Client } from 'discord.js'
+import dotenv, { config } from 'dotenv'
+import fs from 'fs'
+dotenv.config()
 
-let ignoreChannels;
-if (process.env.IGNORE_CHANNELS) {
-    ignoreChannels = process.env.IGNORE_CHANNELS.split(',');
-}
-const bot = new QuickDiscordBot({
-    botToken: process.env.DISCORD_BOT_TOKEN,
-    commandsDir: path.join(__dirname, 'commands'),
-    testChannel: process.env.DISCORD_TEST_CHANNEL_NAME,
-    testMode: process.env.DISCORD_TEST_MODE === 'TRUE' ? true : false,
-    ignoreChannels,
-    ignoreBots: false,
-    showLiveMessages: false
-});
+const client = new Client({
+    intents: ['GUILDS', 'GUILD_MESSAGES'],
+})
 
-bot.connect();
+const nameToCommandMap = {}
+
+client.on('ready', async () => {
+    console.log('The Learn Build Teach bot is running!')
+    const guildId = process.env.DISCORD_GUILD_ID
+    const guild = client.guilds.cache.get(guildId)
+    let commands
+
+    if (guild) {
+        commands = guild.commands
+    } else {
+        commands = client.application?.commands
+    }
+
+    const commandsDir = 'commands' //process.env.COMMANDS_DIR;
+    const commandFiles = fs.readdirSync(commandsDir)
+
+    const filePromises = commandFiles
+        .filter((commandFile) => commandFile.endsWith('.js'))
+        .map((commandFile) => {
+            return import(`./${commandsDir}/${commandFile}`)
+        })
+    const loadedFiles = await Promise.all(filePromises)
+
+    loadedFiles.forEach((loadedFile) => {
+        const commandConfig = loadedFile.default
+        console.log('Loading command', commandConfig)
+        try {
+            commands.create(commandConfig)
+            nameToCommandMap[commandConfig.name] = commandConfig
+        } catch (err) {
+            console.error(err)
+            return
+        }
+    })
+})
+
+client.on('interactionCreate', (interaction) => {
+    if (!interaction.isCommand()) return
+
+    const { commandName, options } = interaction
+    const existingCommand = nameToCommandMap[commandName]
+    if (existingCommand) {
+        return existingCommand.callback(interaction, options)
+    }
+})
+
+client.login(process.env.DISCORD_BOT_TOKEN)
