@@ -33,7 +33,7 @@ client.on('ready', async () => {
 
     loadedFiles.forEach((loadedFile) => {
         const commandConfig = loadedFile.default;
-        console.log('Loading command', commandConfig);
+        console.log('Loading command', commandConfig.name);
         try {
             commands.create(commandConfig);
             nameToCommandMap[commandConfig.name] = commandConfig;

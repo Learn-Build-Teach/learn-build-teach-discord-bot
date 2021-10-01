@@ -1,14 +1,15 @@
-require('dotenv').config();
-const Twitter = require('twitter');
+import dotenv from 'dotenv';
+import Twitter from 'twitter';
+import axios from 'axios';
+dotenv.config();
 var twitterClient = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 });
-const axios = require('axios');
 
-const sendTweet = async (status, imageUrl) => {
+export const sendTweet = async (status, imageUrl) => {
     if (!imageUrl) {
         await twitterClient.post('statuses/update', { status });
         console.log('tweet sent', status);
@@ -27,7 +28,7 @@ const sendTweet = async (status, imageUrl) => {
     console.log('Tweet sent', status);
 };
 
-const getRemoteImageInB64 = async (imageUrl) => {
+export const getRemoteImageInB64 = async (imageUrl) => {
     try {
         let image = await axios.get(imageUrl, {
             responseType: 'arraybuffer',
@@ -39,5 +40,3 @@ const getRemoteImageInB64 = async (imageUrl) => {
         return null;
     }
 };
-
-module.exports = { twitterClient, sendTweet };
