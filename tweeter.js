@@ -1,10 +1,10 @@
-const { sendTweet } = require('./utils/Twitter');
-const {
+import { sendTweet } from './utils/Twitter.js';
+import {
     shareTable,
     getDiscordUserById,
     getShareRecordToTweet,
-} = require('./utils/Airtable');
-const cron = require('node-cron');
+} from './utils/Airtable.js';
+import cron from 'node-cron';
 
 const tweetNextShare = async () => {
     console.log('Looking for shares to tweet');
@@ -45,7 +45,7 @@ const tweetNextShare = async () => {
     }
 };
 
-getTweetFromShare = async (
+const getTweetFromShare = async (
     title,
     link,
     discordId,
@@ -62,7 +62,6 @@ getTweetFromShare = async (
             ? `@${twitterUsername.replace('@', '')}`
             : discordUsername;
         tweet = `Check out "${title}" from ${taggedUser} of the #LearnBuildTeach community! \n\n ${link}`;
-        //? should we require people to update profile with twitter handle before sharing? Maybe? This would ensure that there is an existing user record in Airtable. This would also allow us to connect discordShares to discordUser in Airtable
     }
     return tweet;
 };

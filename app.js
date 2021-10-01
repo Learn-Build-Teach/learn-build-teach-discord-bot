@@ -1,11 +1,11 @@
 //run the twitch bot
-require('./bot');
+import './bot.js';
 
 //run the tweeter
-require('./tweeter');
+import './tweeter.js';
 
-//run the express server
-const express = require('express');
+// //run the express server
+import express from 'express';
 const app = express();
 
 app.get('/ping', (req, res) => {
