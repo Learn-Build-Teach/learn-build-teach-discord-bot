@@ -1,8 +1,15 @@
+import {
+    CommandInteraction,
+    CommandInteractionOptionResolver,
+} from 'discord.js';
 import { shareTable, getDiscordUserById } from '../utils/Airtable.js';
 import { isValidUrl } from '../utils/Helpers.js';
 import ogs from 'open-graph-scraper';
 
-const shareHandler = async (interaction, options) => {
+const shareHandler = async (
+    /** @type {CommandInteraction} */ interaction,
+    /** @type {CommandInteractionOptionResolver} */ options
+) => {
     const discordId = interaction.user.id;
 
     try {

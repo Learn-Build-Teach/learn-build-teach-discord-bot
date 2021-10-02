@@ -1,6 +1,13 @@
+import {
+    CommandInteraction,
+    CommandInteractionOptionResolver,
+} from 'discord.js';
 import { deleteUserRecord, getDiscordUserById } from '../utils/Airtable.js';
 
-const resetProfile = async (interaction, options) => {
+const resetProfile = async (
+    /** @type {CommandInteraction} */ interaction,
+    /** @type {CommandInteractionOptionResolver} */ options
+) => {
     const discordId = interaction.user.id;
     try {
         const existingUser = await getDiscordUserById(discordId);

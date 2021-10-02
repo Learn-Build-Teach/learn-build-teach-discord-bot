@@ -1,3 +1,7 @@
+import {
+    CommandInteraction,
+    CommandInteractionOptionResolver,
+} from 'discord.js';
 import { userTable, getDiscordUserById } from '../utils/Airtable.js';
 
 import { isValidUrl } from '../utils/Helpers.js';
@@ -35,7 +39,10 @@ const validFlags = {
     },
 };
 
-const updateProfile = async (interaction, options) => {
+const updateProfile = async (
+    /** @type {CommandInteraction} */ interaction,
+    /** @type {CommandInteractionOptionResolver} */ options
+) => {
     const discordUsername = interaction.user.username;
     const discordId = interaction.user.id;
     const userUpdates = {
