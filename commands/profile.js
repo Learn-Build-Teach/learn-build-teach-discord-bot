@@ -1,11 +1,18 @@
-import { userTable, minifyRecords } from '../utils/Airtable.js'
+import {
+    CommandInteraction,
+    CommandInteractionOptionResolver,
+} from 'discord.js';
+import { userTable, minifyRecords } from '../utils/Airtable.js';
 
-const getProfile = async (interaction, options) => {
+const getProfile = async (
+    /** @type {CommandInteraction} */ interaction,
+    /** @type {CommandInteractionOptionResolver} */ options
+) => {
     let targetUsername = options
         .getString('username')
         .replace('<@!', '')
-        .replace('>', '')
-    console.log(`Searching for user, ${targetUsername}`)
+        .replace('>', '');
+    console.log(`Searching for user, ${targetUsername}`);
 
     try {
         const records = minifyRecords(
@@ -15,10 +22,10 @@ const getProfile = async (interaction, options) => {
                     filterByFormula: `{discordId} = "${targetUsername}"`,
                 })
                 .firstPage()
-        )
+        );
 
         if (records.length === 1) {
-            const user = records[0]
+            const user = records[0];
             const content = `${targetUsername}'s Profile
                 Twitter - https://twitter.com/${user?.fields?.twitter || 'n/a'} 
                 YouTube - ${user?.fields?.youtube || 'n/a'}
@@ -27,26 +34,26 @@ const getProfile = async (interaction, options) => {
                 Instagram - https://instagram.com/${
                     user?.fields?.instagram || 'n/a'
                 }
-                Github - https://github.com/${user?.fields?.github || 'n/a'}`
+                Github - https://github.com/${user?.fields?.github || 'n/a'}`;
 
-            interaction.reply({ content, ephemeral: true })
+            interaction.reply({ content, ephemeral: true });
         } else {
             interaction.reply({
                 content: "Couldn't find details on that user",
                 ephemeral: true,
-            })
+            });
         }
     } catch (err) {
         console.error(
             `Something went wrong searching for user profile: ${targetUsername}.`
-        )
-        console.error(err)
+        );
+        console.error(err);
         return interaction.reply({
             content: `Something went wrong searching for user profile ${targetUsername}`,
             ephemeral: true,
-        })
+        });
     }
-}
+};
 
 export default {
     callback: getProfile,
@@ -60,4 +67,4 @@ export default {
             type: 'STRING',
         },
     ],
-}
+};
