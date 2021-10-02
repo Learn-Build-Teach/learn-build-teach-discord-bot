@@ -22,7 +22,8 @@
         "twitter": "^1.7.1"
     },
     "engines": {
-        "node": "16"
+        "node": ">=16.6.0",
+        "npm": ">=7.0.0"
     },
     "type": "module"
 }
