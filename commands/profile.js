@@ -27,14 +27,14 @@ const getProfile = async (
         if (records.length === 1) {
             const user = records[0];
             const content = `${targetUsername}'s Profile
-                Twitter - https://twitter.com/${user?.fields?.twitter || 'n/a'} 
-                YouTube - ${user?.fields?.youtube || 'n/a'}
-                Website - ${user?.fields?.website || 'n/a'}
-                Twitch - https://twitch.tv/${user?.fields?.twitch || 'n/a'}
-                Instagram - https://instagram.com/${
+                Twitter - <https://twitter.com/${user?.fields?.twitter || 'n/a'}> 
+                YouTube - <${user?.fields?.youtube || 'n/a'}>
+                Website - <${user?.fields?.website || 'n/a'}>
+                Twitch - <https://twitch.tv/${user?.fields?.twitch || 'n/a'}>
+                Instagram - <https://instagram.com/${
                     user?.fields?.instagram || 'n/a'
-                }
-                Github - https://github.com/${user?.fields?.github || 'n/a'}`;
+                }>
+                Github - <https://github.com/${user?.fields?.github || 'n/a'}>`;
 
             interaction.reply({ content, ephemeral: true });
         } else {
