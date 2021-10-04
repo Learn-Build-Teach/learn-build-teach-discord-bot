@@ -19,7 +19,7 @@ const getProfile = async (
             await userTable
                 .select({
                     maxRecords: 1,
-                    filterByFormula: `{discordId} = "${targetUsername}"`,
+                    filterByFormula: `{discordUsername} = "${targetUsername}"`,
                 })
                 .firstPage()
         );
