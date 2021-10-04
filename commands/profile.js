@@ -7,16 +7,16 @@ import {
 import { userTable, minifyRecords } from '../utils/Airtable.js';
 
 const getProfile = async (
-    /** @type {CommandInteraction} */ interaction,
-    /** @type {CommandInteractionOptionResolver} */ options
+    /** @type { CommandInteraction } */ interaction,
+    /** @type { CommandInteractionOptionResolver } */ options
 ) => {
     const mentionedUser = options.getMentionable('username', false);
-    /** @type {User} */
+    /** @type { User } */
     let targetUser;
     if (!mentionedUser) {
         targetUser = interaction.user;
     } else {
-        targetUser = mentionedUser;
+        targetUser = mentionedUser.user;
     }
 
     console.log(`Searching for user, ${targetUser.username}`);
