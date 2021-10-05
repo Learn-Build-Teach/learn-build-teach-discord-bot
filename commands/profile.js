@@ -20,8 +20,8 @@ const getProfile = async (
     }
 
     console.log(`Searching for user, ${targetUser.username}`);
+    await interaction.deferReply();
     try {
-        await interaction.deferReply();
         const records = minifyRecords(
             await userTable
                 .select({
@@ -76,7 +76,7 @@ const getProfile = async (
 
             interaction.editReply({ embeds: [embed] });
         } else {
-            interaction.reply({
+            interaction.editReply({
                 content: "Couldn't find details on that user",
                 ephemeral: true,
             });
@@ -86,7 +86,7 @@ const getProfile = async (
             `Something went wrong searching for user profile: ${targetUser.username}.`
         );
         console.error(err);
-        return interaction.reply({
+        return interaction.editReply({
             content: `Something went wrong searching for user profile ${targetUser.username}`,
             ephemeral: true,
         });
