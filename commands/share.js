@@ -33,11 +33,12 @@ const shareHandler = async (
         });
     }
     let ogResult;
+    await interaction.deferReply();
     try {
         const data = await ogs({ url: link });
         ogResult = data.result;
         if (!ogResult.ogTitle) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `Sorry, this site doesn't appear to have open graph (og) title property.`,
                 ephemeral: true,
             });
@@ -45,7 +46,7 @@ const shareHandler = async (
     } catch (err) {
         console.error('Something went wrong while scraping data.');
         console.error(err);
-        return interaction.reply({
+        return interaction.editReply({
             content: `Sorry, there was an issue scraping open graph data. Please make sure this site has og:title property set in the head.`,
             ephemeral: true,
         });
@@ -61,7 +62,7 @@ const shareHandler = async (
         console.log('tweet text', tweetText);
 
         if (tweetText && (tweetText + link).length > 230) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `Make sure that the length of the tweet text and the shared link is less than 240.`,
                 ephemeral: true,
             });
@@ -69,8 +70,8 @@ const shareHandler = async (
         await shareTable.create([
             {
                 fields: {
-                    discordUser: msg.author.username,
-                    discordId: msg.author.id,
+                    discordUser: interaction.user.username,
+                    discordId: interaction.user.id,
                     link,
                     title: ogTitle,
                     ...(ogImage && { image: ogImage.url }),
@@ -80,15 +81,14 @@ const shareHandler = async (
                 },
             },
         ]);
-        const msg = await interaction.reply({
+        await interaction.editReply({
             content: `Content successfully shared. Thanks!`,
             ephemeral: true,
         });
-        await msg.react(`🔥`);
     } catch (err) {
         console.error('Something went wrong in sharing to airtable.');
         console.error(err);
-        return interaction.reply({
+        return interaction.editReply({
             content: `Failed to save share record 🤷‍♂️. <@361868131997843456> should take a look!`,
             ephemeral: true,
         });
