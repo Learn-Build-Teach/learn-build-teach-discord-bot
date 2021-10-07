@@ -1,6 +1,7 @@
 import {
     CommandInteraction,
     CommandInteractionOptionResolver,
+    MessageEmbed,
 } from 'discord.js';
 import { shareTable, getDiscordUserById } from '../utils/Airtable.js';
 import { isValidUrl } from '../utils/Helpers.js';
@@ -11,11 +12,12 @@ const shareHandler = async (
     /** @type {CommandInteractionOptionResolver} */ options
 ) => {
     const discordId = interaction.user.id;
+    await interaction.deferReply();
 
     try {
         const existingUser = await getDiscordUserById(discordId);
         if (!existingUser) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `Before you share, please make sure to update your profile with the following flags. I will use these pieces of information to help share your content.`,
                 ephemeral: true,
             });
@@ -27,20 +29,19 @@ const shareHandler = async (
     const link = options.getString('link');
 
     if (!isValidUrl(link)) {
-        return interaction.reply({
+        return interaction.editReply({
             content: `Please include a valid url.`,
             ephemeral: true,
         });
     }
     let ogResult;
-    await interaction.deferReply();
+
     try {
         const data = await ogs({ url: link });
         ogResult = data.result;
         if (!ogResult.ogTitle) {
             return interaction.editReply({
                 content: `Sorry, this site doesn't appear to have open graph (og) title property.`,
-                ephemeral: true,
             });
         }
     } catch (err) {
@@ -48,7 +49,6 @@ const shareHandler = async (
         console.error(err);
         return interaction.editReply({
             content: `Sorry, there was an issue scraping open graph data. Please make sure this site has og:title property set in the head.`,
-            ephemeral: true,
         });
     }
 
@@ -64,7 +64,6 @@ const shareHandler = async (
         if (tweetText && (tweetText + link).length > 230) {
             return interaction.editReply({
                 content: `Make sure that the length of the tweet text and the shared link is less than 240.`,
-                ephemeral: true,
             });
         }
         await shareTable.create([
@@ -82,15 +81,13 @@ const shareHandler = async (
             },
         ]);
         await interaction.editReply({
-            content: `Content successfully shared. Thanks!`,
-            ephemeral: true,
+            content: `Content successfully shared. Thanks!\n${link}`,
         });
     } catch (err) {
         console.error('Something went wrong in sharing to airtable.');
         console.error(err);
         return interaction.editReply({
             content: `Failed to save share record 🤷‍♂️. <@361868131997843456> should take a look!`,
-            ephemeral: true,
         });
     }
 };
