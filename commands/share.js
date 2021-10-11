@@ -1,7 +1,6 @@
 import {
     CommandInteraction,
     CommandInteractionOptionResolver,
-    MessageEmbed,
 } from 'discord.js';
 import { shareTable, getDiscordUserById } from '../utils/Airtable.js';
 import { isValidUrl } from '../utils/Helpers.js';
@@ -13,7 +12,6 @@ const shareHandler = async (
 ) => {
     const discordId = interaction.user.id;
     await interaction.deferReply();
-
     try {
         const existingUser = await getDiscordUserById(discordId);
         if (!existingUser) {
@@ -31,7 +29,6 @@ const shareHandler = async (
     if (!isValidUrl(link)) {
         return interaction.editReply({
             content: `Please include a valid url.`,
-            ephemeral: true,
         });
     }
     let ogResult;
@@ -66,6 +63,7 @@ const shareHandler = async (
                 content: `Make sure that the length of the tweet text and the shared link is less than 240.`,
             });
         }
+
         await shareTable.create([
             {
                 fields: {
