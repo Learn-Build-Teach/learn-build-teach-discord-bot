@@ -83,7 +83,7 @@ const updateProfile = async (
                     ...userUpdates,
                 },
             };
-            userTable.create([newUser]);
+            await userTable.create([newUser]);
             console.log('User successfully created', newUser);
         }
 
