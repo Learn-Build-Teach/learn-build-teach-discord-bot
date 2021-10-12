@@ -17,7 +17,6 @@ const shareHandler = async (
         if (!existingUser) {
             return interaction.editReply({
                 content: `Before you share, please make sure to update your profile with the following flags. I will use these pieces of information to help share your content.`,
-                ephemeral: true,
             });
         }
     } catch (err) {
