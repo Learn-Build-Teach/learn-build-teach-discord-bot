@@ -10,7 +10,15 @@ This bot allows [Learn Build Teach Discord](https://discord.gg/vM2bagU) members 
 npm install
 ```
 
-### 2) Set the environment variables
+### 2) Get the API keys
+
+You can get the API keys from the following websites
+
+- [Discord](https://discord.com/developers/applications)
+- [Airtable](https://airtable.com/account)
+- [Twitter API Docs](https://developer.twitter.com/en/docs/twitter-api)
+
+### 3) Set the environment variables
 
 ```py
 DISCORD_GUILD_ID=""
@@ -20,7 +28,7 @@ AIRTABLE_SHARE_TABLE_NAME=""
 AIRTABLE_USER_TABLE_NAME=""
 AIRTABLE_BASE_ID=""
 # ADD ONLY IF YOU WANT TO DO TWEET STUFF
-COMMANDS_DIR=""
+COMMANDS_DIR="" #OPTIONAL
 SEND_TWEETS=""
 TWITTER_CONSUMER_KEY=""
 TWITTER_CONSUMER_SECRET=""
@@ -28,7 +36,7 @@ TWITTER_ACCESS_TOKEN_KEY=""
 TWITTER_ACCESS_TOKEN_SECRET=""
 ```
 
-### 3) Run the bot
+### 4) Run the bot
 
 ```sh
 npm run dev
