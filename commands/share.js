@@ -36,9 +36,10 @@ const shareHandler = async (
         const data = await ogs({ url: link });
         ogResult = data.result;
         if (!ogResult.ogTitle) {
-            return interaction.editReply({
-                content: `Sorry, this site doesn't appear to have open graph (og) title property.`,
-            });
+            // return interaction.editReply({
+            //     content: `Sorry, this site doesn't appear to have open graph (og) title property.`,
+            // });
+            console.info("This one didn't have an open graph title property, but we'll keep it for now :)")
         }
     } catch (err) {
         console.error('Something went wrong while scraping data.');
