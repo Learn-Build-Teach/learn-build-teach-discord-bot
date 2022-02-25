@@ -53,16 +53,12 @@ const getTweetFromShare = async (
     tweetText
 ) => {
     let tweet;
-    if (tweetText) {
-        tweet = `${tweetText} \n${link}`;
-    } else {
-        const existingUser = await getDiscordUserById(discordId);
-        const twitterUsername = existingUser && existingUser.fields.twitter;
-        const taggedUser = twitterUsername
-            ? `@${twitterUsername.replace('@', '')}`
-            : discordUsername;
-        tweet = `Check out "${title}" from ${taggedUser} of the #LearnBuildTeach community! \n\n ${link}`;
-    }
+    const existingUser = await getDiscordUserById(discordId);
+    const twitterUsername = existingUser && existingUser.fields.twitter;
+    const taggedUser = twitterUsername
+        ? `@${twitterUsername.replace('@', '')}`
+        : discordUsername;
+    tweet = `Check out "${title}" from ${taggedUser} of the #LearnBuildTeach community! \n\n ${link}`;
     return tweet;
 };
 //tweet available share (if there is one) every morning at 8am GMT
