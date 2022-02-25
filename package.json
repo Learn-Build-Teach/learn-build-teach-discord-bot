@@ -26,17 +26,16 @@
     },
     "jest": {
         "coverageThreshold": {
-          "global": {
-            "branches": 70,
-            "functions": 70,
-            "lines": 70,
-            "statements": 70
-          }
+            "global": {
+                "branches": 70,
+                "functions": 70,
+                "lines": 70,
+                "statements": 70
+            }
         }
     },
     "engines": {
-        "node": ">=16.6.0",
-        "npm": ">=7.0.0"
+        "node": "17.x"
     },
     "type": "module",
     "devDependencies": {
