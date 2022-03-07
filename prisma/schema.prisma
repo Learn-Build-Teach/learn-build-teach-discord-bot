@@ -29,16 +29,16 @@ model Kudo {
 
 model User {
   id                  String   @id @default(uuid()) //should match the discord user id
-  username            String   @db.VarChar(255) //discord username by default and updated by user
-  github              String   @db.VarChar(255)
-  twitter             String   @db.VarChar(255)
-  twitch              String   @db.VarChar(255)
-  youtube             String   @db.VarChar(255)
-  website             String   @db.VarChar(255)
-  instagram           String   @db.VarChar(255)
-  tiktok              String   @db.VarChar(255)
-  linkedin            String   @db.VarChar(255)
-  polywork            String   @db.VarChar(255)
+  username            String?  @db.VarChar(255) //discord username by default and updated by user
+  github              String?  @db.VarChar(255)
+  twitter             String?  @db.VarChar(255)
+  twitch              String?  @db.VarChar(255)
+  youtube             String?  @db.VarChar(255)
+  website             String?  @db.VarChar(255)
+  instagram           String?  @db.VarChar(255)
+  tiktok              String?  @db.VarChar(255)
+  linkedin            String?  @db.VarChar(255)
+  polywork            String?  @db.VarChar(255)
   numMessages         Int      @default(0)
   xp                  Int      @default(0)
   receivedKudos       Kudo[]   @relation("receivedKudos")
@@ -48,17 +48,17 @@ model User {
 }
 
 model Share {
-  id          String  @id @default(uuid())
-  user        User    @relation(fields: [userId], references: [id])
-  userId      String  @db.VarChar(255)
-  link        String  @db.VarChar(255)
-  title       String  @db.VarChar(255)
-  imageUrl    String  @db.VarChar(255)
-  description String  @db.VarChar(255)
-  tweetable   Boolean @default(false)
-  emailable   Boolean @default(false)
-  tweeted     Boolean @default(false)
-  emailed     Boolean @default(false)
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @db.VarChar(255)
+  link        String   @db.VarChar(255)
+  title       String   @db.VarChar(255)
+  imageUrl    String?  @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  tweetable   Boolean? @default(false)
+  emailable   Boolean? @default(false)
+  tweeted     Boolean? @default(false)
+  emailed     Boolean? @default(false)
 }
 
 enum KudoCategory {
