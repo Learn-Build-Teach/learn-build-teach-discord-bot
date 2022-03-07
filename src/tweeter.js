@@ -1,9 +1,9 @@
-import { sendTweet } from './utils/Twitter.js';
+import { sendTweet } from './utils/twitter.js';
 import {
     shareTable,
     getDiscordUserById,
     getShareRecordToTweet,
-} from './utils/Airtable.js';
+} from './utils/airtable.js';
 import cron from 'node-cron';
 
 const tweetNextShare = async () => {
@@ -49,8 +49,7 @@ const getTweetFromShare = async (
     title,
     link,
     discordId,
-    discordUsername,
-    tweetText
+    discordUsername
 ) => {
     let tweet;
     const existingUser = await getDiscordUserById(discordId);

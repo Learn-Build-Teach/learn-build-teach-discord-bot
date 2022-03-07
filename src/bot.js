@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import dotenv, { config } from 'dotenv';
+import dotenv from 'dotenv';
 import fs from 'fs';
 dotenv.config();
 
