@@ -12,7 +12,6 @@ generator client {
   previewFeatures = ["referentialIntegrity"]
 }
 
-//TODO: rename to kudo
 model Kudo {
   id         String       @id @default(uuid())
   category   KudoCategory
@@ -28,7 +27,7 @@ model Kudo {
 }
 
 model User {
-  id                  String   @id @default(uuid()) //should match the discord user id
+  id                  String   @id @unique //should match the discord user id
   username            String?  @db.VarChar(255) //discord username by default and updated by user
   github              String?  @db.VarChar(255)
   twitter             String?  @db.VarChar(255)
@@ -44,7 +43,7 @@ model User {
   receivedKudos       Kudo[]   @relation("receivedKudos")
   sentKudos           Kudo[]   @relation("sentKudos")
   shares              Share[]  @relation
-  lastActiveTimestamp DateTime
+  lastActiveTimestamp DateTime @default(now())
 }
 
 model Share {

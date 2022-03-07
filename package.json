@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "node dist/app.js",
+    "dev": "nodemon src/bot.ts",
+    "build": "tsc -p .",
     "test": "jest --env node",
     "test:coverage": "jest --env node --coverage"
   },
@@ -22,6 +24,7 @@
     "express": "^4.17.1",
     "node": "16.6.1",
     "node-cron": "^2.0.3",
+    "nodemon": "^2.0.15",
     "open-graph-scraper": "^4.11.0",
     "quick-chat-bot": "^0.9.1",
     "twitter": "^1.7.1"
@@ -39,7 +42,6 @@
   "engines": {
     "node": "17.x"
   },
-  "type": "module",
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.15.4",
     "@types/express": "^4.17.13",

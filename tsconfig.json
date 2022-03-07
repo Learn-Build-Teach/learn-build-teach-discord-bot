@@ -2,10 +2,14 @@
   "compilerOptions": {
     "sourceMap": true,
     "outDir": "dist",
+    "rootDir": "./src",
     "strict": true,
+    "target": "es6",
     "lib": [
       "esnext"
     ],
-    "esModuleInterop": true
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "module": "es2020"
   }
 }

@@ -10,6 +10,15 @@ export const getUserById = async (id: string): Promise<User | null> => {
   return user;
 }
 
+export const createUser = async (id: string, username: string = "") => {
+  return await prisma.user.create({
+    data: {
+      id,
+      username
+    }
+  })
+}
+
 export const deleteUser = async (id: string): Promise<User | null> => {
   return await prisma.user.delete({
     where: {

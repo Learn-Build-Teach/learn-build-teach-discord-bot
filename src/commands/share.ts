@@ -4,7 +4,7 @@ import {
 } from 'discord.js';
 import { isValidUrl } from '../utils/Helpers.js';
 import ogs from "open-graph-scraper";
-import { getUserById } from '../utils/db/users.js';
+import { createUser, getUserById, upsertUser } from '../utils/db/users.js';
 import { createShare } from '../utils/db/shares.js';
 
 const shareHandler = async (
@@ -64,19 +64,23 @@ const shareHandler = async (
       });
     }
 
-    //TODO: how to create this without an id?
-    await createShare({
-      id: '',
-      userId: interaction.user.id,
-      link,
-      title: ogTitle,
-      imageUrl: ogImage?.url || null,
-      description: ogDescription || null,
-      tweetable: false,
-      tweeted: false,
-      emailable: false,
-      emailed: false
-    })
+    const discordId = interaction.user.id;
+    let user = await getUserById(discordId);
+    if (!user) {
+      user = await createUser(discordId);
+    }
+    //TODO: no idea...
+    // await createShare({
+    //   user,
+    //   link,
+    //   title: ogTitle,
+    //   imageUrl: ogImage?.url || null,
+    //   description: ogDescription || null,
+    //   tweetable: false,
+    //   tweeted: false,
+    //   emailable: false,
+    //   emailed: false
+    // })
 
 
     await interaction.editReply({

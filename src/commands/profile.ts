@@ -6,6 +6,7 @@ import {
 } from 'discord.js';
 import { getUserById } from '../utils/db/users';
 
+
 const getProfile = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
