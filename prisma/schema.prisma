@@ -32,6 +32,7 @@ model User {
   username            String   @db.VarChar(255) //discord username by default and updated by user
   github              String   @db.VarChar(255)
   twitter             String   @db.VarChar(255)
+  twitch              String   @db.VarChar(255)
   youtube             String   @db.VarChar(255)
   website             String   @db.VarChar(255)
   instagram           String   @db.VarChar(255)
