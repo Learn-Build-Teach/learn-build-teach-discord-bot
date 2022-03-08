@@ -1,7 +1,15 @@
 import { Client } from 'discord.js';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url'
 dotenv.config();
+
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+
 
 const client = new Client({
   intents: ['GUILDS', 'GUILD_MESSAGES'],
@@ -21,9 +29,10 @@ client.on('ready', async () => {
     commands = client.application?.commands;
   }
   const commandsDir = process.env.COMMANDS_DIR || '';
+  console.log(__dirname)
   console.log({ commandsDir })
   //TODO: handle errors
-  const commandFiles = fs.readdirSync(commandsDir);
+  const commandFiles = fs.readdirSync(path.join(__dirname, commandsDir));
 
   const filePromises = commandFiles
     .filter((commandFile) => commandFile.endsWith('.ts'))
@@ -32,6 +41,7 @@ client.on('ready', async () => {
       return import(`${commandsDir}/${commandFile}`);
     });
   const loadedFiles = await Promise.all(filePromises);
+  console.log({loadedFiles})
 
   loadedFiles.forEach((loadedFile) => {
     const commandConfig = loadedFile.default;

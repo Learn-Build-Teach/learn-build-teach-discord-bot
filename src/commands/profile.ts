@@ -4,7 +4,8 @@ import {
   CommandInteractionOptionResolver,
   User,
 } from 'discord.js';
-import { getUserById } from '../utils/db/users';
+
+import  { getUserById } from '../utils/db/users'
 
 
 const getProfile = async (

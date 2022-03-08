@@ -23,7 +23,7 @@
         "no-shadow": ["error", { "allow": ["err", "resolve", "reject"] }],
         "no-unused-vars": "error",
         "no-var": "error",
-        "quotes": ["error", "single", "backick"],
+        "quotes": ["error", "backtick", "avoid-escape"],
         "semi": ["error", "always"]
     }
 }

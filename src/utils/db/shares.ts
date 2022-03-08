@@ -11,7 +11,7 @@ export const getShareToTweet = async () => {
 }
 
 
-export const createShare = async (share: Prisma.ShareCreateInput) => {
+export const createShare = async (share: Prisma.ShareCreateInput): Promise<Share> => {
   return await prisma.share.create({
     data: share
   });
