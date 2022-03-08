@@ -85,12 +85,6 @@ export default {
       description: `Link to your content`,
       required: true,
       type: 'STRING',
-    },
-    {
-      name: 'tweettext',
-      description: `Sample text for a tweet`,
-      required: false,
-      type: 'STRING',
-    },
+    }
   ],
 };
