@@ -3,12 +3,13 @@
     "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src/",
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "target": "es6",
     "lib": [
       "esnext"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "module": "es2020"
   }
