@@ -3,6 +3,18 @@
     "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src/",
+    "baseUrl": "./src",
+    "paths": {
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@db/*": [
+        "db/*"
+      ],
+      "@src/*": [
+        "*"
+      ]
+    },
     "strict": true,
     "target": "es6",
     "lib": [
