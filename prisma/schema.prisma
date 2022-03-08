@@ -58,6 +58,8 @@ model Share {
   emailable   Boolean? @default(false)
   tweeted     Boolean? @default(false)
   emailed     Boolean? @default(false)
+
+  @@index([userId])
 }
 
 enum KudoCategory {

@@ -3,25 +3,14 @@
     "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src/",
-    "baseUrl": "./src",
-    "paths": {
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@db/*": [
-        "db/*"
-      ],
-      "@src/*": [
-        "*"
-      ]
-    },
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "target": "es6",
     "lib": [
       "esnext"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
-    "module": "es2020"
+    "module": "CommonJS"
   }
 }

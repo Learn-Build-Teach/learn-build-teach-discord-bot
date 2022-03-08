@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon src/bot.ts",
-    "build": "tsc -p .",
+    "dev": "nodemon",
+    "build": "tsc",
     "test": "jest --env node",
     "test:coverage": "jest --env node --coverage"
   },

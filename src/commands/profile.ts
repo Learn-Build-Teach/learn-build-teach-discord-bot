@@ -5,7 +5,7 @@ import {
   User,
 } from 'discord.js';
 
-import { getUserById } from '@utils/db/users';
+import { getUserById } from '../utils/db/users';
 
 
 const getProfile = async (
@@ -21,6 +21,7 @@ const getProfile = async (
 
     const user = await getUserById(targetUser.id);
     if (!!user) {
+      //TODO: update to include new fields
       const embed = new MessageEmbed()
         .setAuthor(
           `${targetUser.username}'s profile`,

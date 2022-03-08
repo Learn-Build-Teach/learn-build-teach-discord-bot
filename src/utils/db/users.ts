@@ -29,6 +29,23 @@ export const deleteUser = async (id: string): Promise<User | null> => {
   })
 }
 
+export const resetUser = async (user: User) => {
+  user = {
+    ...user,
+    username: '',
+    github: '',
+    twitter: '',
+    twitch: '',
+    youtube: '',
+    website: '',
+    instagram: '',
+    tiktok: '',
+    linkedin: '',
+    polywork: '',
+  }
+  return await upsertUser(user);
+}
+
 export const upsertUser = async (user: User) => {
   return await prisma.user.upsert({
     where: {

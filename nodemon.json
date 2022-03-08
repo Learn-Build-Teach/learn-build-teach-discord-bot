@@ -1,5 +1,8 @@
 {
-  "execMap": {
-    "ts": "node --loader ts-node/esm"
-  }
+  "ext": "js,json,yaml,env,ts",
+  "ignore": ["dist/*", "test/*"],
+  "env": {
+    "NODE_ENV": "dev"
+  },
+  "exec": "tsc && node dist/bot.js"
 }
