@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon",
+    "dev": "ts-node-dev --respawn --exit-child src/bot.ts",
     "build": "tsc",
     "test": "jest --env node",
     "test:coverage": "jest --env node --coverage"
@@ -23,7 +23,6 @@
     "express": "^4.17.1",
     "node": "16.6.1",
     "node-cron": "^2.0.3",
-    "nodemon": "^2.0.15",
     "open-graph-scraper": "^4.11.0",
     "quick-chat-bot": "^0.9.1",
     "twitter": "^1.7.1"
@@ -52,7 +51,7 @@
     "jest": "^27.2.5",
     "prettier": "2.5.1",
     "prisma": "^3.10.0",
-    "ts-node": "^10.7.0",
+    "ts-node-dev": "1.1.8",
     "typescript": "^4.6.2"
   }
 }

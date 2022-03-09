@@ -2,6 +2,11 @@ import { Client } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import('./commands/kudos') 
+import('./commands/profile') 
+import('./commands/resetProfile') 
+import('./commands/share') 
+import('./commands/updateProfile') 
 dotenv.config();
 const client = new Client({
   intents: ['GUILDS', 'GUILD_MESSAGES'],
@@ -25,8 +30,9 @@ client.on('ready', async () => {
 
   //TODO: handle errors
   const commandFiles = fs.readdirSync(commandsFullPath);
+  console.log('foo bar')
   const filePromises = commandFiles
-    .filter((commandFile) => commandFile.endsWith('.js'))
+    .filter((commandFile) => commandFile.endsWith('.js') || commandFile.endsWith('.ts'))
     .map((commandFile) => {
       console.log(`${commandsFullPath}/${commandFile}`)
       return import(`./commands/${commandFile}`);
