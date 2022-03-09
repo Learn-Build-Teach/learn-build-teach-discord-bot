@@ -26,7 +26,7 @@ const giveKudos = async (
   console.log({ receivingUser });
   //Just incase we aren't able to create the user lets leave the guard in place
   if (!receivingUser) {
-    console.info("That usr doesn't exist");
+    console.info("That user doesn't exist");
     return interaction.editReply({
       content: `Something wasn't right with those users`,
     });
@@ -43,9 +43,13 @@ const giveKudos = async (
   }
 
   const description = options.getString('description');
+  const categoryString = options.getString('category', true)
+  //HACK: https://stackoverflow.com/questions/50417254/dynamically-access-enum-in-typescript-by-key
+  const category: KudoCategory = KudoCategory[categoryString as keyof typeof KudoCategory]
+  console.log({categoryString})
 
   const kudo: Prisma.KudoCreateInput = {
-    category: KudoCategory.LEARN, //TODO: replace with user input
+    category: category,
     receiver: {
       connect: {
         id: receiverId,
@@ -82,11 +86,17 @@ export default {
       type: 'STRING',
     },
     //TODO: add enum for category type
-    // {
-    //   name: 'category',
-    //   description: `Learning, building, or teaching?`,
-    //   required: true,
-    //   type: 'CHOICES',
-    // },
+    {
+      name: 'category',
+      description: `Learning, building, or teaching?`,
+      required: true,
+      type: 'STRING',
+      //TODO: I wonder if we an enumerate KudoCategory here and generate the choices
+      choices: [
+        { name: KudoCategory.LEARN, value: KudoCategory.LEARN },
+        { name: KudoCategory.BUILD, value: KudoCategory.BUILD },
+        { name: KudoCategory.TEACH, value: KudoCategory.TEACH },
+      ],
+    },
   ],
 };
