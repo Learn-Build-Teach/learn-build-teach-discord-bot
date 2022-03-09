@@ -1,8 +1,7 @@
 import {
   CommandInteraction,
-  CommandInteractionOptionResolver,
 } from 'discord.js';
-import { deleteUser, getUserById, resetUser, upsertUser } from '../utils/db/users';
+import { getUserById, resetUser } from '../utils/db/users';
 
 const resetProfile = async (
   interaction: CommandInteraction,
