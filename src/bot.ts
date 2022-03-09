@@ -1,10 +1,12 @@
-import { Client } from 'discord.js';
+import { KudoCategory } from '@prisma/client';
+import { Client, MessageReaction } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import { giveKudos } from './utils/db/kudos';
 dotenv.config();
 const client = new Client({
-  intents: ['GUILDS', 'GUILD_MESSAGES'],
+  intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
 });
 
 const nameToCommandMap: any = {};
@@ -46,8 +48,30 @@ client.on('ready', async () => {
   });
 });
 
+client.on('messageReactionAdd', async (reaction, user) => {
+  if (!(reaction instanceof MessageReaction)) return;
+  const { emoji, message } = reaction;
+  const { author: originalAuthor } = message;
+
+  if (!originalAuthor || !emoji?.name) return;
+
+  const emojisWeCareAbout = ['learn', 'build', 'teach'];
+  if (emojisWeCareAbout.includes(emoji.name || '')) {
+    const category: KudoCategory =
+      KudoCategory[emoji.name.toUpperCase() as keyof typeof KudoCategory]
+    try {
+      const kudo = await giveKudos(user.id, originalAuthor.id, category);
+      console.info(`Kudo given`, kudo);
+    } catch (error) {
+      console.error("Well, something went wrong 🤷‍♂️")
+    }
+  }
+
+  // console.log(emoji, user);
+});
 
 client.on('interactionCreate', (interaction) => {
+  console.log(interaction);
   if (!interaction.isCommand()) return;
 
   const { commandName, options } = interaction;

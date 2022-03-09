@@ -10,7 +10,7 @@ export const createKudo = async (kudo: Prisma.KudoCreateInput): Promise<Kudo> =>
 }
 
 //TODO: use this logic in emoji reactions as well?
-export const giveKudos = async (giverId: string, receiverId: string, category: KudoCategory, description: string): Promise<Kudo> => {
+export const giveKudos = async (giverId: string, receiverId: string, category: KudoCategory, description?: string): Promise<Kudo> => {
 
   const receivingUser = await getOrCreateUser(receiverId)
 

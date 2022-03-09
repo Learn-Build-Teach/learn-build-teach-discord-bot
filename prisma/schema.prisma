@@ -15,7 +15,7 @@ generator client {
 model Kudo {
   id          String       @id @default(uuid())
   category    KudoCategory
-  description String       @db.VarChar(255)
+  description String?      @db.VarChar(255)
   points      Int          @default(1)
   receiver    User         @relation("receivedKudos", fields: [receiverId], references: [id])
   receiverId  String       @db.VarChar(255)
