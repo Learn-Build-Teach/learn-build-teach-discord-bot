@@ -66,8 +66,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
       console.error("Well, something went wrong 🤷‍♂️")
     }
   }
-
-  // console.log(emoji, user);
 });
 
 client.on('interactionCreate', (interaction) => {
