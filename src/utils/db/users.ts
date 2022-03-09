@@ -1,31 +1,40 @@
-import { prisma } from ".";
-import type { User } from "@prisma/client"
-
-
+import { prisma } from '.'
+import type { User } from '.prisma/client'
 
 export const getUserById = async (id: string): Promise<User | null> => {
   const user = await prisma.user.findUnique({
     where: {
-      id
+      id,
     },
-  });
-  return user;
+  })
+  return user
 }
 
-export const createUser = async (id: string, username: string = "") => {
+export const createUser = async (id: string, username: string = '') => {
   return await prisma.user.create({
     data: {
       id,
-      username
-    }
+      username,
+    },
   })
+}
+
+//TODO: come up with a better name for this function
+export const getOrCreateUser = async (id: string) => {
+  const existingUser = await getUserById(id)
+  if (existingUser) {
+    return existingUser
+  }
+  const createdUser = await createUser(id)
+  console.log({ createdUser })
+  return createdUser
 }
 
 export const deleteUser = async (id: string): Promise<User | null> => {
   return await prisma.user.delete({
     where: {
-      id
-    }
+      id,
+    },
   })
 }
 
@@ -43,16 +52,15 @@ export const resetUser = async (user: User) => {
     linkedin: '',
     polywork: '',
   }
-  return await upsertUser(user);
+  return await upsertUser(user)
 }
 
 export const upsertUser = async (user: User) => {
   return await prisma.user.upsert({
     where: {
-      id: user.id
+      id: user.id,
     },
     update: user,
-    create: user
-  });
+    create: user,
+  })
 }
-
