@@ -2,8 +2,8 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
 } from 'discord.js';
-import { upsertUser } from '../utils/db/users.js';
-import { isValidUrl } from '../utils/Helpers.js';
+import { upsertUser } from '../utils/db/users';
+import { isValidUrl } from '../utils/helpers';
 
 const validFlags: any = {
   twitter: {

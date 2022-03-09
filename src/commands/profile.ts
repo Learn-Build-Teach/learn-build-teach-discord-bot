@@ -15,7 +15,7 @@ const getProfile = async (
 ) => {
   const mentionedUser = options.getMentionable('username', false);
 
-  let targetUser = mentionedUser instanceof GuildMember ? mentionedUser.user : interaction.user;
+  const targetUser = mentionedUser instanceof GuildMember ? mentionedUser.user : interaction.user;
 
   console.log(`Searching for user, ${targetUser.id}`);
   await interaction.deferReply();

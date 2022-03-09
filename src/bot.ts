@@ -26,7 +26,7 @@ client.on('ready', async () => {
   //TODO: handle errors
   const commandFiles = fs.readdirSync(commandsFullPath);
   const filePromises = commandFiles
-    .filter((commandFile) => commandFile.endsWith('.js'))
+    .filter((commandFile) => commandFile.endsWith('.js') || commandFile.endsWith('.ts'))
     .map((commandFile) => {
       console.log(`${commandsFullPath}/${commandFile}`)
       return import(`./commands/${commandFile}`);

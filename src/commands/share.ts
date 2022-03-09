@@ -2,10 +2,10 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
 } from 'discord.js';
-import { isValidUrl } from '../utils/helpers.js';
+import { isValidUrl } from '../utils/helpers';
 import ogs from "open-graph-scraper";
-import { createUser, getUserById } from '../utils/db/users.js';
-import { createShare } from '../utils/db/shares.js';
+import { createUser, getUserById } from '../utils/db/users';
+import { createShare } from '../utils/db/shares';
 
 
 const shareHandler = async (
