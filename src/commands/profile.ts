@@ -1,12 +1,14 @@
+import { User } from '@prisma/client';
 import {
   MessageEmbed,
   CommandInteraction,
   CommandInteractionOptionResolver,
-  User,
   GuildMember,
 } from 'discord.js';
 
 import { getUserById } from '../utils/db/users';
+import { profileSocialOptions } from './updateProfile';
+
 
 
 const getProfile = async (
@@ -17,12 +19,10 @@ const getProfile = async (
 
   const targetUser = mentionedUser instanceof GuildMember ? mentionedUser.user : interaction.user;
 
-  console.log(`Searching for user, ${targetUser.id}`);
-  await interaction.deferReply();
   try {
 
     const user = await getUserById(targetUser.id);
-    if (!!user) {
+    if (user) {
       //TODO: update to include new fields
       const embed = new MessageEmbed()
         .setAuthor(
@@ -30,45 +30,13 @@ const getProfile = async (
           targetUser.displayAvatarURL()
         )
         .addFields(
-          {
-            name: 'Twitter',
-            value: user.twitter
-              ? `https://twitter.com/${user.twitter}`
-              : 'n/a',
-          },
-          {
-            name: 'YouTube',
-            value: user.youtube || 'n/a',
-          },
-          {
-            name: 'Website',
-            value: user.website || 'n/a',
-          },
-          {
-            name: 'Twitch',
-            value: user.twitch
-              ? `https://twitch.tv/${user.twitch}`
-              : 'n/a',
-          },
-          {
-            name: 'Instagram',
-            value: user.instagram
-              ? `https://instagram.com/${user.instagram}`
-              : 'n/a',
-          },
-          {
-            name: 'GitHub',
-            value: user.github
-              ? `https://github.com/${user.github}`
-              : 'n/a',
-          }
+          createUserProfileFields(user)
         );
 
-      interaction.editReply({ embeds: [embed] });
+      interaction.reply({ embeds: [embed] });
     } else {
-      interaction.editReply({
+      interaction.reply({
         content: "Couldn't find details on that user",
-        //TODO: how do we use this ?ephemeral: true,
       });
     }
   } catch (err) {
@@ -76,12 +44,32 @@ const getProfile = async (
       `Something went wrong searching for user profile: ${targetUser.username}.`
     );
     console.error(err);
-    return interaction.editReply({
+    return interaction.reply({
       content: `Something went wrong searching for user profile ${targetUser.username}`,
-      //TODO: how do we use this ?ephemeral: true,
     });
   }
 };
+
+interface ProfileField {
+  name: string,
+  value: string
+}
+
+//defining user as type any so we can dynamically pull values
+const createUserProfileFields = (user: any): ProfileField[] => {
+  const fields: ProfileField[] = [];
+  for (let i = 0; i < profileSocialOptions.length; i++) {
+    const option = profileSocialOptions[i];
+    const optionName = option.name;
+    if (user[optionName]) {
+      fields.push({
+        name: optionName.toUpperCase(),
+        value: user[optionName]
+      })
+    }
+  }
+  return fields;
+}
 
 export default {
   callback: getProfile,

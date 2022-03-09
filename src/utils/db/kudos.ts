@@ -27,7 +27,8 @@ export const giveKudos = async (giverId: string, receiverId: string, category: K
   }
 
   const kudo: Prisma.KudoCreateInput = {
-    category: category,
+    category,
+    description,
     receiver: {
       connect: {
         id: receiverId,

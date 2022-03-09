@@ -13,14 +13,15 @@ generator client {
 }
 
 model Kudo {
-  id         String       @id @default(uuid())
-  category   KudoCategory
-  points     Int          @default(1)
-  receiver   User         @relation("receivedKudos", fields: [receiverId], references: [id])
-  receiverId String       @db.VarChar(255)
-  giver      User         @relation("sentKudos", fields: [giverId], references: [id])
-  giverId    String       @db.VarChar(255)
-  multiplier Int          @default(1)
+  id          String       @id @default(uuid())
+  category    KudoCategory
+  description String       @db.VarChar(255)
+  points      Int          @default(1)
+  receiver    User         @relation("receivedKudos", fields: [receiverId], references: [id])
+  receiverId  String       @db.VarChar(255)
+  giver       User         @relation("sentKudos", fields: [giverId], references: [id])
+  giverId     String       @db.VarChar(255)
+  multiplier  Int          @default(1)
 
   @@index(receiverId)
   @@index(giverId)

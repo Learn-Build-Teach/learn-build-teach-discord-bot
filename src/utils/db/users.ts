@@ -19,14 +19,13 @@ export const createUser = async (id: string, username: string = '') => {
   })
 }
 
-//TODO: come up with a better name for this function
 export const getOrCreateUser = async (id: string) => {
   const existingUser = await getUserById(id)
   if (existingUser) {
     return existingUser
   }
   const createdUser = await createUser(id)
-  console.log({ createdUser })
+  console.info({ createdUser })
   return createdUser
 }
 

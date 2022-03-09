@@ -19,12 +19,11 @@ const handleKudos = async (
 ) => {
   try {
 
-    await interaction.deferReply()
 
     const mentionedUser = options.getMentionable('user', false)
 
     if (!(mentionedUser instanceof GuildMember)) {
-      return interaction.editReply({
+      return interaction.reply({
         content: `You can only give kudos to a User 🥰`,
       })
     }
@@ -41,12 +40,12 @@ const handleKudos = async (
       KudoCategory[categoryString as keyof typeof KudoCategory]
 
     giveKudos(giverId, receiverId, category, description);
-    return interaction.editReply({
+    return interaction.reply({
       content: `${category} Kudos were given to ${mentionedUser.user.username} for '${description}'`,
     })
   } catch (err) {
     console.error(err)
-    return interaction.editReply({
+    return interaction.reply({
       content: `Something went wrong giving kudos :(`,
     })
   }
