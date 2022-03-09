@@ -28,6 +28,8 @@ model Kudo {
 
 model User {
   id                  String   @id @unique //should match the discord user id
+  //TODO do we need the username here it doesn't seem to be used by the bot
+  //On top of that shouldn't it also just display the users name from their profile?
   username            String?  @db.VarChar(255) //discord username by default and updated by user
   github              String?  @db.VarChar(255)
   twitter             String?  @db.VarChar(255)

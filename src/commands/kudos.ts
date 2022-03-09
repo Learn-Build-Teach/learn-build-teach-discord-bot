@@ -1,10 +1,16 @@
-import { Kudo, KudoCategory, Prisma, Share } from "@prisma/client";
-import { CommandInteraction, CommandInteractionOptionResolver, GuildMember, User } from "discord.js";
-import { createKudo } from "../utils/db/kudos";
-import { getUserById } from "../utils/db/users";
+import { KudoCategory, Prisma } from '.prisma/client';
+import {
+  CommandInteraction,
+  CommandInteractionOptionResolver,
+  GuildMember,
+} from 'discord.js';
+import { createKudo } from '../utils/db/kudos';
+import { getOrCreateUser } from '../utils/db/users';
 
-const giveKudos = async (interaction: CommandInteraction,
-  options: CommandInteractionOptionResolver) => {
+const giveKudos = async (
+  interaction: CommandInteraction,
+  options: CommandInteractionOptionResolver
+) => {
   await interaction.deferReply();
 
   const mentionedUser = options.getMentionable('user', false);
@@ -15,11 +21,10 @@ const giveKudos = async (interaction: CommandInteraction,
     });
   }
 
-
   const { id: receiverId } = mentionedUser;
-  const receivingUser = await getUserById(receiverId);
-  console.log(receivingUser);
-  //TODO: what if the user doesn't exist? Create them?
+  const receivingUser = await getOrCreateUser(receiverId);
+  console.log({ receivingUser });
+  //Just incase we aren't able to create the user lets leave the guard in place
   if (!receivingUser) {
     console.info("That usr doesn't exist");
     return interaction.editReply({
@@ -28,10 +33,10 @@ const giveKudos = async (interaction: CommandInteraction,
   }
 
   const { id: giverId } = interaction.user;
-  const givingUser = await getUserById(giverId);
+  const givingUser = await getOrCreateUser(giverId);
 
   if (!givingUser) {
-    console.info("That user doesn't exist")
+    console.info("That user doesn't exist");
     return interaction.editReply({
       content: `Something wasn't right with those users`,
     });
@@ -43,26 +48,26 @@ const giveKudos = async (interaction: CommandInteraction,
     category: KudoCategory.LEARN, //TODO: replace with user input
     receiver: {
       connect: {
-        id: receiverId
-      }
+        id: receiverId,
+      },
     },
     giver: {
       connect: {
-        id: giverId
-      }
+        id: giverId,
+      },
     },
-  }
+  };
   const createdKudo = await createKudo(kudo);
   console.log(createdKudo);
   console.log(receivingUser, givingUser, description);
   return interaction.editReply({
     content: `Kudos were given`,
   });
-}
+};
 export default {
   callback: giveKudos,
   name: 'kudos',
-  description: "Give kudos to a community member",
+  description: 'Give kudos to a community member',
   options: [
     {
       name: 'user',
