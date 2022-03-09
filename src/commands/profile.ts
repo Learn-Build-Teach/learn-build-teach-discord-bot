@@ -3,9 +3,10 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
   User,
+  GuildMember,
 } from 'discord.js';
 
-import  { getUserById } from '../utils/db/users'
+import { getUserById } from '../utils/db/users';
 
 
 const getProfile = async (
@@ -13,7 +14,8 @@ const getProfile = async (
   options: CommandInteractionOptionResolver
 ) => {
   const mentionedUser = options.getMentionable('username', false);
-  let targetUser = mentionedUser instanceof User ? mentionedUser : interaction.user;
+
+  let targetUser = mentionedUser instanceof GuildMember ? mentionedUser.user : interaction.user;
 
   console.log(`Searching for user, ${targetUser.id}`);
   await interaction.deferReply();
@@ -21,6 +23,7 @@ const getProfile = async (
 
     const user = await getUserById(targetUser.id);
     if (!!user) {
+      //TODO: update to include new fields
       const embed = new MessageEmbed()
         .setAuthor(
           `${targetUser.username}'s profile`,
@@ -93,3 +96,19 @@ export default {
     },
   ],
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

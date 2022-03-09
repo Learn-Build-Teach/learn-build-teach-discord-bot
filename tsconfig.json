@@ -11,6 +11,6 @@
     ],
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "module": "es2020"
+    "module": "CommonJS"
   }
 }

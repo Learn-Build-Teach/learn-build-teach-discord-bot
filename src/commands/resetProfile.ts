@@ -2,24 +2,23 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
 } from 'discord.js';
-import { deleteUser, getUserById } from '../utils/db/users';
+import { deleteUser, getUserById, resetUser, upsertUser } from '../utils/db/users';
 
 const resetProfile = async (
   interaction: CommandInteraction,
-  options: CommandInteractionOptionResolver
 ) => {
   const discordId = interaction.user.id;
   try {
-    const existingUser = await getUserById(discordId);
+    let existingUser = await getUserById(discordId);
     if (!existingUser) {
       return interaction.reply({
         content: `Unfortunately, we couldn't find your profile.`,
         ephemeral: true,
       });
     }
-    await deleteUser(existingUser.id);
+    resetUser(existingUser);
     return interaction.reply({
-      content: `Profile has been reset/deleted.`,
+      content: `Profile has been reset.`,
       ephemeral: true,
     });
   } catch (err) {
