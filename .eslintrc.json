@@ -6,8 +6,7 @@
     ],
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/eslint-recommended"
     ],
     "env": {
         "node": true,
@@ -15,52 +14,6 @@
     },
     "parserOptions": {
         "ecmaVersion": 2021,
-        "allowImportExportEverywhere": true,
         "sourceType": "module"
-    },
-    "rules": {
-        "comma-dangle": [
-            "error",
-            "always-multiline"
-        ],
-        "comma-spacing": "error",
-        "comma-style": "error",
-        "curly": [
-            "error",
-            "multi",
-            "consistent"
-        ],
-        "eqeqeq": "error",
-        "indent": [
-            "error",
-            "space"
-        ],
-        "no-console": "off",
-        "no-empty": "error",
-        "no-empty-function": "error",
-        "no-extra-parens": "error",
-        "no-extra-semi": "error",
-        "no-inline-comments": "error",
-        "no-shadow": [
-            "error",
-            {
-                "allow": [
-                    "err",
-                    "resolve",
-                    "reject"
-                ]
-            }
-        ],
-        "no-unused-vars": "error",
-        "no-var": "error",
-        "quotes": [
-            "error",
-            "single",
-            "avoid-escape"
-        ],
-        "semi": [
-            "warn",
-            "never"
-        ]
     }
 }
