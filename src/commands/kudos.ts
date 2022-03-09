@@ -7,6 +7,13 @@ import {
 import { createKudo } from '../utils/db/kudos';
 import { getOrCreateUser } from '../utils/db/users';
 
+const choices = Object.keys(KudoCategory).map((key) => {
+  return {
+    name: KudoCategory[key as keyof typeof KudoCategory],
+    value: KudoCategory[key as keyof typeof KudoCategory],
+  };
+});
+
 const giveKudos = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
@@ -43,10 +50,11 @@ const giveKudos = async (
   }
 
   const description = options.getString('description');
-  const categoryString = options.getString('category', true)
+  const categoryString = options.getString('category', true);
   //HACK: https://stackoverflow.com/questions/50417254/dynamically-access-enum-in-typescript-by-key
-  const category: KudoCategory = KudoCategory[categoryString as keyof typeof KudoCategory]
-  console.log({categoryString})
+  const category: KudoCategory =
+    KudoCategory[categoryString as keyof typeof KudoCategory];
+  console.log({ categoryString });
 
   const kudo: Prisma.KudoCreateInput = {
     category: category,
@@ -85,18 +93,12 @@ export default {
       required: true,
       type: 'STRING',
     },
-    //TODO: add enum for category type
     {
       name: 'category',
       description: `Learning, building, or teaching?`,
       required: true,
       type: 'STRING',
-      //TODO: I wonder if we an enumerate KudoCategory here and generate the choices
-      choices: [
-        { name: KudoCategory.LEARN, value: KudoCategory.LEARN },
-        { name: KudoCategory.BUILD, value: KudoCategory.BUILD },
-        { name: KudoCategory.TEACH, value: KudoCategory.TEACH },
-      ],
+      choices: choices,
     },
   ],
 };
