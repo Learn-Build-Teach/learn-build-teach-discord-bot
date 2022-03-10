@@ -15,13 +15,14 @@ npm install
 You can get the API keys from the following websites
 
 -   [Discord](https://discord.com/developers/applications)
--   [Airtable](https://airtable.com/account)
+-   [Discord Guide](https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js)
 -   [Twitter API Docs](https://developer.twitter.com/en/docs/twitter-api)
 -   [PlanetScale Connection String](https://docs.planetscale.com/concepts/connection-strings)
+-   [Running MySql locally (instead of planetscale)](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing)
 
 ### 3) Set the environment variables
 
-```py
+```env
 DISCORD_GUILD_ID=""
 DISCORD_BOT_TOKEN=""
 COMMANDS_DIR="" #OPTIONAL
@@ -31,7 +32,7 @@ TWITTER_CONSUMER_KEY=""
 TWITTER_CONSUMER_SECRET=""
 TWITTER_ACCESS_TOKEN_KEY=""
 TWITTER_ACCESS_TOKEN_SECRET=""
-# CONNECT TO PLANETSCALE DATABASE
+# CONNECT TO PLANETSCALE(MYSQL) DATABASE
 DATABASE_URL=""
 ```
 
@@ -43,7 +44,8 @@ npm run dev
 
 ## Commands
 
-**updateProfile**
+### updateProfile
+
 Update your profile with the following flags. I will use these pieces of information to help share your content.
 
 -   `twitter`: your Twitter handle
@@ -53,13 +55,21 @@ Update your profile with the following flags. I will use these pieces of informa
 -   `github`: your Github username
 -   `website`: your personal website URL
 
-**profile**
+### profile
+
 Get profile details about you or another discord member.
 
-**resetProfile**
+### resetProfile
+
 Clear your existing profile in case your display name has changed, you entered incorrect info, etc.
 
-**share**
+### share
 Share a piece of content (article, video, etc.) by including a valid URL. I will consider sharing this on Twitter and/or my newsletter. You can (optionally) include a suggested tweet text after the URL.
 
 ex. `/share https://www.jamesqquick.com/ This is a suggested tweet text`
+
+### kudo 
+Give Kudos to another user
+
+If have emojis named 'learn' | 'build' | 'teach' those will also give a kudo 
+
