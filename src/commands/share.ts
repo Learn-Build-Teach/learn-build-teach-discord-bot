@@ -3,10 +3,9 @@ import {
   CommandInteractionOptionResolver,
 } from 'discord.js';
 import { isValidUrl } from '../utils/helpers';
-import ogs from "open-graph-scraper";
+import ogs from 'open-graph-scraper';
 import { createUser, getUserById } from '../utils/db/users';
 import { createShare } from '../utils/db/shares';
-
 
 const shareHandler = async (
   interaction: CommandInteraction,
@@ -27,7 +26,9 @@ const shareHandler = async (
     const data: any = await ogs({ url: link });
     ogResult = data.result;
     if (!ogResult.ogTitle) {
-      console.info("This one didn't have an open graph title property, but we'll keep it for now :)")
+      console.info(
+        "This one didn't have an open graph title property, but we'll keep it for now :)"
+      );
     }
   } catch (err) {
     console.error('Something went wrong while scraping data.');
@@ -38,8 +39,12 @@ const shareHandler = async (
   }
 
   try {
-    const { ogTitle: title, ogDescription: description, ogImage: { url: imageUrl } } = ogResult;
-
+    const {
+      ogTitle: title,
+      ogDescription: description,
+      ogImage: { url: imageUrl },
+    } = ogResult;
+    //TODO: add length validation to title, description, and image
     const { id } = interaction.user;
     let user = await getUserById(id);
     if (!user) {
@@ -49,8 +54,8 @@ const shareHandler = async (
     await createShare({
       user: {
         connect: {
-          id
-        }
+          id,
+        },
       },
       link,
       title,
@@ -59,9 +64,8 @@ const shareHandler = async (
       tweetable: false,
       tweeted: false,
       emailable: false,
-      emailed: false
-    })
-
+      emailed: false,
+    });
 
     await interaction.editReply({
       content: `Content successfully shared. Thanks!\n${link}`,
@@ -85,6 +89,6 @@ export default {
       description: `Link to your content`,
       required: true,
       type: 'STRING',
-    }
+    },
   ],
 };

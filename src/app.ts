@@ -1,8 +1,8 @@
 //run the twitch bot
-import './bot.js';
+import './bot';
 
 //run the tweeter
-import './tweeter.js';
+import './tweeter';
 
 //start the express server
 import './server';

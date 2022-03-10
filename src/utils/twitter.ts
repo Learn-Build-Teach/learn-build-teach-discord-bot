@@ -9,7 +9,7 @@ const twitterClient = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET || '',
 });
 
-export const sendTweet = async (status: string, imageUrl: string) => {
+export const sendTweet = async (status: string, imageUrl?: string) => {
   if (!imageUrl) {
     await twitterClient.post('statuses/update', { status });
     console.log('tweet sent', status);
@@ -30,10 +30,10 @@ export const sendTweet = async (status: string, imageUrl: string) => {
 
 export const getRemoteImageInB64 = async (imageUrl: string) => {
   try {
-    let image = await axios.get(imageUrl, {
+    const image = await axios.get(imageUrl, {
       responseType: 'arraybuffer',
     });
-    let returnedB64 = Buffer.from(image.data).toString('base64');
+    const returnedB64 = Buffer.from(image.data).toString('base64');
     return returnedB64;
   } catch (err) {
     console.error(err);
