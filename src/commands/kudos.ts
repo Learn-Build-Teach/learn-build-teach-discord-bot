@@ -18,8 +18,6 @@ const handleKudos = async (
   options: CommandInteractionOptionResolver
 ) => {
   try {
-
-
     const mentionedUser = options.getMentionable('user', false)
 
     if (!(mentionedUser instanceof GuildMember)) {
@@ -31,15 +29,18 @@ const handleKudos = async (
     const { id: receiverId } = mentionedUser
     const { id: giverId } = interaction.user
 
+    //If the giver and receiver are the same just abort
+    //no need to let people kudo themselves I think
+    if (receiverId === giverId) return
 
-    const description = options.getString('for', true);
+    const description = options.getString('for', true)
     const categoryString = options.getString('category', true)
 
     //HACK: https://stackoverflow.com/questions/50417254/dynamically-access-enum-in-typescript-by-key
     const category: KudoCategory =
       KudoCategory[categoryString as keyof typeof KudoCategory]
 
-    giveKudos(giverId, receiverId, category, description);
+    giveKudos(giverId, receiverId, category, description)
     return interaction.reply({
       content: `${category} Kudos were given to ${mentionedUser.user.username} for '${description}'`,
     })
