@@ -38,7 +38,6 @@ client.on('ready', async () => {
         commandFile.endsWith('.js') || commandFile.endsWith('.ts')
     )
     .map((commandFile) => {
-      console.log(`${commandsFullPath}/${commandFile}`)
       return import(`./commands/${commandFile}`)
     })
   const loadedFiles = await Promise.all(filePromises)
@@ -87,7 +86,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 })
 
 client.on('interactionCreate', (interaction) => {
-  console.log(interaction)
   if (!interaction.isCommand()) return
 
   const { commandName, options } = interaction
