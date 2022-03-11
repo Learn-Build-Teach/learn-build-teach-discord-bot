@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --debounce=100 --exit-child src/app.ts",
-    "build": "tsc",
+    "build": "prisma db push && tsc",
     "test": "jest --env node",
     "test:coverage": "jest --env node --coverage",
     "prepare": "husky install"
