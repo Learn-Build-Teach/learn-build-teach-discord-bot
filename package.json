@@ -39,7 +39,7 @@
     }
   },
   "engines": {
-    "node": "17"
+    "node": "16"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.15.4",
