@@ -1,14 +1,14 @@
-import { prisma } from '.'
-import type { User } from '.prisma/client'
+import { prisma } from '.';
+import type { User } from '.prisma/client';
 
 export const getUserById = async (id: string): Promise<User | null> => {
   const user = await prisma.user.findUnique({
     where: {
       id,
     },
-  })
-  return user
-}
+  });
+  return user;
+};
 
 export const createUser = async (id: string, username: string = '') => {
   return await prisma.user.create({
@@ -16,26 +16,26 @@ export const createUser = async (id: string, username: string = '') => {
       id,
       username,
     },
-  })
-}
+  });
+};
 
-export const getOrCreateUser = async (id: string) => {
-  const existingUser = await getUserById(id)
+export const getOrCreateUser = async (id: string, username?: string) => {
+  const existingUser = await getUserById(id);
   if (existingUser) {
-    return existingUser
+    return existingUser;
   }
-  const createdUser = await createUser(id)
-  console.info({ createdUser })
-  return createdUser
-}
+  const createdUser = await createUser(id, username);
+  console.info({ createdUser });
+  return createdUser;
+};
 
 export const deleteUser = async (id: string): Promise<User | null> => {
   return await prisma.user.delete({
     where: {
       id,
     },
-  })
-}
+  });
+};
 
 export const resetUser = async (user: User) => {
   user = {
@@ -50,9 +50,9 @@ export const resetUser = async (user: User) => {
     tiktok: '',
     linkedin: '',
     polywork: '',
-  }
-  return await upsertUser(user)
-}
+  };
+  return await upsertUser(user);
+};
 
 export const upsertUser = async (user: User) => {
   return await prisma.user.upsert({
@@ -61,5 +61,5 @@ export const upsertUser = async (user: User) => {
     },
     update: user,
     create: user,
-  })
-}
+  });
+};

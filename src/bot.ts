@@ -91,7 +91,9 @@ client.on('interactionCreate', (interaction) => {
   const { commandName, options } = interaction;
   const existingCommand = nameToCommandMap[commandName];
   if (existingCommand) {
-    console.info(`Incoming command we care about: ${commandName}`);
+    console.info(
+      `Incoming command we care about: ${commandName} from ${interaction.user.username}`
+    );
     return existingCommand.callback(interaction, options);
   }
 });
