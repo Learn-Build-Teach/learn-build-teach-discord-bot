@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+model Kudo {
+  id          String       @id @default(uuid())
+  category    KudoCategory
+  description String?      @db.VarChar(255)
+  points      Int          @default(1)
+  receiver    User         @relation("receivedKudos", fields: [receiverId], references: [id])
+  receiverId  String       @db.VarChar(255)
+  giver       User         @relation("sentKudos", fields: [giverId], references: [id])
+  giverId     String       @db.VarChar(255)
+  multiplier  Int          @default(1)
+
+  @@index(receiverId)
+  @@index(giverId)
+}
+
+model User {
+  id                  String   @id @unique //should match the discord user id
+  //TODO do we need the username here it doesn't seem to be used by the bot
+  //On top of that shouldn't it also just display the users name from their profile?
+  username            String?  @db.VarChar(255) //discord username by default and updated by user
+  github              String?  @db.VarChar(255)
+  twitter             String?  @db.VarChar(255)
+  twitch              String?  @db.VarChar(255)
+  youtube             String?  @db.VarChar(255)
+  website             String?  @db.VarChar(255)
+  instagram           String?  @db.VarChar(255)
+  tiktok              String?  @db.VarChar(255)
+  linkedin            String?  @db.VarChar(255)
+  polywork            String?  @db.VarChar(255)
+  numMessages         Int      @default(0)
+  xp                  Int      @default(0)
+  receivedKudos       Kudo[]   @relation("receivedKudos")
+  sentKudos           Kudo[]   @relation("sentKudos")
+  shares              Share[]  @relation
+  lastActiveTimestamp DateTime @default(now())
+}
+
+model Share {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @db.VarChar(255)
+  link        String   @db.VarChar(1000)
+  title       String   @db.VarChar(255)
+  imageUrl    String?  @db.VarChar(1000)
+  description String?  @db.VarChar(1000)
+  tweetable   Boolean? @default(false)
+  emailable   Boolean? @default(false)
+  tweeted     Boolean? @default(false)
+  emailed     Boolean? @default(false)
+
+  @@index([userId])
+}
+
+enum KudoCategory {
+  LEARN
+  BUILD
+  TEACH
+}
