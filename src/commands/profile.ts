@@ -9,18 +9,18 @@ import {
 import { getUserById } from '../utils/db/users';
 import { profileSocialOptions } from './updateProfile';
 
-
-
 const getProfile = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
 ) => {
   const mentionedUser = options.getMentionable('username', false);
 
-  const targetUser = mentionedUser instanceof GuildMember ? mentionedUser.user : interaction.user;
+  const targetUser =
+    mentionedUser instanceof GuildMember
+      ? mentionedUser.user
+      : interaction.user;
 
   try {
-
     const user = await getUserById(targetUser.id);
     if (user) {
       //TODO: update to include new fields
@@ -29,13 +29,11 @@ const getProfile = async (
           `${targetUser.username}'s profile`,
           targetUser.displayAvatarURL()
         )
-        .addFields(
-          createUserProfileFields(user)
-        );
+        .addFields(createUserProfileFields(user));
 
-      interaction.reply({ embeds: [embed] });
+      return interaction.reply({ embeds: [embed] });
     } else {
-      interaction.reply({
+      return interaction.reply({
         content: "Couldn't find details on that user",
       });
     }
@@ -51,8 +49,8 @@ const getProfile = async (
 };
 
 interface ProfileField {
-  name: string,
-  value: string
+  name: string;
+  value: string;
 }
 
 //defining user as type any so we can dynamically pull values
@@ -64,12 +62,12 @@ const createUserProfileFields = (user: any): ProfileField[] => {
     if (user[optionName]) {
       fields.push({
         name: optionName.toUpperCase(),
-        value: user[optionName]
-      })
+        value: user[optionName],
+      });
     }
   }
   return fields;
-}
+};
 
 export default {
   callback: getProfile,
@@ -84,19 +82,3 @@ export default {
     },
   ],
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
