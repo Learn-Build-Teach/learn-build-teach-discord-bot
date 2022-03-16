@@ -1,15 +1,18 @@
-import  profile  from '../profile';
-import { MockCommandInteraction,  MockCommandInteractionOptionResolver } from '../__mocks__/profile.mock';
+import profile from '../profile';
+import {
+  MockCommandInteraction,
+  MockCommandInteractionOptionResolver,
+} from '../__mocks__/profile.mock';
 
 jest.mock('../../utils/Airtable', () => jest.fn());
 jest.mock('discord.js', () => jest.fn());
 jest.mock('../../utils/Airtable', () => ({
-    userTable: {
-      select: () => ({  
-        firstPage: jest.fn() 
-      }),
-    },
-    minifyRecords: () => jest.fn(),
+  userTable: {
+    select: () => ({
+      firstPage: jest.fn(),
+    }),
+  },
+  minifyRecords: () => jest.fn(),
 }));
 
 describe('profile test', () => {
@@ -30,9 +33,11 @@ describe('profile test', () => {
     expect(options.required).toBe(false);
     expect(options.type).toBe('MENTIONABLE');
   });
-   
   it('should return undefined user', async () => {
-    const val = await profile.callback(MockCommandInteraction, MockCommandInteractionOptionResolver);
+    const val = await profile.callback(
+      MockCommandInteraction,
+      MockCommandInteractionOptionResolver
+    );
     expect(val).toBe(undefined);
   });
 });
