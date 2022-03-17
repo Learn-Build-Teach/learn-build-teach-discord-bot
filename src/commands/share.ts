@@ -26,9 +26,13 @@ const shareHandler = async (
     const data: any = await ogs({ url: link });
     ogResult = data.result;
     if (!ogResult.ogTitle) {
+      //?Title is required for db record...should it be?
       console.info(
-        "This one didn't have an open graph title property, but we'll keep it for now :)"
+        "This one didn't have an open graph title property which is required for shares."
       );
+      return interaction.editReply({
+        content: `Sorry, site didn't appear to have a title property which is required for shares.`,
+      });
     }
   } catch (err) {
     console.error('Something went wrong while scraping data.');
@@ -39,11 +43,8 @@ const shareHandler = async (
   }
 
   try {
-    const {
-      ogTitle: title,
-      ogDescription: description,
-      ogImage: { url: imageUrl },
-    } = ogResult;
+    const { ogTitle: title, ogDescription: description } = ogResult;
+    const imageUrl = ogResult?.ogImage?.url || null;
     //TODO: add length validation to title, description, and image
     const { id } = interaction.user;
     let user = await getUserById(id);
