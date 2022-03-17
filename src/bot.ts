@@ -21,6 +21,9 @@ client.on('ready', async () => {
   const guildId = process.env.DISCORD_GUILD_ID || '';
   const guild = client.guilds.cache.get(guildId);
   let commands: any;
+  //empty out the command sets prior to adding in the new one's just in case
+  client.application?.commands.set([]);
+  guild?.commands.set([]);
 
   if (guild) {
     commands = guild.commands;

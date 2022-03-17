@@ -18,15 +18,6 @@
   },
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-use-before-define": [
-      "error",
-      {
-        "functions": false,
-        "classes": true,
-        "variables": true,
-        "typedefs": true
-      }
-    ],
     "import/no-extraneous-dependencies": "off"
   },
   "settings": {
