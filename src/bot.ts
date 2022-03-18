@@ -77,8 +77,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
   }
   const { emoji, message } = reaction;
   const { author: originalAuthor, channelId } = message;
-  console.log(originalAuthor);
-  console.log(emoji.name);
 
   const APPROVE_EMOJI = '✅';
   const REJECT_EMOJI = '❌';
@@ -119,8 +117,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
 
     if (emoji.name === APPROVE_EMOJI) {
-      const updatedShare = await reviewShare(shareInfo.shareId, true, true);
-      console.log(updatedShare);
+      await reviewShare(shareInfo.shareId, true, true);
       reaction.message.channel.send(
         `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter and Email.`
       );

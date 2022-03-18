@@ -33,7 +33,6 @@ export const reviewShare = async (
   if (tweetable !== undefined) {
     updates.tweetable = tweetable;
   }
-  console.log(updates);
   return await prisma.share.update({
     where: {
       id,
