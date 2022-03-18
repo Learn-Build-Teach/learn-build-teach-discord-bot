@@ -22,6 +22,9 @@ client.on('ready', async () => {
   const guild = client.guilds.cache.get(guildId);
   let commands: any;
 
+  client.application?.commands.set([]);
+  guild?.commands.set([]);
+
   if (guild) {
     commands = guild.commands;
   } else {
