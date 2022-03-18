@@ -1,11 +1,14 @@
 import {
   CommandInteraction,
   CommandInteractionOptionResolver,
+  MessageEmbed,
+  TextChannel,
 } from 'discord.js';
 import { isValidUrl } from '../utils/helpers';
 import ogs from 'open-graph-scraper';
 import { createUser, getUserById } from '../utils/db/users';
 import { createShare } from '../utils/db/shares';
+import { client } from '../bot';
 
 const shareHandler = async (
   interaction: CommandInteraction,
@@ -46,13 +49,13 @@ const shareHandler = async (
     const { ogTitle: title, ogDescription: description } = ogResult;
     const imageUrl = ogResult?.ogImage?.url || null;
     //TODO: add length validation to title, description, and image
-    const { id } = interaction.user;
+    const { id, username } = interaction.user;
     let user = await getUserById(id);
     if (!user) {
       user = await createUser(id);
     }
 
-    await createShare({
+    const createdShare = await createShare({
       user: {
         connect: {
           id,
@@ -68,7 +71,25 @@ const shareHandler = async (
       emailed: false,
     });
 
-    await interaction.editReply({
+    const embed = new MessageEmbed()
+      .setTitle(title)
+      .setDescription(description)
+      .addFields(
+        { name: 'shareId', value: createdShare.id },
+        { name: 'shareLink', value: createdShare.link },
+        { name: 'sharerUsername', value: username },
+        { name: 'sharerId', value: createdShare.userId }
+      )
+      .setThumbnail(imageUrl)
+      .setAuthor(`Share from ${username}`);
+    const shareReviewChannel = client.channels.cache.get(
+      process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
+    ) as TextChannel;
+    if (shareReviewChannel) {
+      shareReviewChannel.send({ embeds: [embed] });
+    }
+
+    return await interaction.editReply({
       content: `Content successfully shared. Thanks!\n${link}`,
     });
   } catch (err) {
