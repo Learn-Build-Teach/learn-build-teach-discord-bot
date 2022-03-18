@@ -2,6 +2,7 @@ import {
   createUser,
   deleteUser,
   getUserById,
+  resetUser,
   upsertUser,
 } from '../../utils/db/users';
 import { prismaMock } from '../../singleton';
@@ -61,10 +62,15 @@ test('it should create a new user using upsert', async () => {
   prismaMock.user.upsert.mockResolvedValue(user);
   const updatedUser = {
     ...user,
-    twitter: faker.internet.url(),
+    github: faker.internet.url(),
   };
   const returnedUser = await upsertUser(updatedUser);
   returnedUser.lastActiveTimestamp = updatedUser.lastActiveTimestamp;
 
   expect(returnedUser).toMatchObject(updatedUser);
+});
+test('it should reset a users profile', async () => {
+  prismaMock.user.upsert.mockResolvedValue(user);
+  const response = await resetUser(user);
+  expect(response).toHaveProperty('count');
 });
