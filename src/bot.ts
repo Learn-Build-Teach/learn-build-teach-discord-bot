@@ -22,9 +22,11 @@ client.on('ready', async () => {
   const guildId = process.env.DISCORD_GUILD_ID || '';
   const guild = client.guilds.cache.get(guildId);
   let commands: any;
-  //empty out the command sets prior to adding in the new one's just in case
-  client.application?.commands.set([]);
-  guild?.commands.set([]);
+  //Don't do this in testing because you'll use your max number of registered commands 🥰
+  if (process.env.NODE_ENV === 'production') {
+    client.application?.commands.set([]);
+    guild?.commands.set([]);
+  }
 
   //Don't do this in testing because you'll use your max number of registered commands 🥰
   if (process.env.NODE_ENV === 'production') {
