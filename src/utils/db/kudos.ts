@@ -1,5 +1,5 @@
 import { Kudo, KudoCategory, Prisma } from '@prisma/client';
-import { prisma } from '.';
+import prisma from '.';
 import { getOrCreateUser } from './users';
 
 export const createKudo = async (

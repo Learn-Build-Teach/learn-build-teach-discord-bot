@@ -1,5 +1,5 @@
 import type { Prisma, Share } from '@prisma/client';
-import { prisma } from './index';
+import prisma from './index';
 
 export const getShareToTweet = async () => {
   return await prisma.share.findFirst({

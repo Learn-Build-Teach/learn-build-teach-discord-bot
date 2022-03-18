@@ -8,7 +8,7 @@ import {
 import { prismaMock } from '../../singleton';
 import { faker } from '@faker-js/faker';
 
-const user = {
+const mockUser = {
   id: faker.datatype.uuid(),
   username: faker.name.findName(),
   github: null,
@@ -26,51 +26,48 @@ const user = {
 };
 
 test('should create new user ', async () => {
-  prismaMock.user.create.mockResolvedValue(user);
+  prismaMock.user.create.mockResolvedValue(mockUser);
 
-  const returnedUser = await createUser(user.id, user.username);
+  const returnedUser = await createUser(mockUser.id, mockUser.username);
   //HACK: There has to be a better way to handle this
-  returnedUser.lastActiveTimestamp = user.lastActiveTimestamp;
-  expect(returnedUser).toMatchObject(user);
+  returnedUser.lastActiveTimestamp = mockUser.lastActiveTimestamp;
+  expect(returnedUser).toMatchObject(mockUser);
 });
 
 test('it should return a user ', async () => {
-  prismaMock.user.findUnique.mockResolvedValue(user);
+  prismaMock.user.findUnique.mockResolvedValue(mockUser);
 
-  const returnedUser = await getUserById(user.id);
-  expect(returnedUser?.id).toEqual(user.id);
+  const returnedUser = await getUserById(mockUser.id);
+  expect(returnedUser?.id).toEqual(mockUser.id);
 });
 
 test('it should update an existing user ', async () => {
-  prismaMock.user.upsert.mockResolvedValue(user);
   const updatedUser = {
-    ...user,
+    ...mockUser,
     twitter: faker.internet.url(),
   };
+  prismaMock.user.upsert.mockResolvedValue(updatedUser);
   const response = await upsertUser(updatedUser);
   console.log(response);
-
-  expect(response).toHaveProperty('count');
+  expect(response).toMatchObject(updatedUser);
 });
 test('it should delete a user ', async () => {
-  prismaMock.user.delete.mockResolvedValue(user);
+  prismaMock.user.delete.mockResolvedValue(mockUser);
 
-  const returnedUser = await deleteUser(user.id);
-  expect(returnedUser?.id).toEqual(user.id);
+  const returnedUser = await deleteUser(mockUser.id);
+  expect(returnedUser?.id).toEqual(mockUser.id);
 });
 test('it should create a new user using upsert', async () => {
-  prismaMock.user.upsert.mockResolvedValue(user);
   const updatedUser = {
-    ...user,
+    ...mockUser,
     github: faker.internet.url(),
   };
+  prismaMock.user.upsert.mockResolvedValue(updatedUser);
   const returnedUser = await upsertUser(updatedUser);
-  returnedUser.lastActiveTimestamp = updatedUser.lastActiveTimestamp;
-
   expect(returnedUser).toMatchObject(updatedUser);
 });
 test('it should reset a users profile', async () => {
-  prismaMock.user.upsert.mockResolvedValue(user);
-  const response = await resetUser(user);
-  expect(response).toHaveProperty('count');
+  prismaMock.user.upsert.mockResolvedValue(mockUser);
+  const response = await resetUser(mockUser);
+  expect(response).toMatchObject(mockUser);
 });
