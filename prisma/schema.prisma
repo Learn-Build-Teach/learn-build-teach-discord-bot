@@ -46,8 +46,7 @@ model User {
   receivedKudos       Kudo[]   @relation("receivedKudos")
   sentKudos           Kudo[]   @relation("sentKudos")
   shares              Share[]  @relation
-  //HACK: I hate making this optional but I can't get the tests working otherwise
-  lastActiveTimestamp DateTime? @default(now())
+  lastActiveTimestamp DateTime @default(now())
 }
 
 model Share {
