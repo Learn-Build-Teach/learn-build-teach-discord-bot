@@ -10,6 +10,17 @@ export const getShareToTweet = async () => {
   });
 };
 
+export const markShareAsTweeted = async (id: string) => {
+  return await prisma.share.update({
+    where: {
+      id,
+    },
+    data: {
+      tweeted: true,
+    },
+  });
+};
+
 export const reviewShare = async (
   id: string,
   emailable?: boolean,
