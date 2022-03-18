@@ -1,11 +1,12 @@
 import { KudoCategory } from '@prisma/client';
-import { Client, Intents, MessageReaction } from 'discord.js';
+import { Client, EmbedField, Intents, MessageReaction } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { giveKudos } from './utils/db/kudos';
+import { reviewShare } from './utils/db/shares';
 dotenv.config();
-const client = new Client({
+export const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGES,
@@ -24,6 +25,12 @@ client.on('ready', async () => {
   //empty out the command sets prior to adding in the new one's just in case
   client.application?.commands.set([]);
   guild?.commands.set([]);
+
+  //Don't do this in testing because you'll use your max number of registered commands 🥰
+  if (process.env.NODE_ENV === 'production') {
+    client.application?.commands.set([]);
+    guild?.commands.set([]);
+  }
 
   if (guild) {
     commands = guild.commands;
@@ -60,6 +67,7 @@ client.on('ready', async () => {
 
 client.on('messageReactionAdd', async (reaction, user) => {
   if (!(reaction instanceof MessageReaction)) return;
+
   if (reaction.message.partial) {
     // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
     try {
@@ -71,12 +79,18 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
   }
   const { emoji, message } = reaction;
-  const { author: originalAuthor } = message;
+  const { author: originalAuthor, channelId } = message;
+
+  const APPROVE_EMOJI = '✅';
+  const REJECT_EMOJI = '❌';
+  const EMAIL_APPROVED_EMOJI = '📧';
+  const TWITTER_APPROVED_EMOJI = '🐦';
 
   if (!originalAuthor || !emoji?.name) return;
 
-  const emojisWeCareAbout = ['learn', 'build', 'teach'];
-  if (emojisWeCareAbout.includes(emoji.name || '')) {
+  //Handle Kudos
+  const kudoEmojis = ['learn', 'build', 'teach'];
+  if (kudoEmojis.includes(emoji.name || '')) {
     const category: KudoCategory =
       KudoCategory[emoji.name.toUpperCase() as keyof typeof KudoCategory];
     try {
@@ -84,6 +98,47 @@ client.on('messageReactionAdd', async (reaction, user) => {
       console.info(`Kudo given`, kudo);
     } catch (error) {
       console.error('Well, something went wrong 🤷‍♂️');
+    }
+  }
+
+  //Handle Share Approvals
+  if (channelId === process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL) {
+    const messageEmbed = message?.embeds[0];
+    if (!messageEmbed) return;
+
+    const shareInfo = messageEmbed.fields.reduce(
+      (acc: any, cur: EmbedField) => {
+        acc[cur.name] = cur.value;
+        return acc;
+      },
+      {}
+    );
+
+    if (!shareInfo.shareId) {
+      console.info('Emoji reaction on a message without a share id');
+      return;
+    }
+
+    if (emoji.name === APPROVE_EMOJI) {
+      await reviewShare(shareInfo.shareId, true, true);
+      reaction.message.channel.send(
+        `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter and Email.`
+      );
+    } else if (emoji.name === EMAIL_APPROVED_EMOJI) {
+      await reviewShare(shareInfo.shareId, true, undefined);
+      reaction.message.channel.send(
+        `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Email.`
+      );
+    } else if (emoji.name === TWITTER_APPROVED_EMOJI) {
+      await reviewShare(shareInfo.shareId, undefined, true);
+      reaction.message.channel.send(
+        `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter.`
+      );
+    } else if (emoji.name === REJECT_EMOJI) {
+      await reviewShare(shareInfo.shareId, false, false);
+      reaction.message.channel.send(
+        `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} rejected for Twitter and Email.`
+      );
     }
   }
 });

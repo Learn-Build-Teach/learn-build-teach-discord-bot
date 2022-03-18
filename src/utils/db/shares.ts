@@ -21,6 +21,26 @@ export const markShareAsTweeted = async (id: string) => {
   });
 };
 
+export const reviewShare = async (
+  id: string,
+  emailable?: boolean,
+  tweetable?: boolean
+) => {
+  const updates: any = {};
+  if (emailable !== undefined) {
+    updates.emailable = emailable;
+  }
+  if (tweetable !== undefined) {
+    updates.tweetable = tweetable;
+  }
+  return await prisma.share.update({
+    where: {
+      id,
+    },
+    data: updates,
+  });
+};
+
 export const createShare = async (
   share: Prisma.ShareCreateInput
 ): Promise<Share> => {
