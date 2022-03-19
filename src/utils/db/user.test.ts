@@ -29,8 +29,6 @@ test('should create new user ', async () => {
   prismaMock.user.create.mockResolvedValue(mockUser);
 
   const returnedUser = await createUser(mockUser.id, mockUser.username);
-  //HACK: There has to be a better way to handle this
-  returnedUser.lastActiveTimestamp = mockUser.lastActiveTimestamp;
   expect(returnedUser).toMatchObject(mockUser);
 });
 
@@ -48,7 +46,6 @@ test('it should update an existing user ', async () => {
   };
   prismaMock.user.upsert.mockResolvedValue(updatedUser);
   const response = await upsertUser(updatedUser);
-  console.log(response);
   expect(response).toMatchObject(updatedUser);
 });
 test('it should delete a user ', async () => {
