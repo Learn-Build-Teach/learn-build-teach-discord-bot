@@ -22,7 +22,7 @@ const mockUser = {
   polywork: null,
   numMessages: 0,
   xp: 0,
-  lastActiveTimestamp: null,
+  lastActiveTimestamp: faker.date.recent(),
 };
 
 test('should create new user ', async () => {
