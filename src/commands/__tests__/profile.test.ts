@@ -1,8 +1,4 @@
 import profile from '../profile';
-import {
-  MockCommandInteraction,
-  MockCommandInteractionOptionResolver,
-} from '../__mocks__/profile.mock';
 
 jest.mock('discord.js', () => jest.fn());
 
