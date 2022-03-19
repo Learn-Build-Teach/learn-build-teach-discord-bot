@@ -1,4 +1,4 @@
-import { prisma } from '.';
+import prisma from '.';
 import type { User } from '.prisma/client';
 
 export const getUserById = async (id: string): Promise<User | null> => {

@@ -9,6 +9,21 @@ import {
 import { getUserById } from '../utils/db/users';
 import { profileSocialOptions } from './updateProfile';
 
+//defining user as type any so we can dynamically pull values
+const createUserProfileFields = (user: any): ProfileField[] => {
+  const fields: ProfileField[] = [];
+  for (let i = 0; i < profileSocialOptions.length; i++) {
+    const option = profileSocialOptions[i];
+    const optionName = option.name;
+    if (user[optionName]) {
+      fields.push({
+        name: optionName.toUpperCase(),
+        value: user[optionName],
+      });
+    }
+  }
+  return fields;
+};
 const getProfile = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
@@ -52,22 +67,6 @@ interface ProfileField {
   name: string;
   value: string;
 }
-
-//defining user as type any so we can dynamically pull values
-const createUserProfileFields = (user: any): ProfileField[] => {
-  const fields: ProfileField[] = [];
-  for (let i = 0; i < profileSocialOptions.length; i++) {
-    const option = profileSocialOptions[i];
-    const optionName = option.name;
-    if (user[optionName]) {
-      fields.push({
-        name: optionName.toUpperCase(),
-        value: user[optionName],
-      });
-    }
-  }
-  return fields;
-};
 
 export default {
   callback: getProfile,
