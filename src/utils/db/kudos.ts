@@ -10,7 +10,6 @@ export const createKudo = async (
   });
 };
 
-//TODO: use this logic in emoji reactions as well?
 export const giveKudos = async (
   giverId: string,
   receiverId: string,

@@ -6,7 +6,7 @@ import {
 } from 'discord.js';
 import { isValidUrl } from '../utils/helpers';
 import ogs from 'open-graph-scraper';
-import { createUser, getUserById } from '../utils/db/users';
+import { getOrCreateUser } from '../utils/db/users';
 import { createShare } from '../utils/db/shares';
 import { client } from '../bot';
 
@@ -50,9 +50,17 @@ const shareHandler = async (
     const imageUrl = ogResult?.ogImage?.url || null;
     //TODO: add length validation to title, description, and image
     const { id, username } = interaction.user;
-    let user = await getUserById(id);
+    const user = await getOrCreateUser(id, username);
     if (!user) {
-      user = await createUser(id);
+      return interaction.editReply({
+        content: `Failed to retrieve existing user or create a new one`,
+      });
+    }
+
+    if (!user.username) {
+      return interaction.editReply({
+        content: `Please update your username using the "/updateProfile" command before attempting to share.`,
+      });
     }
 
     const createdShare = await createShare({
@@ -89,7 +97,7 @@ const shareHandler = async (
       shareReviewChannel.send({ embeds: [embed] });
     }
 
-    return await interaction.editReply({
+    return interaction.editReply({
       content: `Content successfully shared. Thanks!\n${link}`,
     });
   } catch (err) {
