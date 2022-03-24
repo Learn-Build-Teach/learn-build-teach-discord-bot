@@ -14,13 +14,12 @@ const shareHandler = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
 ) => {
-  await interaction.deferReply();
-
   const link = options.getString('link') || '';
 
   if (!isValidUrl(link)) {
-    return interaction.editReply({
+    return interaction.reply({
       content: `Please include a valid url.`,
+      ephemeral: true,
     });
   }
   let ogResult;
@@ -33,15 +32,17 @@ const shareHandler = async (
       console.info(
         "This one didn't have an open graph title property which is required for shares."
       );
-      return interaction.editReply({
+      return interaction.reply({
         content: `Sorry, site didn't appear to have a title property which is required for shares.`,
+        ephemeral: true,
       });
     }
   } catch (err) {
     console.error('Something went wrong while scraping data.');
     console.error(err);
-    return interaction.editReply({
+    return interaction.reply({
       content: `Sorry, there was an issue scraping open graph data. Please make sure this site has og:title property set in the head.`,
+      ephemeral: true,
     });
   }
 
@@ -52,14 +53,16 @@ const shareHandler = async (
     const { id, username } = interaction.user;
     const user = await getOrCreateUser(id, username);
     if (!user) {
-      return interaction.editReply({
+      return interaction.reply({
         content: `Failed to retrieve existing user or create a new one`,
+        ephemeral: true,
       });
     }
 
     if (!user.username) {
-      return interaction.editReply({
+      return interaction.reply({
         content: `Please update your username using the "/updateProfile" command before attempting to share.`,
+        ephemeral: true,
       });
     }
 
@@ -97,14 +100,16 @@ const shareHandler = async (
       shareReviewChannel.send({ embeds: [embed] });
     }
 
-    return interaction.editReply({
+    return interaction.reply({
       content: `Content successfully shared. Thanks!\n${link}`,
+      ephemeral: true,
     });
   } catch (err) {
     console.error('Something went wrong in sharing to airtable.');
     console.error(err);
-    return interaction.editReply({
+    return interaction.reply({
       content: `Failed to save share record 🤷‍♂️. <@361868131997843456> should take a look!`,
+      ephemeral: true,
     });
   }
 };

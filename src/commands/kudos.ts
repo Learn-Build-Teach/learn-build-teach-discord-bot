@@ -23,6 +23,7 @@ const handleKudos = async (
     if (!(mentionedUser instanceof GuildMember)) {
       return interaction.reply({
         content: `You can only give kudos to a User 🥰`,
+        ephemeral: true,
       });
     }
 
@@ -34,6 +35,7 @@ const handleKudos = async (
     if (receiverId === giverId)
       return interaction.reply({
         content: `Silly rabbit, you can't give kudos to yourself!`,
+        ephemeral: true,
       });
 
     const description = options.getString('for', true);
@@ -46,11 +48,13 @@ const handleKudos = async (
     await giveKudos(giverId, receiverId, category, description);
     return interaction.reply({
       content: `${category} Kudos were given to ${mentionedUser.user.username} for '${description}'`,
+      ephemeral: true,
     });
   } catch (err) {
     console.error(err);
     return interaction.reply({
       content: `Something went wrong giving kudos :(`,
+      ephemeral: true,
     });
   }
 };

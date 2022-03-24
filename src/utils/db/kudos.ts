@@ -1,5 +1,6 @@
 import { Kudo, KudoCategory, Prisma } from '@prisma/client';
 import prisma from '.';
+import { Leader } from '../../commands/kudosLeaderboard';
 import { getOrCreateUser } from './users';
 
 export const createKudo = async (
@@ -49,4 +50,36 @@ export const giveKudos = async (
     },
   };
   return await createKudo(kudo);
+};
+
+export const getKudosLeaderboard = async (): Promise<Leader[]> => {
+  //? I don't know how to get everything (points + username) in one query...
+  const pointsStuff = await prisma.kudo.groupBy({
+    by: ['receiverId'],
+    _sum: {
+      points: true,
+    },
+    orderBy: {
+      _count: {
+        points: 'desc',
+      },
+    },
+    take: 10,
+  });
+
+  const userIds = pointsStuff.map((record) => record.receiverId);
+  const users = await prisma.user.findMany({
+    where: { id: { in: userIds } },
+    select: {
+      username: true,
+      id: true,
+    },
+  });
+
+  const leaders: Leader[] = pointsStuff.map((record, i) => ({
+    id: record.receiverId || '',
+    points: record._sum.points || 0,
+    username: users[i].username || '',
+  }));
+  return leaders;
 };

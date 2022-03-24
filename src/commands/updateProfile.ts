@@ -5,7 +5,6 @@ import {
 import { upsertUser } from '../utils/db/users';
 import { isValidUrl } from '../utils/helpers';
 
-
 const updateProfile = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
@@ -16,7 +15,6 @@ const updateProfile = async (
     id,
     username,
   };
-
 
   for (let i = 0; i < profileSocialOptions.length; i++) {
     const commandOption = profileSocialOptions[i];
@@ -29,6 +27,7 @@ const updateProfile = async (
     if (!isValidUrl(optionValue)) {
       return interaction.reply({
         content: `Please enter a valid url for your ${optionName} account.`,
+        ephemeral: true,
       });
     }
     userUpdates[optionName] = optionValue;
@@ -105,13 +104,12 @@ export const profileSocialOptions = [
     description: `Your Polywork Url`,
     required: false,
     type: 'STRING',
-  }
+  },
 ];
 
 export default {
   callback: updateProfile,
   name: 'updateprofile',
-  description:
-    'Update your profile.',
-  options: profileSocialOptions
+  description: 'Update your profile.',
+  options: profileSocialOptions,
 };

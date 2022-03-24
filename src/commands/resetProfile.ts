@@ -1,14 +1,10 @@
-import {
-  CommandInteraction,
-} from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import { getUserById, resetUser } from '../utils/db/users';
 
-const resetProfile = async (
-  interaction: CommandInteraction,
-) => {
+const resetProfile = async (interaction: CommandInteraction) => {
   const discordId = interaction.user.id;
   try {
-    let existingUser = await getUserById(discordId);
+    const existingUser = await getUserById(discordId);
     if (!existingUser) {
       return interaction.reply({
         content: `Unfortunately, we couldn't find your profile.`,

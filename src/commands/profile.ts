@@ -10,8 +10,8 @@ import { getUserById } from '../utils/db/users';
 import { profileSocialOptions } from './updateProfile';
 
 //defining user as type any so we can dynamically pull values
-const createUserProfileFields = (user: any): ProfileField[] => {
-  const fields: ProfileField[] = [];
+const createUserProfileFields = (user: any): EmbedField[] => {
+  const fields: EmbedField[] = [];
   for (let i = 0; i < profileSocialOptions.length; i++) {
     const option = profileSocialOptions[i];
     const optionName = option.name;
@@ -59,11 +59,12 @@ const getProfile = async (
     console.error(err);
     return interaction.reply({
       content: `Something went wrong searching for user profile ${targetUser.username}`,
+      ephemeral: true,
     });
   }
 };
 
-interface ProfileField {
+export interface EmbedField {
   name: string;
   value: string;
 }
