@@ -2,6 +2,7 @@ import { Kudo, KudoCategory, Prisma } from '@prisma/client';
 import prisma from '.';
 import { Leader } from '../../commands/kudosLeaderboard';
 import { getOrCreateUser } from './users';
+import { client } from '../../bot';
 
 export const createKudo = async (
   kudo: Prisma.KudoCreateInput
@@ -67,19 +68,16 @@ export const getKudosLeaderboard = async (): Promise<Leader[]> => {
     take: 10,
   });
 
-  const userIds = pointsStuff.map((record) => record.receiverId);
-  const users = await prisma.user.findMany({
-    where: { id: { in: userIds } },
-    select: {
-      username: true,
-      id: true,
-    },
+  const userPromises = pointsStuff.map((record) => {
+    return client.users.fetch(record.receiverId);
   });
+  const users = await Promise.all(userPromises);
 
-  const leaders: Leader[] = pointsStuff.map((record, i) => ({
+  const leaders: Leader[] = pointsStuff.map((record) => ({
     id: record.receiverId || '',
     points: record._sum.points || 0,
-    username: users[i].username || '',
+    username:
+      users.find((user) => user.id === record.receiverId)?.username || '',
   }));
   return leaders;
 };
