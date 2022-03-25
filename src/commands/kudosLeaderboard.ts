@@ -36,7 +36,7 @@ const createLeaderboardFields = (leaders: Leader[]): EmbedField[] => {
   const fields: EmbedField[] = [];
   for (let i = 0; i < leaders.length; i++) {
     fields.push({
-      name: leaders[i].username,
+      name: leaders[i].username || 'Unknown',
       value: leaders[i].points + '',
     });
   }
