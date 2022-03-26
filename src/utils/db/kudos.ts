@@ -53,31 +53,33 @@ export const giveKudos = async (
   return await createKudo(kudo);
 };
 
+// @ts-ignore
 export const getKudosLeaderboard = async (): Promise<Leader[]> => {
-  //? I don't know how to get everything (points + username) in one query...
-  const pointsStuff = await prisma.kudo.groupBy({
-    by: ['receiverId'],
-    _sum: {
-      points: true,
-    },
-    orderBy: {
-      _count: {
-        points: 'desc',
+  const pointsStuff = await prisma.kudo.findMany({
+    include: {
+      receiver: {
+        select: {
+          username: true,
+        },
       },
     },
-    take: 10,
   });
-
-  const userPromises = pointsStuff.map((record) => {
-    return client.users.fetch(record.receiverId);
-  });
-  const users = await Promise.all(userPromises);
-
-  const leaders: Leader[] = pointsStuff.map((record) => ({
-    id: record.receiverId || '',
-    points: record._sum.points || 0,
-    username:
-      users.find((user) => user.id === record.receiverId)?.username || '',
-  }));
-  return leaders;
+  const leaders = pointsStuff.reduce((acc, record) => {
+    if (acc.has(record.receiverId)) {
+      const prevValue = acc.get(record.receiverId);
+      acc.set(record.receiverId, {
+        id: record.receiverId,
+        username: record.receiver.username || 'Unknown',
+        points: (prevValue?.points || 0) + record.points,
+      });
+    } else {
+      acc.set(record.receiverId, {
+        id: record.receiverId,
+        username: record.receiver.username || 'Unknown',
+        points: record.points,
+      });
+    }
+    return acc;
+  }, new Map<string, Leader>());
+  return [...leaders.values()].sort((a, b) => b.points - a.points).slice(0, 10);
 };
