@@ -1,5 +1,6 @@
 import prisma from '.';
 import type { User } from '.prisma/client';
+import { client } from '../../bot';
 
 export const getUserById = async (id: string): Promise<User | null> => {
   const user = await prisma.user.findUnique({
@@ -23,6 +24,10 @@ export const getOrCreateUser = async (id: string, username?: string) => {
   const existingUser = await getUserById(id);
   if (existingUser) {
     return existingUser;
+  }
+  if (!username) {
+    const user = await client.users.fetch(id);
+    username = user.username;
   }
   const createdUser = await createUser(id, username);
   console.info({ createdUser });
