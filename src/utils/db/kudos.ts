@@ -2,7 +2,6 @@ import { Kudo, KudoCategory, Prisma } from '@prisma/client';
 import prisma from '.';
 import { Leader } from '../../commands/kudosLeaderboard';
 import { getOrCreateUser } from './users';
-import { client } from '../../bot';
 
 export const createKudo = async (
   kudo: Prisma.KudoCreateInput
@@ -70,16 +69,33 @@ export const getKudosLeaderboard = async (): Promise<Leader[]> => {
       acc.set(record.receiverId, {
         id: record.receiverId,
         username: record.receiver.username || 'Unknown',
-        points: (prevValue?.points || 0) + record.points,
+        totalPoints: (prevValue?.totalPoints || 0) + record.points,
+        learnPoints:
+          record.category === 'LEARN'
+            ? (prevValue?.learnPoints || 0) + record.points
+            : prevValue?.learnPoints || 0,
+        buildPoints:
+          record.category === 'BUILD'
+            ? (prevValue?.buildPoints || 0) + record.points
+            : prevValue?.buildPoints || 0,
+        teachPoints:
+          record.category === 'TEACH'
+            ? (prevValue?.teachPoints || 0) + record.points
+            : prevValue?.teachPoints || 0,
       });
     } else {
       acc.set(record.receiverId, {
         id: record.receiverId,
         username: record.receiver.username || 'Unknown',
-        points: record.points,
+        totalPoints: record.points,
+        learnPoints: record.category === 'LEARN' ? record.points : 0,
+        buildPoints: record.category === 'BUILD' ? record.points : 0,
+        teachPoints: record.category === 'TEACH' ? record.points : 0,
       });
     }
     return acc;
   }, new Map<string, Leader>());
-  return [...leaders.values()].sort((a, b) => b.points - a.points).slice(0, 10);
+  return [...leaders.values()]
+    .sort((a, b) => b.totalPoints - a.totalPoints)
+    .slice(0, 10);
 };
