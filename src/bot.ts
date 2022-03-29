@@ -3,6 +3,7 @@ import { Client, EmbedField, Intents, MessageReaction } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import { BUILD_EMOJI_NAME, LEARN_EMOJI_NAME, TEACH_EMOJI_NAME } from './consts';
 import { giveKudos } from './utils/db/kudos';
 import { reviewShare } from './utils/db/shares';
 dotenv.config();
@@ -86,7 +87,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
   if (!originalAuthor || !emoji?.name) return;
 
   //Handle Kudos
-  const kudoEmojis = ['learn', 'build', 'teach'];
+  const kudoEmojis = [LEARN_EMOJI_NAME, BUILD_EMOJI_NAME, TEACH_EMOJI_NAME];
   if (kudoEmojis.includes(emoji.name || '')) {
     const category: KudoCategory =
       KudoCategory[emoji.name.toUpperCase() as keyof typeof KudoCategory];
