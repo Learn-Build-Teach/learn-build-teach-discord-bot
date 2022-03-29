@@ -7,6 +7,7 @@ import { BUILD_EMOJI_NAME, LEARN_EMOJI_NAME, TEACH_EMOJI_NAME } from './consts';
 import { giveKudos } from './utils/db/kudos';
 import { reviewShare } from './utils/db/shares';
 dotenv.config();
+console.log('BOT STUFF');
 export const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,

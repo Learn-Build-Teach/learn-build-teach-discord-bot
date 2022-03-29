@@ -13,9 +13,9 @@ export const MockCommandInteraction: any = {
 export const MockCommandInteractionOptionResolver = {
   user: 'user',
   getMentionable: jest.fn(() => {
-    user: {
-      username: 'username';
-      id: 1;
+    {
+      ('username');
+      1;
     }
   }),
 };

@@ -1,6 +1,6 @@
-import profile from '../profile';
-
-jest.mock('discord.js', () => jest.fn());
+import profile from './profile';
+//Mock out the request to the bot so Discord connection isn't created
+jest.mock('../bot', () => ({}));
 
 describe('profile test', () => {
   it('should return the name of the command', () => {
