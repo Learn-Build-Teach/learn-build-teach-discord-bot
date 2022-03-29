@@ -2,6 +2,11 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { getKudosLeaderboard } from '../utils/db/kudos';
 import { EmbedField } from './profile';
 import { client } from '../bot';
+import {
+  BUILD_EMOJI_NAME,
+  LEARN_EMOJI_NAME,
+  TEACH_EMOJI_NAME,
+} from '../consts';
 
 const handleLoadKudosLeaderboard = async (interaction: CommandInteraction) => {
   try {
@@ -36,7 +41,7 @@ export interface Leader {
   id: string;
 }
 
-const kudoEmojis = ['learn', 'build', 'teach'];
+const kudoEmojis = [LEARN_EMOJI_NAME, BUILD_EMOJI_NAME, TEACH_EMOJI_NAME];
 const customEmojis = client.emojis.cache.filter((emoji) => {
   return kudoEmojis.includes(emoji.name || '');
 });
@@ -53,7 +58,7 @@ const createLeaderboardFields = (leaders: Leader[]): EmbedField[] => {
 };
 
 const buildLeaderValueField = (leader: Leader): string => {
-  let values = [];
+  const values = [];
   if (leader.learnPoints > 0) {
     const learnEmoji = customEmojis.find((emoji) => {
       return emoji.name === 'learn';
