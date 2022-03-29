@@ -7,7 +7,6 @@ import { BUILD_EMOJI_NAME, LEARN_EMOJI_NAME, TEACH_EMOJI_NAME } from './consts';
 import { giveKudos } from './utils/db/kudos';
 import { reviewShare } from './utils/db/shares';
 dotenv.config();
-console.log('BOT STUFF');
 export const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
@@ -20,7 +19,7 @@ export const client = new Client({
 const nameToCommandMap: any = {};
 
 client.on('ready', async () => {
-  console.log('The Learn Build Teach bot is running!');
+  console.info('The Learn Build Teach bot is running!');
   const guildId = process.env.DISCORD_GUILD_ID || '';
   const guild = client.guilds.cache.get(guildId);
   let commands: any;
@@ -53,7 +52,7 @@ client.on('ready', async () => {
 
   loadedFiles.forEach((loadedFile) => {
     const commandConfig = loadedFile.default;
-    console.log('Loading command', commandConfig.name);
+    console.info('Loading command', commandConfig.name);
     try {
       commands.create(commandConfig);
       nameToCommandMap[commandConfig.name] = commandConfig;

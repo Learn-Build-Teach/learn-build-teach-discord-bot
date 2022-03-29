@@ -12,7 +12,7 @@ const twitterClient = new Twitter({
 export const sendTweet = async (status: string, imageUrl?: string) => {
   if (!imageUrl) {
     await twitterClient.post('statuses/update', { status });
-    console.log('tweet sent', status);
+    console.info('tweet sent', status);
     return;
   }
   const imageData = await getRemoteImageInB64(imageUrl);
@@ -25,7 +25,7 @@ export const sendTweet = async (status: string, imageUrl?: string) => {
     media_ids: media.media_id_string,
   };
   await twitterClient.post('statuses/update', statusWithImage);
-  console.log('Tweet sent', status);
+  console.info('Tweet sent', status);
 };
 
 export const getRemoteImageInB64 = async (imageUrl: string) => {

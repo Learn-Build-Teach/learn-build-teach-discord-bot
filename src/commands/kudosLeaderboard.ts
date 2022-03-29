@@ -11,7 +11,6 @@ import {
 const handleLoadKudosLeaderboard = async (interaction: CommandInteraction) => {
   try {
     const leaders: Leader[] = await getKudosLeaderboard();
-    console.log(leaders);
     const embed = new MessageEmbed()
       .setAuthor(`Kudos Leaders`)
       .addFields(createLeaderboardFields(leaders));
