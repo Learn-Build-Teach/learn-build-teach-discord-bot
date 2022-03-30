@@ -57,30 +57,24 @@ const createLeaderboardFields = (leaders: Leader[]): EmbedField[] => {
 };
 
 const buildLeaderValueField = (leader: Leader): string => {
-  const values = [];
-  if (leader.learnPoints > 0) {
-    const learnEmoji = customEmojis.find((emoji) => {
-      return emoji.name === 'learn';
-    });
-    values.push(
-      `${leader.learnPoints} <:${learnEmoji?.name}:${learnEmoji?.id}>`
-    );
-  }
-  if (leader.buildPoints > 0) {
-    const buildEmoji = customEmojis.find((emoji) => {
-      return emoji.name === 'build';
-    });
-    values.push(
-      `${leader.buildPoints} <:${buildEmoji?.name}:${buildEmoji?.id}>`
-    );
-  }
-  if (leader.teachPoints > 0) {
-    const teachEmoji = customEmojis.find((emoji) => {
-      return emoji.name === 'teach';
-    });
-    values.push(
-      `${leader.teachPoints} <:${teachEmoji?.name}:${teachEmoji?.id}>`
-    );
-  }
-  return values.join(' ');
+  const kudos = [
+    {
+      emoji: customEmojis.find((emoji) => emoji.name === LEARN_EMOJI_NAME),
+      points: leader.learnPoints,
+    },
+    {
+      emoji: customEmojis.find((emoji) => emoji.name === BUILD_EMOJI_NAME),
+      points: leader.buildPoints,
+    },
+    {
+      emoji: customEmojis.find((emoji) => emoji.name === TEACH_EMOJI_NAME),
+      points: leader.teachPoints,
+    },
+  ]
+    .filter((kudo) => kudo.points > 0)
+    .sort((a, b) => b.points - a.points);
+
+  return kudos
+    .map((kudo) => `${kudo.points} <:${kudo.emoji?.name}:${kudo.emoji?.id}>`)
+    .join(' ');
 };
