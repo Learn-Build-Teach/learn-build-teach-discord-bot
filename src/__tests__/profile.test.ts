@@ -1,7 +1,7 @@
 import profile from '../commands/profile';
 
 //Mock out the request to the bot so Discord connection isn't created
-jest.mock('../bot', () => ({}));
+jest.mock('../utils/discord', () => ({}));
 
 describe('profile test', () => {
   it('should return the name of the command', () => {

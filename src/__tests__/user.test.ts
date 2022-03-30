@@ -9,7 +9,7 @@ import { prismaMock } from '../singleton';
 import { faker } from '@faker-js/faker';
 
 //Mock out the request to the bot so Discord connection isn't created
-jest.mock('../discord', () => ({}));
+jest.mock('../utils/discord', () => ({}));
 
 const mockUser = {
   id: faker.datatype.uuid(),
