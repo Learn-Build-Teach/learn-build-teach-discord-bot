@@ -1,12 +1,14 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js';
-import { getKudosLeaderboard } from '../utils/db/kudos';
+import { getKudosLeaderboard } from '../db/kudos';
 import { EmbedField } from './profile';
-import { client } from '../bot';
+
 import {
   BUILD_EMOJI_NAME,
   LEARN_EMOJI_NAME,
   TEACH_EMOJI_NAME,
 } from '../consts';
+import { discordClient } from '../utils/discord';
+import { Leader } from '../utils/interfaces';
 
 const handleLoadKudosLeaderboard = async (interaction: CommandInteraction) => {
   try {
@@ -31,17 +33,8 @@ export default {
   options: [],
 };
 
-export interface Leader {
-  username: string;
-  totalPoints: number;
-  learnPoints: number;
-  buildPoints: number;
-  teachPoints: number;
-  id: string;
-}
-
 const kudoEmojis = [LEARN_EMOJI_NAME, BUILD_EMOJI_NAME, TEACH_EMOJI_NAME];
-const customEmojis = client.emojis.cache.filter((emoji) => {
+const customEmojis = discordClient.emojis.cache.filter((emoji) => {
   return kudoEmojis.includes(emoji.name || '');
 });
 

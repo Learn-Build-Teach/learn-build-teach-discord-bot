@@ -4,12 +4,12 @@ import {
   getUserById,
   resetUser,
   upsertUser,
-} from '../utils/db/users';
+} from '../db/users';
 import { prismaMock } from '../singleton';
 import { faker } from '@faker-js/faker';
 
 //Mock out the request to the bot so Discord connection isn't created
-jest.mock('../bot', () => ({}));
+jest.mock('../utils/discord', () => ({}));
 
 const mockUser = {
   id: faker.datatype.uuid(),

@@ -6,9 +6,9 @@ import {
 } from 'discord.js';
 import { isValidUrl } from '../utils/helpers';
 import ogs from 'open-graph-scraper';
-import { getOrCreateUser } from '../utils/db/users';
-import { createShare } from '../utils/db/shares';
-import { client } from '../bot';
+import { getOrCreateUser } from '../utils/users';
+import { createShare } from '../db/shares';
+import { discordClient } from '../utils/discord';
 
 const shareHandler = async (
   interaction: CommandInteraction,
@@ -93,7 +93,7 @@ const shareHandler = async (
       )
       .setThumbnail(imageUrl)
       .setAuthor(`Share from ${username}`);
-    const shareReviewChannel = client.channels.cache.get(
+    const shareReviewChannel = discordClient.channels.cache.get(
       process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
     ) as TextChannel;
     if (shareReviewChannel) {

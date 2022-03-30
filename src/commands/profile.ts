@@ -6,7 +6,7 @@ import {
   GuildMember,
 } from 'discord.js';
 
-import { getUserById } from '../utils/db/users';
+import { getUserById } from '../db/users';
 import { profileSocialOptions } from './updateProfile';
 
 //defining user as type any so we can dynamically pull values

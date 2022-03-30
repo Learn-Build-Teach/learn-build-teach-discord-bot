@@ -1,7 +1,7 @@
 import { Kudo, KudoCategory, Prisma } from '@prisma/client';
 import prisma from '.';
-import { Leader } from '../../commands/kudosLeaderboard';
-import { getOrCreateUser } from './users';
+import { getOrCreateUser } from '../utils/users';
+import { Leader } from '../utils/interfaces';
 
 export const createKudo = async (
   kudo: Prisma.KudoCreateInput
@@ -64,11 +64,14 @@ export const getKudosLeaderboard = async (): Promise<Leader[]> => {
     },
   });
   const leaders = pointsStuff.reduce((acc, record) => {
+    //Filter records without a username
+    if (!record.receiver.username) return acc;
+
     if (acc.has(record.receiverId)) {
       const prevValue = acc.get(record.receiverId);
       acc.set(record.receiverId, {
         id: record.receiverId,
-        username: record.receiver.username || 'Unknown',
+        username: record.receiver.username,
         totalPoints: (prevValue?.totalPoints || 0) + record.points,
         learnPoints:
           record.category === 'LEARN'
@@ -86,7 +89,7 @@ export const getKudosLeaderboard = async (): Promise<Leader[]> => {
     } else {
       acc.set(record.receiverId, {
         id: record.receiverId,
-        username: record.receiver.username || 'Unknown',
+        username: record.receiver.username,
         totalPoints: record.points,
         learnPoints: record.category === 'LEARN' ? record.points : 0,
         buildPoints: record.category === 'BUILD' ? record.points : 0,

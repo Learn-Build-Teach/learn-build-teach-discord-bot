@@ -2,7 +2,7 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
 } from 'discord.js';
-import { upsertUser } from '../utils/db/users';
+import { upsertUser } from '../db/users';
 import { isValidUrl } from '../utils/helpers';
 
 const updateProfile = async (

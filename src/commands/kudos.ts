@@ -4,7 +4,7 @@ import {
   CommandInteractionOptionResolver,
   GuildMember,
 } from 'discord.js';
-import { giveKudos } from '../utils/db/kudos';
+import { giveKudos } from '../db/kudos';
 
 const choices = Object.keys(KudoCategory).map((key) => {
   return {
