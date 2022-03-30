@@ -1,39 +1,33 @@
 import { KudoCategory } from '@prisma/client';
-import { Client, EmbedField, Intents, MessageReaction } from 'discord.js';
+import { EmbedField, MessageReaction } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { BUILD_EMOJI_NAME, LEARN_EMOJI_NAME, TEACH_EMOJI_NAME } from './consts';
-import { giveKudos } from './utils/db/kudos';
-import { reviewShare } from './utils/db/shares';
+import { giveKudos } from './db/kudos';
+import { reviewShare } from './db/shares';
+import { discordClient } from './utils/discord';
+
 dotenv.config();
-export const client = new Client({
-  intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-  ],
-  partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-});
 
 const nameToCommandMap: any = {};
 
-client.on('ready', async () => {
+discordClient.on('ready', async () => {
   console.info('The Learn Build Teach bot is running!');
   const guildId = process.env.DISCORD_GUILD_ID || '';
-  const guild = client.guilds.cache.get(guildId);
+  const guild = discordClient.guilds.cache.get(guildId);
   let commands: any;
 
   //Don't do this in testing because you'll use your max number of registered commands 🥰
   if (process.env.NODE_ENV === 'production') {
-    client.application?.commands.set([]);
+    discordClient.application?.commands.set([]);
     guild?.commands.set([]);
   }
 
   if (guild) {
     commands = guild.commands;
   } else {
-    commands = client.application?.commands;
+    commands = discordClient.application?.commands;
   }
   const commandsDir = process.env.COMMANDS_DIR || 'commands';
   const commandsFullPath = path.join(__dirname, commandsDir);
@@ -63,7 +57,7 @@ client.on('ready', async () => {
   });
 });
 
-client.on('messageReactionAdd', async (reaction, user) => {
+discordClient.on('messageReactionAdd', async (reaction, user) => {
   if (!(reaction instanceof MessageReaction)) return;
 
   if (reaction.message.partial) {
@@ -141,7 +135,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
   }
 });
 
-client.on('interactionCreate', (interaction) => {
+discordClient.on('interactionCreate', (interaction) => {
   if (!interaction.isCommand()) return;
 
   const { commandName, options } = interaction;
@@ -154,4 +148,4 @@ client.on('interactionCreate', (interaction) => {
   }
 });
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+discordClient.login(process.env.DISCORD_BOT_TOKEN);

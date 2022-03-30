@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { getUserById, resetUser } from '../utils/db/users';
+import { getUserById, resetUser } from '../db/users';
 
 const resetProfile = async (interaction: CommandInteraction) => {
   const discordId = interaction.user.id;

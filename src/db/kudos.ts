@@ -1,7 +1,7 @@
 import { Kudo, KudoCategory, Prisma } from '@prisma/client';
 import prisma from '.';
-import { Leader } from '../../commands/kudosLeaderboard';
-import { getOrCreateUser } from './users';
+import { getOrCreateUser } from '../utils/users';
+import { Leader } from '../utils/interfaces';
 
 export const createKudo = async (
   kudo: Prisma.KudoCreateInput

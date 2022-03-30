@@ -1,6 +1,6 @@
 import { sendTweet } from './utils/twitter';
-import { getShareToTweet, markShareAsTweeted } from './utils/db/shares';
-import { getUserById } from './utils/db/users';
+import { getShareToTweet, markShareAsTweeted } from './db/shares';
+import { getUserById } from './db/users';
 import cron from 'node-cron';
 import { Share } from '@prisma/client';
 import('@prisma/client');
