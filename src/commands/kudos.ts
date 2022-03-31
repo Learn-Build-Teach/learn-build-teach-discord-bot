@@ -19,8 +19,7 @@ const handleKudos = async (
 ) => {
   try {
     const mentionedUser = options.getMentionable('user', false);
-
-    if (!(mentionedUser instanceof GuildMember)) {
+    if (!(mentionedUser instanceof GuildMember) || mentionedUser.user.bot) {
       return interaction.reply({
         content: `You can only give kudos to a User 🥰`,
         ephemeral: true,
