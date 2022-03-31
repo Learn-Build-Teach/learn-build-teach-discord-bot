@@ -79,6 +79,13 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
   const TWITTER_APPROVED_EMOJI = '🐦';
 
   if (!originalAuthor || !emoji?.name) return;
+  if (message.author?.bot) return;
+  if (user.id === originalAuthor.id) {
+    console.info(
+      `${user.username} tried to give themselves a kudo, but they can't!`
+    );
+    return;
+  }
 
   //Handle Kudos
   const kudoEmojis = [LEARN_EMOJI_NAME, BUILD_EMOJI_NAME, TEACH_EMOJI_NAME];
