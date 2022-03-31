@@ -22,6 +22,7 @@ model Kudo {
   giver       User         @relation("sentKudos", fields: [giverId], references: [id])
   giverId     String       @db.VarChar(255)
   multiplier  Int          @default(1)
+  createdAt   DateTime     @default(now())
 
   @@index(receiverId)
   @@index(giverId)
@@ -47,6 +48,7 @@ model User {
   sentKudos           Kudo[]   @relation("sentKudos")
   shares              Share[]  @relation
   lastActiveTimestamp DateTime @default(now())
+  createdAt           DateTime @default(now())
 }
 
 model Share {
@@ -61,6 +63,7 @@ model Share {
   emailable   Boolean? @default(false)
   tweeted     Boolean? @default(false)
   emailed     Boolean? @default(false)
+  createdAt   DateTime @default(now())
 
   @@index([userId])
 }
