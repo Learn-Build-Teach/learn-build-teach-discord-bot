@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/app.js",
+    "start:server": "node dist/server/index.js",
     "dev": "ts-node-dev --respawn --debounce=100 --exit-child src/app.ts",
     "build": "tsc && npm run test",
     "test": "jest",
