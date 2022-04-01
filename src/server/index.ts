@@ -1,9 +1,16 @@
 import express, { Request, Response } from 'express';
-import shareRoutes from './routes.ts/shares';
-import kudoRoutes from './routes.ts/kudos';
-import userRoutes from './routes.ts/users';
+import cors from 'cors';
+import shareRoutes from './routes/shares';
+import kudoRoutes from './routes/kudos';
+import userRoutes from './routes/users';
 const app = express();
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: 'https://www.learnbuildteach.com',
+  })
+);
 
 app.get('/ping', (req: Request, res: Response) => {
   console.info('Server was pinged');
