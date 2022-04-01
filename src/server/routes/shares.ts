@@ -6,7 +6,6 @@ import { checkAPIKey } from '../middleware';
 const router = express.Router();
 
 router.get('', checkAPIKey, async (req: Request, res: Response) => {
-  console.log(req.headers);
   const retVal = new ReturnValue();
   try {
     const limit = parseInt(String(req.query.limit)) || 20;

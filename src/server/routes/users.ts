@@ -30,7 +30,6 @@ router.get('/:id', checkAPIKey, async (req: Request, res: Response) => {
 router.patch('/:id', checkAPIKey, async (req: Request, res: Response) => {
   const retVal = new ReturnValue();
   const user: User = req.body;
-  console.log('Upserty');
   try {
     const updatedUser = await upsertUser(user);
     retVal.body.data = updatedUser;
