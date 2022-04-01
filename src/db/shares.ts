@@ -10,6 +10,15 @@ export const getShareToTweet = async () => {
   });
 };
 
+export const getRecentShares = async (limit: number) => {
+  return await prisma.share.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: limit,
+  });
+};
+
 export const markShareAsTweeted = async (id: string) => {
   return await prisma.share.update({
     where: {
