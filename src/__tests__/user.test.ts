@@ -26,6 +26,7 @@ const mockUser = {
   numMessages: 0,
   xp: 0,
   lastActiveTimestamp: faker.date.recent(),
+  createdAt: faker.date.recent(),
 };
 
 test('should create new user ', async () => {
