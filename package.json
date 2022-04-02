@@ -7,7 +7,7 @@
     "start": "node dist/app.js",
     "start:server": "node dist/server/index.js",
     "dev": "ts-node-dev --respawn --debounce=100 --exit-child src/app.ts",
-    "build": "tsc && npm run test",
+    "build": "tsc",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
@@ -27,7 +27,6 @@
     "node": "16.6.1",
     "node-cron": "^2.0.3",
     "open-graph-scraper": "^4.11.0",
-    "quick-chat-bot": "^0.9.1",
     "twitter": "^1.7.1"
   },
   "engines": {

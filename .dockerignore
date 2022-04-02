@@ -1,0 +1,14 @@
+.dev/
+.github/
+.vscode/
+build/
+node_modules/
+
+.env*
+.eslintrc
+.git-blame-ignore-revs
+.nvmrc
+.prettierignore
+.prettier.json
+README.md
+
