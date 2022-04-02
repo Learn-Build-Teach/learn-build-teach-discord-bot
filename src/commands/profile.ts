@@ -46,9 +46,9 @@ const getProfile = async (
         )
         .addFields(createUserProfileFields(user));
 
-      return await interaction.reply({ embeds: [embed] });
+      return interaction.reply({ embeds: [embed] });
     } else {
-      return await interaction.reply({
+      return interaction.reply({
         content: "Couldn't find details on that user",
       });
     }
@@ -57,7 +57,7 @@ const getProfile = async (
       `Something went wrong searching for user profile: ${targetUser.username}.`
     );
     console.error(err);
-    return await interaction.reply({
+    return interaction.reply({
       content: `Something went wrong searching for user profile ${targetUser.username}`,
       ephemeral: true,
     });
