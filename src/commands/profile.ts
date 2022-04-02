@@ -29,7 +29,6 @@ const getProfile = async (
   options: CommandInteractionOptionResolver
 ) => {
   const mentionedUser = options.getMentionable('username', false);
-  await interaction.deferReply();
 
   const targetUser =
     mentionedUser instanceof GuildMember
@@ -47,9 +46,9 @@ const getProfile = async (
         )
         .addFields(createUserProfileFields(user));
 
-      return interaction.followUp({ embeds: [embed] });
+      return await interaction.reply({ embeds: [embed] });
     } else {
-      return interaction.followUp({
+      return await interaction.reply({
         content: "Couldn't find details on that user",
       });
     }
@@ -58,7 +57,7 @@ const getProfile = async (
       `Something went wrong searching for user profile: ${targetUser.username}.`
     );
     console.error(err);
-    return interaction.followUp({
+    return await interaction.reply({
       content: `Something went wrong searching for user profile ${targetUser.username}`,
       ephemeral: true,
     });
