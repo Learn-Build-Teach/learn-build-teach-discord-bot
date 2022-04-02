@@ -29,7 +29,7 @@ const getProfile = async (
   options: CommandInteractionOptionResolver
 ) => {
   const mentionedUser = options.getMentionable('username', false);
-  interaction.deferReply();
+  await interaction.deferReply();
 
   const targetUser =
     mentionedUser instanceof GuildMember
