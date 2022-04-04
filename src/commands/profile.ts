@@ -46,7 +46,7 @@ const getProfile = async (
         )
         .addFields(createUserProfileFields(user));
 
-      return interaction.editReply({ embeds: [embed] });
+      return interaction.reply({ embeds: [embed] });
     } else {
       return interaction.reply({
         content: "Couldn't find details on that user",
