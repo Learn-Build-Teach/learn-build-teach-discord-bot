@@ -5,7 +5,7 @@ import {
   resetUser,
   upsertUser,
 } from '../db/users';
-import { prismaMock } from '../singleton';
+import { prismaMock } from '../__mocks__/prismaMock';
 import { faker } from '@faker-js/faker';
 
 //Mock out the request to the bot so Discord connection isn't created
