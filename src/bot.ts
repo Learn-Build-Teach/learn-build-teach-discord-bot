@@ -3,7 +3,7 @@ import { EmbedField, Message, MessageReaction } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { EMOJI_NAMES } from './consts';
+import { EMOJI_NAMES, kudoEmojis } from './consts';
 import { giveKudos } from './db/kudos';
 import { markShareAsEmailed, reviewShare } from './db/shares';
 import { addXpToUser } from './db/users';
@@ -84,11 +84,6 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
   }
 
   //Handle Kudos
-  const kudoEmojis = [
-    EMOJI_NAMES.LEARN_EMOJI_NAME,
-    EMOJI_NAMES.BUILD_EMOJI_NAME,
-    EMOJI_NAMES.TEACH_EMOJI_NAME,
-  ];
   if (kudoEmojis.includes(emoji.name || '')) {
     const category: KudoCategory =
       KudoCategory[emoji.name.toUpperCase() as keyof typeof KudoCategory];

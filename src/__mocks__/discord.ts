@@ -31,7 +31,7 @@ export default class MockDiscord {
   private reaction!: MessageReaction;
   private reactionUser!: User;
 
-  constructor(options) {
+  constructor(options: any) {
     this.mockClient();
     this.mockGuild();
     this.mockChannel();
@@ -132,7 +132,7 @@ export default class MockDiscord {
     Message.prototype.edit = jest.fn();
   }
 
-  private mockReaction(reactionOptions, message): void {
+  private mockReaction(reactionOptions: any, message: any): void {
     this.reaction = Reflect.construct(MessageReaction, [
       this.client,
       { emoji: reactionOptions.emoji },
@@ -265,7 +265,7 @@ export default class MockDiscord {
     ]);
   }
 
-  private mockReactionUser(userId): void {
+  private mockReactionUser(userId: string): void {
     this.reactionUser = Reflect.construct(User, [
       this.client,
       {
@@ -298,8 +298,8 @@ export default class MockDiscord {
     ]);
   }
 
-  private mockPartyMessages(messages): void {
-    messages.forEach((message) => {
+  private mockPartyMessages(messages: any): void {
+    messages.forEach((message: any) => {
       const msg = Reflect.construct(Message, [
         this.client,
         {
@@ -328,7 +328,7 @@ export default class MockDiscord {
     });
   }
 
-  private mockMessage(content): void {
+  private mockMessage(content: any): void {
     this.message = Reflect.construct(Message, [
       this.client,
       {
@@ -355,7 +355,7 @@ export default class MockDiscord {
     this.message.react = jest.fn();
   }
 
-  private mockInteracion(command): void {
+  private mockInteracion(command: any): void {
     if (!command) return;
     this.interaction = Reflect.construct(CommandInteraction, [
       this.client,

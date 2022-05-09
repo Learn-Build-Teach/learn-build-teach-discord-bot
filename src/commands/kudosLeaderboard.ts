@@ -2,11 +2,7 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { getKudosLeaderboard } from '../db/kudos';
 import { EmbedField } from './profile';
 
-import {
-  BUILD_EMOJI_NAME,
-  LEARN_EMOJI_NAME,
-  TEACH_EMOJI_NAME,
-} from '../consts';
+import { EMOJI_NAMES, kudoEmojis } from '../consts';
 import { discordClient } from '../utils/discord';
 import { Leader } from '../utils/interfaces';
 
@@ -33,7 +29,6 @@ export default {
   options: [],
 };
 
-const kudoEmojis = [LEARN_EMOJI_NAME, BUILD_EMOJI_NAME, TEACH_EMOJI_NAME];
 const customEmojis = discordClient.emojis.cache.filter((emoji) => {
   return kudoEmojis.includes(emoji.name || '');
 });
@@ -52,15 +47,21 @@ const createLeaderboardFields = (leaders: Leader[]): EmbedField[] => {
 const buildLeaderValueField = (leader: Leader): string => {
   const kudos = [
     {
-      emoji: customEmojis.find((emoji) => emoji.name === LEARN_EMOJI_NAME),
+      emoji: customEmojis.find(
+        (emoji) => emoji.name === EMOJI_NAMES.LEARN_EMOJI_NAME
+      ),
       points: leader.learnPoints,
     },
     {
-      emoji: customEmojis.find((emoji) => emoji.name === BUILD_EMOJI_NAME),
+      emoji: customEmojis.find(
+        (emoji) => emoji.name === EMOJI_NAMES.BUILD_EMOJI_NAME
+      ),
       points: leader.buildPoints,
     },
     {
-      emoji: customEmojis.find((emoji) => emoji.name === TEACH_EMOJI_NAME),
+      emoji: customEmojis.find(
+        (emoji) => emoji.name === EMOJI_NAMES.TEACH_EMOJI_NAME
+      ),
       points: leader.teachPoints,
     },
   ]
