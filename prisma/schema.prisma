@@ -47,7 +47,7 @@ model User {
   receivedKudos       Kudo[]   @relation("receivedKudos")
   sentKudos           Kudo[]   @relation("sentKudos")
   shares              Share[]  @relation
-  lastActiveTimestamp DateTime @default(now())
+  lastActiveTimestamp DateTime @updatedAt
   createdAt           DateTime @default(now())
 }
 

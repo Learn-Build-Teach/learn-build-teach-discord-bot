@@ -1,11 +1,12 @@
 import { KudoCategory } from '@prisma/client';
-import { EmbedField, MessageReaction } from 'discord.js';
+import { EmbedField, Message, MessageReaction } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { BUILD_EMOJI_NAME, LEARN_EMOJI_NAME, TEACH_EMOJI_NAME } from './consts';
+import { EMOJI_NAMES } from './consts';
 import { giveKudos } from './db/kudos';
-import { reviewShare } from './db/shares';
+import { markShareAsEmailed, reviewShare } from './db/shares';
+import { addXpToUser } from './db/users';
 import { discordClient } from './utils/discord';
 
 dotenv.config();
@@ -73,13 +74,8 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
   const { emoji, message } = reaction;
   const { author: originalAuthor, channelId } = message;
 
-  const APPROVE_EMOJI = '✅';
-  const REJECT_EMOJI = '❌';
-  const EMAIL_APPROVED_EMOJI = '📧';
-  const TWITTER_APPROVED_EMOJI = '🐦';
-
   if (!originalAuthor || !emoji?.name) return;
-  if (message.author?.bot) return;
+
   if (user.id === originalAuthor.id) {
     console.info(
       `${user.username} tried to give themselves a kudo, but they can't!`
@@ -88,7 +84,11 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
   }
 
   //Handle Kudos
-  const kudoEmojis = [LEARN_EMOJI_NAME, BUILD_EMOJI_NAME, TEACH_EMOJI_NAME];
+  const kudoEmojis = [
+    EMOJI_NAMES.LEARN_EMOJI_NAME,
+    EMOJI_NAMES.BUILD_EMOJI_NAME,
+    EMOJI_NAMES.TEACH_EMOJI_NAME,
+  ];
   if (kudoEmojis.includes(emoji.name || '')) {
     const category: KudoCategory =
       KudoCategory[emoji.name.toUpperCase() as keyof typeof KudoCategory];
@@ -101,6 +101,7 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
   }
 
   //Handle Share Approvals
+
   if (channelId === process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL) {
     const messageEmbed = message?.embeds[0];
     if (!messageEmbed) return;
@@ -113,31 +114,28 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
       {}
     );
 
+    let actionMessage;
     if (!shareInfo.shareId) {
-      console.info('Emoji reaction on a message without a share id');
-      return;
-    }
-
-    if (emoji.name === APPROVE_EMOJI) {
+      actionMessage = 'Emoji reaction on a message without a share id';
+    } else if (emoji.name === EMOJI_NAMES.APPROVE_EMOJI) {
       await reviewShare(shareInfo.shareId, true, true);
-      reaction.message.channel.send(
-        `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter and Email.`
-      );
-    } else if (emoji.name === EMAIL_APPROVED_EMOJI) {
+      actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter and Email.`;
+    } else if (emoji.name === EMOJI_NAMES.EMAIL_APPROVED_EMOJI) {
       await reviewShare(shareInfo.shareId, true, undefined);
-      reaction.message.channel.send(
-        `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Email.`
-      );
-    } else if (emoji.name === TWITTER_APPROVED_EMOJI) {
+      actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Email.`;
+    } else if (emoji.name === EMOJI_NAMES.TWITTER_APPROVED_EMOJI) {
       await reviewShare(shareInfo.shareId, undefined, true);
-      reaction.message.channel.send(
-        `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter.`
-      );
-    } else if (emoji.name === REJECT_EMOJI) {
+      actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter.`;
+    } else if (emoji.name === EMOJI_NAMES.REJECT_EMOJI) {
       await reviewShare(shareInfo.shareId, false, false);
-      reaction.message.channel.send(
-        `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} rejected for Twitter and Email.`
-      );
+      actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} rejected for Twitter and Email.`;
+    } else if (emoji.name === EMOJI_NAMES.EMAIL_SENT_EMOJI) {
+      await markShareAsEmailed(shareInfo.shareId);
+      actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} was marked as emailed.`;
+    }
+    if (actionMessage) {
+      console.info(actionMessage);
+      reaction.message.channel.send(actionMessage);
     }
   }
 });
@@ -152,6 +150,17 @@ discordClient.on('interactionCreate', (interaction) => {
       `Incoming command we care about: ${commandName} from ${interaction.user.username}`
     );
     return existingCommand.callback(interaction, options);
+  }
+});
+
+discordClient.on('message', async (message: Message) => {
+  const userId = message?.author.id;
+  if (!userId) return;
+  try {
+    await addXpToUser(userId);
+    console.info(`Added xp to user: ${userId}`);
+  } catch (err) {
+    console.error(err);
   }
 });
 

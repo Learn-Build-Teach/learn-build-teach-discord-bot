@@ -1,4 +1,5 @@
 import type { Prisma, Share } from '@prisma/client';
+import { stringify } from 'querystring';
 import prisma from './index';
 
 export const getShareToTweet = async () => {
@@ -47,6 +48,15 @@ export const reviewShare = async (
       id,
     },
     data: updates,
+  });
+};
+
+export const markShareAsEmailed = async (id: string) => {
+  return await prisma.share.update({
+    where: {
+      id,
+    },
+    data: { emailed: true },
   });
 };
 
