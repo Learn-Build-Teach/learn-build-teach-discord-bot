@@ -1,5 +1,4 @@
 import type { Prisma, Share } from '@prisma/client';
-import { stringify } from 'querystring';
 import prisma from './index';
 
 export const getShareToTweet = async () => {
