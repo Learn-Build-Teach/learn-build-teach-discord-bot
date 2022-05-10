@@ -24,7 +24,7 @@ const createShareEmbed = (share: Share): MessageEmbed => {
     .setTitle(share.title)
     .setDescription(share.description || '')
     .setURL(share.link)
-    .setAuthor(`Random piece of content from User ${share.userId}`)
+    .addField('Author', `By <@${share.userId}>`, true)
     .setTimestamp(share.createdAt);
 };
 
