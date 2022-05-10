@@ -15,6 +15,9 @@ export const getRecentShares = async (limit: number = 20) => {
     orderBy: {
       createdAt: 'desc',
     },
+    where: {
+      tweetable: true,
+    },
     take: limit,
     include: {
       user: {
