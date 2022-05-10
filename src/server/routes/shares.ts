@@ -6,7 +6,7 @@ import { getRandomShareFromCache } from '../../utils/shareCache';
 
 const router = express.Router();
 
-router.get('', async (req: Request, res: Response) => {
+router.get('', checkAPIKey, async (req: Request, res: Response) => {
   const retVal = new ReturnValue();
   try {
     const limit = parseInt(String(req.query.limit)) || 20;
