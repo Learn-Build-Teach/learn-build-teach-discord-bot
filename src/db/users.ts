@@ -1,5 +1,6 @@
 import prisma from '.';
 import type { User } from '.prisma/client';
+import { getOrCreateUser } from '../utils/users';
 
 export const getUserById = async (id: string): Promise<User | null> => {
   const user = await prisma.user.findUnique({
@@ -12,6 +13,7 @@ export const getUserById = async (id: string): Promise<User | null> => {
 
 export const addXpToUser = async (id: string) => {
   const increment = 10;
+  await getOrCreateUser(id);
   return prisma.user.update({
     where: {
       id,
