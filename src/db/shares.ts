@@ -1,4 +1,4 @@
-import type { Prisma, Share } from '@prisma/client';
+import { Prisma, Share } from '@prisma/client';
 import prisma from './index';
 
 export const getShareToTweet = async () => {
@@ -10,12 +10,19 @@ export const getShareToTweet = async () => {
   });
 };
 
-export const getRecentShares = async (limit: number) => {
+export const getRecentShares = async (limit: number = 20) => {
   return await prisma.share.findMany({
     orderBy: {
       createdAt: 'desc',
     },
     take: limit,
+    include: {
+      user: {
+        select: {
+          username: true,
+        },
+      },
+    },
   });
 };
 

@@ -9,13 +9,13 @@ import ogs from 'open-graph-scraper';
 import { getOrCreateUser } from '../utils/users';
 import { createShare } from '../db/shares';
 import { discordClient } from '../utils/discord';
+import { addNewShareToCache } from '../utils/shareCache';
 
 const shareHandler = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
 ) => {
   const link = options.getString('link') || '';
-
   if (!isValidUrl(link)) {
     return interaction.reply({
       content: `Please include a valid url.`,
@@ -81,6 +81,7 @@ const shareHandler = async (
       emailable: false,
       emailed: false,
     });
+    addNewShareToCache(createdShare);
 
     const embed = new MessageEmbed()
       .setTitle(title)
@@ -101,11 +102,10 @@ const shareHandler = async (
     }
 
     return interaction.reply({
-      content: `Content successfully shared. Thanks!\n${link}`,
-      ephemeral: true,
+      content: `Content successfully shared. \n${link}`,
     });
   } catch (err) {
-    console.error('Something went wrong in sharing to airtable.');
+    console.error('Something went wrong in sharing the record.');
     console.error(err);
     return interaction.reply({
       content: `Failed to save share record 🤷‍♂️. <@361868131997843456> should take a look!`,
