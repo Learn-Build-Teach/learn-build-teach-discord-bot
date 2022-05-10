@@ -6,7 +6,9 @@ const getRandomContent = async (interaction: CommandInteraction) => {
   try {
     const randomShare = await getRandomShareFromCache();
     const embed = createShareEmbed(randomShare);
-    return interaction.channel?.send({ embeds: [embed] });
+    return interaction.reply({
+      embeds: [embed],
+    });
   } catch (err) {
     console.error(err);
     return interaction.reply({
@@ -22,7 +24,7 @@ const createShareEmbed = (share: Share): MessageEmbed => {
     .setTitle(share.title)
     .setDescription(share.description || '')
     .setURL(share.link)
-    .setAuthor(`From User ${share.userId}`)
+    .setAuthor(`Random piece of content from User ${share.userId}`)
     .setTimestamp(share.createdAt);
 };
 
