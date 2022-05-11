@@ -85,7 +85,7 @@ const shareHandler = async (
 
     const embed = new MessageEmbed()
       .setTitle(title)
-      .setDescription(description)
+      .setDescription(description || '')
       .addFields(
         { name: 'shareId', value: createdShare.id },
         { name: 'shareLink', value: createdShare.link },
