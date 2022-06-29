@@ -98,7 +98,18 @@ const shareHandler = async (
       process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
     ) as TextChannel;
     if (shareReviewChannel) {
-      shareReviewChannel.send({ embeds: [embed] });
+      shareReviewChannel
+        .send({ embeds: [embed] })
+        .then(function (message) {
+          message.react('✅');
+          message.react('❌');
+          message.react('📧');
+          message.react('🐦');
+        })
+        .catch(function (err) {
+          console.error('Error reacting to message.');
+          console.error(err);
+        });
     }
 
     return interaction.reply({

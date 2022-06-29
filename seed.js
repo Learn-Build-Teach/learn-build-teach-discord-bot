@@ -34,7 +34,7 @@ const migrateUsersToPlanetScale = async () => {
     await prisma.user.createMany({
       data: usersToMigrate,
     });
-    console.log(`Migrated ${records.length} users`);
+    console.info(`Migrated ${records.length} users`);
   } catch (err) {
     console.error(err);
   }
@@ -49,7 +49,6 @@ const migrateSharesToPlanetScale = async () => {
         })
         .firstPage()
     );
-    // console.log(records[0]);
     const sharesToMigrate = records
       .filter(
         (record) =>
@@ -74,7 +73,7 @@ const migrateSharesToPlanetScale = async () => {
     await prisma.share.createMany({
       data: sharesToMigrate,
     });
-    console.log(`Migrated ${sharesToMigrate.length} shares`);
+    console.info(`Migrated ${sharesToMigrate.length} shares`);
   } catch (err) {
     console.error(err);
   }
@@ -85,13 +84,13 @@ const minifyRecords = (records) =>
 
 const migrate = async () => {
   const { count } = await prisma.share.deleteMany();
-  console.log(`Deleted ${count} shares`);
+  console.info(`Deleted ${count} shares`);
 
   const { count: kudoCount } = await prisma.kudo.deleteMany();
-  console.log(`Deleted ${kudoCount} kudos`);
+  console.info(`Deleted ${kudoCount} kudos`);
 
   const { count: userCount } = await prisma.user.deleteMany();
-  console.log(`Deleted ${userCount} users`);
+  console.info(`Deleted ${userCount} users`);
 
   await migrateUsersToPlanetScale();
   await migrateSharesToPlanetScale();
