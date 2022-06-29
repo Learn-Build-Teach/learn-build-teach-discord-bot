@@ -6,6 +6,7 @@ import {
 } from 'discord.js';
 import { isValidUrl } from '../utils/helpers';
 import ogs from 'open-graph-scraper';
+import { EMOJI_NAMES } from '../consts';
 import { getOrCreateUser } from '../utils/users';
 import { createShare } from '../db/shares';
 import { discordClient } from '../utils/discord';
@@ -101,10 +102,10 @@ const shareHandler = async (
       shareReviewChannel
         .send({ embeds: [embed] })
         .then(function (message) {
-          message.react('✅');
-          message.react('❌');
-          message.react('📧');
-          message.react('🐦');
+          message.react(EMOJI_NAMES.APPROVE_EMOJI);
+          message.react(EMOJI_NAMES.EMAIL_APPROVED_EMOJI);
+          message.react(EMOJI_NAMES.TWITTER_APPROVED_EMOJI);
+          message.react(EMOJI_NAMES.REJECT_EMOJI);
         })
         .catch(function (err) {
           console.error('Error reacting to message.');
