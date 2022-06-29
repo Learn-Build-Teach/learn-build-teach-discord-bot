@@ -97,16 +97,20 @@ const shareHandler = async (
     const shareReviewChannel = discordClient.channels.cache.get(
       process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
     ) as TextChannel;
+    console.log(shareReviewChannel);
     if (shareReviewChannel) {
-      shareReviewChannel.send({ embeds: [embed] }).then(function (message) {
-        message.react("✅");
-        message.react("❌");
-        message.react("📧");
-        message.react("🐦");
-      }).catch(function(err) {
-        console.error('Error reacting to message.');
-        console.error(err);
-      });
+      shareReviewChannel
+        .send({ embeds: [embed] })
+        .then(function (message) {
+          message.react('✅');
+          message.react('❌');
+          message.react('📧');
+          message.react('🐦');
+        })
+        .catch(function (err) {
+          console.error('Error reacting to message.');
+          console.error(err);
+        });
     }
 
     return interaction.reply({

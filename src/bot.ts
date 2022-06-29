@@ -59,6 +59,8 @@ discordClient.on('ready', async () => {
 });
 
 discordClient.on('messageReactionAdd', async (reaction, user) => {
+  if (user.bot) return;
+
   if (!(reaction instanceof MessageReaction)) return;
 
   if (reaction.message.partial) {
@@ -76,15 +78,15 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
 
   if (!originalAuthor || !emoji?.name) return;
 
-  if (user.id === originalAuthor.id) {
-    console.info(
-      `${user.username} tried to give themselves a kudo, but they can't!`
-    );
-    return;
-  }
-
   //Handle Kudos
   if (kudoEmojis.includes(emoji.name || '')) {
+    if (user.id === originalAuthor.id) {
+      console.info(
+        `${user.username} tried to give themselves a kudo, but they can't!`
+      );
+      return;
+    }
+
     const category: KudoCategory =
       KudoCategory[emoji.name.toUpperCase() as keyof typeof KudoCategory];
     try {
