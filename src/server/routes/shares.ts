@@ -1,12 +1,11 @@
 import { getRecentShares } from '../../db/shares';
 import { ReturnValue } from '../models';
 import express, { Request, Response } from 'express';
-import { checkAPIKey } from '../middleware';
 import { getRandomShareFromCache } from '../../utils/shareCache';
 
 const router = express.Router();
 
-router.get('', checkAPIKey, async (req: Request, res: Response) => {
+router.get('', async (req: Request, res: Response) => {
   const retVal = new ReturnValue();
   try {
     const limit = parseInt(String(req.query.limit)) || 20;
