@@ -16,7 +16,7 @@ export const getRecentShares = async (limit: number = 20) => {
       createdAt: 'desc',
     },
     where: {
-      tweetable: true,
+      emailable: true,
     },
     take: limit,
     include: {
