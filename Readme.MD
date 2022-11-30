@@ -1,6 +1,6 @@
 # Learn Build Teach Discord Bot
 
-This bot allows [Learn Build Teach Discord](https://discord.gg/vM2bagU) members to share a piece of content (article, video, etc.) that will potentially be shared on Twitter and in an email newsletter.
+This bot allows [Learn Build Teach Discord](https://discord.gg/vM2bagU) members to share a piece of content (article, video, etc.) that will potentially be shared on Twitter and in the James Q Quick email newsletter.
 
 ## How to run
 
