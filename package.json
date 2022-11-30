@@ -7,7 +7,7 @@
     "start": "node dist/app.js",
     "start:server": "node dist/server/index.js",
     "dev": "ts-node-dev --respawn --debounce=100 --exit-child src/app.ts",
-    "build": "tsc && npm run test",
+    "build": "tsc && prisma generate && npm run test",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",

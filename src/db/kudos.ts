@@ -54,7 +54,8 @@ export const giveKudos = async (
 
 // @ts-ignore
 export const getKudosLeaderboard = async (): Promise<Leader[]> => {
-  const pointsStuff = await prisma.kudo.findMany({
+  //TODO: create a type that includes Kudo fields and adds receiver with username
+  const pointsStuff: any[] = await prisma.kudo.findMany({
     include: {
       receiver: {
         select: {
@@ -63,41 +64,44 @@ export const getKudosLeaderboard = async (): Promise<Leader[]> => {
       },
     },
   });
-  const leaders = pointsStuff.reduce((acc, record) => {
-    //Filter records without a username
-    if (!record.receiver.username) return acc;
+  const leaders = pointsStuff.reduce(
+    (acc: Map<string, Leader>, record: any) => {
+      //Filter records without a username
+      if (!record.receiver.username) return acc;
 
-    if (acc.has(record.receiverId)) {
-      const prevValue = acc.get(record.receiverId);
-      acc.set(record.receiverId, {
-        id: record.receiverId,
-        username: record.receiver.username,
-        totalPoints: (prevValue?.totalPoints || 0) + record.points,
-        learnPoints:
-          record.category === 'LEARN'
-            ? (prevValue?.learnPoints || 0) + record.points
-            : prevValue?.learnPoints || 0,
-        buildPoints:
-          record.category === 'BUILD'
-            ? (prevValue?.buildPoints || 0) + record.points
-            : prevValue?.buildPoints || 0,
-        teachPoints:
-          record.category === 'TEACH'
-            ? (prevValue?.teachPoints || 0) + record.points
-            : prevValue?.teachPoints || 0,
-      });
-    } else {
-      acc.set(record.receiverId, {
-        id: record.receiverId,
-        username: record.receiver.username,
-        totalPoints: record.points,
-        learnPoints: record.category === 'LEARN' ? record.points : 0,
-        buildPoints: record.category === 'BUILD' ? record.points : 0,
-        teachPoints: record.category === 'TEACH' ? record.points : 0,
-      });
-    }
-    return acc;
-  }, new Map<string, Leader>());
+      if (acc.has(record.receiverId)) {
+        const prevValue = acc.get(record.receiverId);
+        acc.set(record.receiverId, {
+          id: record.receiverId,
+          username: record.receiver.username,
+          totalPoints: (prevValue?.totalPoints || 0) + record.points,
+          learnPoints:
+            record.category === 'LEARN'
+              ? (prevValue?.learnPoints || 0) + record.points
+              : prevValue?.learnPoints || 0,
+          buildPoints:
+            record.category === 'BUILD'
+              ? (prevValue?.buildPoints || 0) + record.points
+              : prevValue?.buildPoints || 0,
+          teachPoints:
+            record.category === 'TEACH'
+              ? (prevValue?.teachPoints || 0) + record.points
+              : prevValue?.teachPoints || 0,
+        });
+      } else {
+        acc.set(record.receiverId, {
+          id: record.receiverId,
+          username: record.receiver.username,
+          totalPoints: record.points,
+          learnPoints: record.category === 'LEARN' ? record.points : 0,
+          buildPoints: record.category === 'BUILD' ? record.points : 0,
+          teachPoints: record.category === 'TEACH' ? record.points : 0,
+        });
+      }
+      return acc;
+    },
+    new Map<string, Leader>()
+  );
   return [...leaders.values()]
     .sort((a, b) => b.totalPoints - a.totalPoints)
     .slice(0, 10);
