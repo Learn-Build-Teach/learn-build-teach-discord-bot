@@ -1,3 +1,5 @@
+//load environment variables
+import './variables';
 //run the twitch bot
 import './bot';
 
