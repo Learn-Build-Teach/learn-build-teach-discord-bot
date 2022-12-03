@@ -3,6 +3,7 @@ import { getShareToTweet, markShareAsTweeted } from './db/shares';
 import { getUserById } from './db/users';
 import cron from 'node-cron';
 import { Share } from '@prisma/client';
+import { sendEmailAlert } from './utils/email';
 import('@prisma/client');
 
 const tweetNextShare = async () => {
@@ -19,7 +20,7 @@ const tweetNextShare = async () => {
     if (process.env.SEND_TWEETS === 'TRUE') {
       console.info('Sending tweet');
       await sendTweet(tweet, share.imageUrl || '');
-
+      await sendEmailAlert('Tweet Sent', `Tweet: ${tweet}`);
       markShareAsTweeted(share.id);
     }
   } catch (err) {
