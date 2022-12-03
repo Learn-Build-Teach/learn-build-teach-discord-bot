@@ -28,7 +28,7 @@ const tweetNextShare = async () => {
   }
 };
 
-const getTweetFromShare = async (share: Share) => {
+export const getTweetFromShare = async (share: Share) => {
   const existingUser = await getUserById(share.userId);
   //TODO: any other error handling we need here?
   if (!existingUser?.username) return null;
@@ -37,7 +37,7 @@ const getTweetFromShare = async (share: Share) => {
   const taggedUser = twitterUsername
     ? `@${twitterUsername.replace('@', '')}`
     : existingUser.username;
-  return `Check out "${share.title}" from ${taggedUser} of the LearnBuildTeach community! #bot \n\n ${share.link}`;
+  return `Check out "${share.title}" from ${taggedUser} of the #LearnBuildTeach community! #bot \n\n ${share.link}`;
 };
 
 //tweet available share (if there is one) every morning at 8am GMT
