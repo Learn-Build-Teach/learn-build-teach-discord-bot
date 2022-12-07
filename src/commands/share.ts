@@ -129,7 +129,7 @@ const shareHandler = async (
 export default {
   callback: shareHandler,
   name: 'share',
-  description: 'Share a link to a piece of content that you created.',
+  description: 'Share a link to a piece of content that YOU created.',
   options: [
     {
       name: 'link',
