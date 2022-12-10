@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import shareRoutes from './routes/shares';
 import kudoRoutes from './routes/kudos';
-import userRoutes from './routes/users';
+import discordUserRoutes from './routes/discordUser';
 const app = express();
 app.use(express.json());
 
@@ -19,7 +19,7 @@ app.get('/ping', (req: Request, res: Response) => {
 
 app.use('/api/shares', shareRoutes);
 app.use('/api/kudos', kudoRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/discordUsers', discordUserRoutes);
 
 const port = process.env.PORT || 3000;
 

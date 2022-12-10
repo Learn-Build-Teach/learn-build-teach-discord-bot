@@ -5,7 +5,7 @@ import {
   GuildMember,
 } from 'discord.js';
 
-import { getUserById } from '../db/users';
+import { getDiscordUserById } from '../db/discordUser';
 import { profileSocialOptions } from './updateProfile';
 
 //defining user as type any so we can dynamically pull values
@@ -35,7 +35,7 @@ const getProfile = async (
       : interaction.user;
 
   try {
-    const user = await getUserById(targetUser.id);
+    const user = await getDiscordUserById(targetUser.id);
     if (user) {
       //TODO: update to include new fields
       const embed = new MessageEmbed()

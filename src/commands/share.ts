@@ -7,7 +7,7 @@ import {
 import { isValidUrl } from '../utils/helpers';
 import ogs from 'open-graph-scraper';
 import { EMOJI_NAMES } from '../consts';
-import { getOrCreateUser } from '../utils/users';
+import { getOrCreateDiscordUser } from '../utils/discordUser';
 import { createShare } from '../db/shares';
 import { discordClient } from '../utils/discord';
 import { addNewShareToCache } from '../utils/shareCache';
@@ -29,7 +29,6 @@ const shareHandler = async (
     const data: any = await ogs({ url: link });
     ogResult = data.result;
     if (!ogResult.ogTitle) {
-      //?Title is required for db record...should it be?
       console.info(
         "This one didn't have an open graph title property which is required for shares."
       );
@@ -52,7 +51,7 @@ const shareHandler = async (
     const imageUrl = ogResult?.ogImage?.url || null;
     //TODO: add length validation to title, description, and image
     const { id, username } = interaction.user;
-    const user = await getOrCreateUser(id, username);
+    const user = await getOrCreateDiscordUser(id, username);
     if (!user) {
       return interaction.reply({
         content: `Failed to retrieve existing user or create a new one`,
@@ -68,11 +67,7 @@ const shareHandler = async (
     }
 
     const createdShare = await createShare({
-      user: {
-        connect: {
-          id,
-        },
-      },
+      discordUserId: user.id,
       link,
       title,
       imageUrl,
@@ -83,15 +78,13 @@ const shareHandler = async (
       emailed: false,
     });
     addNewShareToCache(createdShare);
-
     const embed = new MessageEmbed()
       .setTitle(title)
       .setDescription(description || '')
       .addFields(
         { name: 'shareId', value: createdShare.id },
         { name: 'shareLink', value: createdShare.link },
-        { name: 'sharerUsername', value: username },
-        { name: 'sharerId', value: createdShare.userId }
+        { name: 'sharerUsername', value: username }
       )
       .setThumbnail(imageUrl)
       .setAuthor(`Share from ${username}`);

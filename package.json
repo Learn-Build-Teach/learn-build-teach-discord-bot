@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node dist/app.js",
     "start:server": "node dist/server/index.js",
-    "dev": "ts-node-dev --respawn --debounce=100 --exit-child src/app.ts",
-    "build": "prisma generate && tsc && npm run test",
+    "dev": "ts-node-dev --respawn --debounce=100 --exit-child --files src/app.ts",
+    "build": "tsc",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
@@ -17,8 +17,8 @@
   "author": "@jamesqquick",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^4.7.0",
     "@sendgrid/mail": "^7.7.0",
+    "@supabase/supabase-js": "^2.1.3",
     "airtable": "^0.10.1",
     "axios": "^0.21.4",
     "cors": "^2.8.5",
@@ -29,6 +29,7 @@
     "node-cron": "^2.0.3",
     "open-graph-scraper": "^4.11.0",
     "quick-chat-bot": "^0.9.1",
+    "ts-node": "^10.9.1",
     "twitter": "^1.7.1"
   },
   "engines": {
@@ -56,7 +57,6 @@
     "jest-mock-extended": "2.0.4",
     "prettier": "2.5.1",
     "pretty-quick": "3.1.3",
-    "prisma": "^4.7.0",
     "ts-jest": "27.1.3",
     "ts-node-dev": "1.1.8",
     "tsconfig-paths": "3.14.0",

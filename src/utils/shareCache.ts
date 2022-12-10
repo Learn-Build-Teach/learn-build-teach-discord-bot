@@ -1,7 +1,7 @@
-import { Share } from '@prisma/client';
 import { getRecentShares } from '../db/shares';
+import { ShareWithUsername } from '../types/types';
 
-let shares: Share[] = [];
+let shares: ShareWithUsername[] = [];
 
 export const getRandomShareFromCache = async () => {
   if (!shares || shares.length === 0) {
@@ -11,6 +11,6 @@ export const getRandomShareFromCache = async () => {
   return shares[randomIndex];
 };
 
-export const addNewShareToCache = async (share: Share) => {
+export const addNewShareToCache = async (share: ShareWithUsername) => {
   shares.push(share);
 };

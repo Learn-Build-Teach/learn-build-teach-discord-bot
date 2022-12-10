@@ -6,11 +6,10 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "target": "es6",
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext", "DOM"],
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "module": "CommonJS"
-  }
+  },
+  "include": ["**/*.d.ts", "src/**/*"]
 }
