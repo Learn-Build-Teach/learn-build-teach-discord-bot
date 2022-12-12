@@ -1,8 +1,8 @@
 import { ReturnValue } from '../models';
 import express, { Request, Response } from 'express';
 import { checkAPIKey } from '../middleware';
-import { getUserById, upsertUser } from '../../db/users';
-import { User } from '@prisma/client';
+import { getDiscordUserById, updateDiscordUser } from '../../db/discordUser';
+import { DiscordUser } from '../../types/types';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.get('/:id', checkAPIKey, async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const user = await getUserById(id);
+    const user = await getDiscordUserById(id);
 
     retVal.body.data = user;
     if (!user) {
@@ -29,9 +29,9 @@ router.get('/:id', checkAPIKey, async (req: Request, res: Response) => {
 
 router.patch('/:id', checkAPIKey, async (req: Request, res: Response) => {
   const retVal = new ReturnValue();
-  const user: User = req.body;
+  const user: DiscordUser = req.body;
   try {
-    const updatedUser = await upsertUser(user);
+    const updatedUser = await updateDiscordUser(user.id, user);
     retVal.body.data = updatedUser;
   } catch (error) {
     console.error(error);

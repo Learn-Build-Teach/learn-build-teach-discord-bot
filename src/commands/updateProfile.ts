@@ -2,7 +2,7 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
 } from 'discord.js';
-import { upsertUser } from '../db/users';
+import { updateDiscordUser } from '../db/discordUser';
 import { isValidUrl } from '../utils/helpers';
 
 const updateProfile = async (
@@ -33,7 +33,7 @@ const updateProfile = async (
     userUpdates[optionName] = optionValue;
   }
   try {
-    await upsertUser(userUpdates);
+    await updateDiscordUser(id, userUpdates);
 
     interaction.reply({
       content: 'Profile updated successfully 🔥',

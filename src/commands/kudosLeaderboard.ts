@@ -4,11 +4,12 @@ import { EmbedField } from './profile';
 
 import { EMOJI_NAMES, kudoEmojis } from '../consts';
 import { discordClient } from '../utils/discord';
-import { Leader } from '../utils/interfaces';
+import { Leader } from '../types/types';
 
 const handleLoadKudosLeaderboard = async (interaction: CommandInteraction) => {
   try {
-    const leaders: Leader[] = await getKudosLeaderboard();
+    const leaders = await getKudosLeaderboard();
+
     const embed = new MessageEmbed()
       .setAuthor(`Kudos Leaders`)
       .addFields(createLeaderboardFields(leaders));

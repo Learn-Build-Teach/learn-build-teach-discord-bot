@@ -1,14 +1,13 @@
-import { KudoCategory } from '@prisma/client';
 import { EmbedField, Message, MessageReaction } from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { EMOJI_NAMES, kudoEmojis } from './consts';
 import { giveKudos } from './db/kudos';
-import { markShareAsEmailed, reviewShare } from './db/shares';
-import { addXpToUser } from './db/users';
+import { markShareAsEmailed, updateShare } from './db/shares';
+import { addXpToDiscordUser } from './db/discordUser';
+import { KudoCategory } from './types/types';
 import { discordClient } from './utils/discord';
-
 dotenv.config();
 
 const nameToCommandMap: any = {};
@@ -43,8 +42,8 @@ discordClient.on('ready', async () => {
     .map((commandFile) => {
       return import(`./commands/${commandFile}`);
     });
-  const loadedFiles = await Promise.all(filePromises);
 
+  const loadedFiles = await Promise.all(filePromises);
   loadedFiles.forEach((loadedFile) => {
     const commandConfig = loadedFile.default;
     console.info('Loading command', commandConfig.name);
@@ -93,6 +92,7 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
       const kudo = await giveKudos(user.id, originalAuthor.id, category);
       console.info(`Kudo given`, kudo);
     } catch (error) {
+      console.error(error);
       console.error('Well, something went wrong 🤷‍♂️');
     }
   }
@@ -115,16 +115,22 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
     if (!shareInfo.shareId) {
       actionMessage = 'Emoji reaction on a message without a share id';
     } else if (emoji.name === EMOJI_NAMES.APPROVE_EMOJI) {
-      await reviewShare(shareInfo.shareId, true, true);
+      await updateShare(shareInfo.shareId, {
+        emailable: true,
+        tweetable: true,
+      });
       actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter and Email.`;
     } else if (emoji.name === EMOJI_NAMES.EMAIL_APPROVED_EMOJI) {
-      await reviewShare(shareInfo.shareId, true, undefined);
+      await updateShare(shareInfo.shareId, { emailable: true });
       actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Email.`;
     } else if (emoji.name === EMOJI_NAMES.TWITTER_APPROVED_EMOJI) {
-      await reviewShare(shareInfo.shareId, undefined, true);
+      await updateShare(shareInfo.shareId, { tweetable: true });
       actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter.`;
     } else if (emoji.name === EMOJI_NAMES.REJECT_EMOJI) {
-      await reviewShare(shareInfo.shareId, false, false);
+      await updateShare(shareInfo.shareId, {
+        emailable: true,
+        tweetable: true,
+      });
       actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} rejected for Twitter and Email.`;
     } else if (emoji.name === EMOJI_NAMES.EMAIL_SENT_EMOJI) {
       await markShareAsEmailed(shareInfo.shareId);
@@ -154,7 +160,7 @@ discordClient.on('message', async (message: Message) => {
   const userId = message?.author.id;
   if (!userId) return;
   try {
-    await addXpToUser(userId);
+    await addXpToDiscordUser(userId);
     console.info(`Added xp to user: ${userId}`);
   } catch (err) {
     console.error(err);

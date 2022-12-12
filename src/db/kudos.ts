@@ -1,14 +1,20 @@
-import { Kudo, KudoCategory, Prisma } from '@prisma/client';
-import prisma from '.';
-import { getOrCreateUser } from '../utils/users';
-import { Leader } from '../utils/interfaces';
+import { getOrCreateDiscordUser } from '../utils/discordUser';
+import { supabase } from '../utils/supabase';
+import {
+  Kudo,
+  KudoCategory,
+  KudoInsert,
+  KudoWithUsernames,
+  Leader,
+} from '../types/types';
+export const KUDO_TABLE_NAME = 'Kudo';
 
-export const createKudo = async (
-  kudo: Prisma.KudoCreateInput
-): Promise<Kudo> => {
-  return await prisma.kudo.create({
-    data: kudo,
-  });
+export const createKudo = async (kudo: KudoInsert): Promise<Kudo> => {
+  const res = await supabase.from(KUDO_TABLE_NAME).insert(kudo).select();
+  if (res.error) {
+    throw res.error;
+  }
+  return res.data[0] as Kudo;
 };
 
 export const giveKudos = async (
@@ -17,17 +23,14 @@ export const giveKudos = async (
   category: KudoCategory,
   description?: string
 ): Promise<Kudo> => {
-  const receivingUser = await getOrCreateUser(receiverId);
-
+  const receivingUser = await getOrCreateDiscordUser(receiverId);
   if (!receivingUser) {
     console.error(
       `Failed to get or create retrieving user with id ${receiverId}`
     );
     throw new Error('Failed to get or create retrieving user');
   }
-
-  const givingUser = await getOrCreateUser(giverId);
-
+  const givingUser = await getOrCreateDiscordUser(giverId);
   if (!givingUser) {
     console.error(
       `Failed to create get or create giving user with id ${giverId} `
@@ -35,36 +38,31 @@ export const giveKudos = async (
     throw new Error('Failed to get or create givine user.');
   }
 
-  const kudo: Prisma.KudoCreateInput = {
+  const kudo: KudoInsert = {
     category,
     description,
-    receiver: {
-      connect: {
-        id: receiverId,
-      },
-    },
-    giver: {
-      connect: {
-        id: giverId,
-      },
-    },
+    receiverId,
+    giverId,
   };
+
   return await createKudo(kudo);
 };
 
 // @ts-ignore
 export const getKudosLeaderboard = async (): Promise<Leader[]> => {
-  //TODO: create a type that includes Kudo fields and adds receiver with username
-  const pointsStuff: any[] = await prisma.kudo.findMany({
-    include: {
-      receiver: {
-        select: {
-          username: true,
-        },
-      },
-    },
-  });
-  const leaders = pointsStuff.reduce(
+  const res = await supabase.from(KUDO_TABLE_NAME).select(`
+  id, createdAt, category, description, points, receiverId, giverId, multiplier,
+    receiver:receiverId(username),
+    giver:giverId(username)
+  `);
+
+  if (res.error) {
+    throw res.error;
+  }
+
+  const kudosWithUsernames = res.data as KudoWithUsernames[];
+
+  const leaders = kudosWithUsernames.reduce(
     (acc: Map<string, Leader>, record: any) => {
       //Filter records without a username
       if (!record.receiver.username) return acc;
@@ -76,15 +74,15 @@ export const getKudosLeaderboard = async (): Promise<Leader[]> => {
           username: record.receiver.username,
           totalPoints: (prevValue?.totalPoints || 0) + record.points,
           learnPoints:
-            record.category === 'LEARN'
+            record.category === KudoCategory.LEARN
               ? (prevValue?.learnPoints || 0) + record.points
               : prevValue?.learnPoints || 0,
           buildPoints:
-            record.category === 'BUILD'
+            record.category === KudoCategory.BUILD
               ? (prevValue?.buildPoints || 0) + record.points
               : prevValue?.buildPoints || 0,
           teachPoints:
-            record.category === 'TEACH'
+            record.category === KudoCategory.TEACH
               ? (prevValue?.teachPoints || 0) + record.points
               : prevValue?.teachPoints || 0,
         });

@@ -1,10 +1,10 @@
-import { KudoCategory, Prisma } from '.prisma/client';
 import {
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
 } from 'discord.js';
 import { giveKudos } from '../db/kudos';
+import { KudoCategory } from '../types/types';
 
 const choices = Object.keys(KudoCategory).map((key) => {
   return {

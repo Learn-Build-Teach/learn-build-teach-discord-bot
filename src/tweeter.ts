@@ -1,10 +1,9 @@
 import { sendTweet } from './utils/twitter';
 import { getShareToTweet, markShareAsTweeted } from './db/shares';
-import { getUserById } from './db/users';
+import { getDiscordUserById } from './db/discordUser';
 import cron from 'node-cron';
-import { Share } from '@prisma/client';
 import { sendEmailAlert } from './utils/email';
-import('@prisma/client');
+import { Share } from './types/types';
 
 const tweetNextShare = async () => {
   console.info('Looking for shares to tweet');
@@ -30,7 +29,7 @@ const tweetNextShare = async () => {
 };
 
 export const getTweetFromShare = async (share: Share) => {
-  const existingUser = await getUserById(share.userId);
+  const existingUser = await getDiscordUserById(share.discordUserId);
   //TODO: any other error handling we need here?
   if (!existingUser?.username) return null;
 

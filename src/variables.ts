@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 interface EnvironmentVariables {
-  DATABASE_URL: string;
   DISCORD_ADMIN_SHARE_REVIEW_CHANNEL: string;
   DISCORD_BOT_TOKEN: string;
   DISCORD_GUILD_ID: string;
@@ -16,12 +15,10 @@ interface EnvironmentVariables {
   EMAIL_ALERTS_RECIPIENT: string;
   EMAIL_ALERTS_SENDER: string;
   SENDGRID_API_KEY: string;
+  SUPABASE_PROJECT_URL: string;
+  SUPABASE_SERVICE_ROLE_KEY: string;
 }
 
-if (!process.env.DATABASE_URL) {
-  console.error('DTABASE_URL environment variable is required');
-  throw new Error('DTABASE_URL environment variable is required');
-}
 if (!process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL) {
   console.error(
     'DISCORD_ADMIN_SHARE_REVIEW_CHANNEL environment variable is required'
@@ -81,8 +78,17 @@ if (!process.env.SENDGRID_API_KEY) {
   throw new Error('SENDGRID_API_KEY environment variable is required');
 }
 
+if (!process.env.SUPABASE_PROJECT_URL) {
+  console.error('SUPABASE_PROJECT_URL environment variable is required');
+  throw new Error('SUPABASE_PROJECT_URL environment variable is required');
+}
+
+if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  console.error('SUPABASE_SERVICE_ROLE_KEY environment variable is required');
+  throw new Error('SUPABASE_SERVICE_ROLE_KEY environment variable is required');
+}
+
 export const variables: EnvironmentVariables = {
-  DATABASE_URL: process.env.DATABASE_URL,
   DISCORD_ADMIN_SHARE_REVIEW_CHANNEL:
     process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL,
   DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
@@ -97,4 +103,6 @@ export const variables: EnvironmentVariables = {
   EMAIL_ALERTS_RECIPIENT: process.env.EMAIL_ALERTS_RECIPIENT,
   EMAIL_ALERTS_SENDER: process.env.EMAIL_ALERTS_SENDER,
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+  SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL,
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
 };

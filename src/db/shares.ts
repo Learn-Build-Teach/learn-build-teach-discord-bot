@@ -1,78 +1,95 @@
-import { Prisma, Share } from '@prisma/client';
-import prisma from './index';
+import {
+  Share,
+  ShareInsert,
+  ShareUpdate,
+  ShareWithUsername,
+} from '../types/types';
+import { supabase } from '../utils/supabase';
 
+export const SHARE_TABLE_NAME = 'Share';
 export const getShareToTweet = async () => {
-  return await prisma.share.findFirst({
-    where: {
-      tweetable: true,
-      tweeted: false,
-    },
-  });
+  const { data, error } = await supabase
+    .from(SHARE_TABLE_NAME)
+    .select()
+    .eq('tweetable', true)
+    .eq('tweeted', false)
+    .limit(1);
+
+  if (error) {
+    throw error;
+  }
+
+  return data[0] as Share;
 };
 
-export const getRecentShares = async (limit: number = 20) => {
-  return await prisma.share.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    where: {
-      emailable: true,
-    },
-    take: limit,
-    include: {
-      user: {
-        select: {
-          username: true,
-        },
-      },
-    },
-  });
+export const getRecentShares = async (
+  limit: number = 20
+): Promise<ShareWithUsername[]> => {
+  const res = await supabase
+    .from(SHARE_TABLE_NAME)
+    .select(
+      `id, createdAt, link, title, description, imageUrl, tweetable, discordUserId,
+        user:discordUserId(username)`
+    )
+    .eq('emailable', true)
+    .limit(limit)
+    .order('createdAt', { ascending: false });
+
+  if (res.error) {
+    throw res.error;
+  }
+
+  return res.data as ShareWithUsername[];
 };
 
-export const markShareAsTweeted = async (id: string) => {
-  return await prisma.share.update({
-    where: {
-      id,
-    },
-    data: {
-      tweeted: true,
-    },
-  });
+export const markShareAsTweeted = async (id: string): Promise<Share> => {
+  const res = await supabase
+    .from(SHARE_TABLE_NAME)
+    .update({ tweeted: true })
+    .eq('id', id)
+    .select();
+
+  if (res.error) {
+    throw res.error;
+  }
+
+  return res.data[0] as Share;
 };
 
-export const reviewShare = async (
+export const updateShare = async (
   id: string,
-  emailable?: boolean,
-  tweetable?: boolean
-) => {
-  const updates: any = {};
-  if (emailable !== undefined) {
-    updates.emailable = emailable;
+  shareUpdate: ShareUpdate
+): Promise<Share> => {
+  const res = await supabase
+    .from(SHARE_TABLE_NAME)
+    .update(shareUpdate)
+    .eq('id', id)
+    .select();
+
+  if (res.error) {
+    throw res.error;
   }
-  if (tweetable !== undefined) {
-    updates.tweetable = tweetable;
-  }
-  return await prisma.share.update({
-    where: {
-      id,
-    },
-    data: updates,
-  });
+
+  return res.data[0] as Share;
 };
 
-export const markShareAsEmailed = async (id: string) => {
-  return await prisma.share.update({
-    where: {
-      id,
-    },
-    data: { emailed: true },
-  });
+export const markShareAsEmailed = async (id: string): Promise<Share> => {
+  return await updateShare(id, { emailed: true });
 };
 
 export const createShare = async (
-  share: Prisma.ShareCreateInput
-): Promise<Share> => {
-  return await prisma.share.create({
-    data: share,
-  });
+  share: ShareInsert
+): Promise<ShareWithUsername> => {
+  const res = await supabase
+    .from(SHARE_TABLE_NAME)
+    .insert(share)
+    .select(
+      `id, createdAt, link, title, description, imageUrl, tweetable, 
+    user:discordUserId(username)`
+    );
+  if (res.error) {
+    throw res.error;
+  }
+
+  return res.data[0] as ShareWithUsername;
 };
