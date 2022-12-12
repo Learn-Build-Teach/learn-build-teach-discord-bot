@@ -6,6 +6,7 @@ import {
 } from 'discord.js';
 
 import { getDiscordUserById } from '../db/discordUser';
+import { getOrCreateDiscordUser } from '../utils/discordUser';
 import { profileSocialOptions } from './updateProfile';
 
 //defining user as type any so we can dynamically pull values
@@ -35,7 +36,7 @@ const getProfile = async (
       : interaction.user;
 
   try {
-    const user = await getDiscordUserById(targetUser.id);
+    const user = await getOrCreateDiscordUser(targetUser.id);
     if (user) {
       //TODO: update to include new fields
       const embed = new MessageEmbed()
