@@ -3,6 +3,7 @@ import {
   CommandInteractionOptionResolver,
 } from 'discord.js';
 import { updateDiscordUser } from '../db/discordUser';
+import { getOrCreateDiscordUser } from '../utils/discordUser';
 import { isValidUrl } from '../utils/helpers';
 
 const updateProfile = async (
@@ -33,6 +34,7 @@ const updateProfile = async (
     userUpdates[optionName] = optionValue;
   }
   try {
+    await getOrCreateDiscordUser(id, username);
     await updateDiscordUser(id, userUpdates);
 
     interaction.reply({
