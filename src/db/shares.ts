@@ -6,7 +6,7 @@ import {
 } from '../types/types';
 import { supabase } from '../utils/supabase';
 
-const SHARE_TABLE_NAME = 'Share';
+export const SHARE_TABLE_NAME = 'Share';
 export const getShareToTweet = async () => {
   const { data, error } = await supabase
     .from(SHARE_TABLE_NAME)

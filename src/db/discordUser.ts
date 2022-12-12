@@ -1,7 +1,7 @@
 import { DiscordUser, DiscordUserUpdate } from '../types/types';
 import { supabase } from '../utils/supabase';
 import { getOrCreateDiscordUser } from '../utils/discordUser';
-const DISCORD_USER_TABLE_NAME = 'TestyUsers';
+export const DISCORD_USER_TABLE_NAME = 'DiscordUsers';
 
 export const getDiscordUserById = async (
   id: string

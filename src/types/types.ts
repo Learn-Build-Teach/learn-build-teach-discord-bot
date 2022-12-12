@@ -110,7 +110,7 @@ export interface Share {
   link: string;
   title: string;
   description?: string;
-  imageUrl: string;
+  imageUrl?: string;
   tweetable: boolean;
   emailable: boolean;
   tweeted: boolean;

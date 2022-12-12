@@ -7,9 +7,10 @@ import {
   KudoWithUsernames,
   Leader,
 } from '../types/types';
+export const KUDO_TABLE_NAME = 'Kudo';
 
 export const createKudo = async (kudo: KudoInsert): Promise<Kudo> => {
-  const res = await supabase.from('Kudo').insert(kudo).select();
+  const res = await supabase.from(KUDO_TABLE_NAME).insert(kudo).select();
   if (res.error) {
     throw res.error;
   }
@@ -49,7 +50,7 @@ export const giveKudos = async (
 
 // @ts-ignore
 export const getKudosLeaderboard = async (): Promise<Leader[]> => {
-  const res = await supabase.from('Kudo').select(`
+  const res = await supabase.from(KUDO_TABLE_NAME).select(`
   id, createdAt, category, description, points, receiverId, giverId, multiplier,
     receiver:receiverId(username),
     giver:giverId(username)

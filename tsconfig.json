@@ -11,5 +11,5 @@
     "esModuleInterop": true,
     "module": "CommonJS"
   },
-  "include": ["**/*.d.ts", "src/**/*"]
+  "include": ["**/*.d.ts", "src/**/*", "seed.ts"]
 }

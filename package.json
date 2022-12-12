@@ -17,6 +17,7 @@
   "author": "@jamesqquick",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^4.7.1",
     "@sendgrid/mail": "^7.7.0",
     "@supabase/supabase-js": "^2.1.3",
     "airtable": "^0.10.1",
@@ -28,6 +29,7 @@
     "node": "16.6.1",
     "node-cron": "^2.0.3",
     "open-graph-scraper": "^4.11.0",
+    "prisma": "^4.7.1",
     "quick-chat-bot": "^0.9.1",
     "ts-node": "^10.9.1",
     "twitter": "^1.7.1"
