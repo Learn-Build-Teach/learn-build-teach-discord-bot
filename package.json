@@ -46,6 +46,7 @@
     "@types/node-cron": "^3.0.1",
     "@types/open-graph-scraper": "^4.8.1",
     "@types/twitter": "^1.7.1",
+    "@types/xml2js": "^0.4.11",
     "@typescript-eslint/eslint-plugin": "5.14.0",
     "@typescript-eslint/parser": "5.14.0",
     "eslint": "8.10.0",
