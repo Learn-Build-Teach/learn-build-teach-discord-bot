@@ -93,3 +93,37 @@ export const createShare = async (
 
   return res.data[0] as ShareWithUsername;
 };
+
+export const getSharesForNewsletter = async (): Promise<
+  ShareWithUsername[]
+> => {
+  const limit = 10;
+  const res = await supabase
+    .from(SHARE_TABLE_NAME)
+    .select(
+      `id, createdAt, link, title, description, imageUrl, tweetable, discordUserId,
+          user:discordUserId(username)`
+    )
+    .eq('emailable', true)
+    .eq('emailed', false)
+    .limit(limit)
+    .order('createdAt', { ascending: false });
+
+  if (res.error) {
+    throw res.error;
+  }
+
+  const shares = res.data as ShareWithUsername[];
+  const namesSet = new Set<string>();
+  const sharesByUniqueAuthors: ShareWithUsername[] = shares.reduce(
+    (filteredShares: ShareWithUsername[], share) => {
+      if (namesSet.has(share.user.username)) return filteredShares;
+      namesSet.add(share.user.username);
+      filteredShares.push(share);
+      return filteredShares;
+    },
+    []
+  );
+
+  return sharesByUniqueAuthors.slice(0, 5);
+};

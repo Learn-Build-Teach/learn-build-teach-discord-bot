@@ -17,6 +17,7 @@ interface EnvironmentVariables {
   SENDGRID_API_KEY: string;
   SUPABASE_PROJECT_URL: string;
   SUPABASE_SERVICE_ROLE_KEY: string;
+  YOUTUBE_API_KEY?: string;
 }
 
 if (!process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL) {
@@ -105,4 +106,5 @@ export const variables: EnvironmentVariables = {
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
   SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+  YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
 };
