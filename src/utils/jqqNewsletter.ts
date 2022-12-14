@@ -11,7 +11,7 @@ export const generateNewsletterHTML = async () => {
   const recentCompressedEpisode = compressedFeed.items[0];
   const recentYouTubeVideos = await getRecentYouTubeVideos();
   const newsletterHTML = `
-  <h1>Recent Videos</h1>
+  <h1>Recent Videos </h1>
 ${recentYouTubeVideos
   .map(
     (video: any) => `
