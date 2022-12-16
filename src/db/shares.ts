@@ -145,7 +145,7 @@ export const uploadShareImageFromRemoteURL = async (
   const buffer = Buffer.from(response.data, 'utf-8');
   const { data, error } = await supabase.storage
     .from(SHARE_STORAGE_NAME)
-    .upload(`covers/${uuid}.${extension}`, buffer, {
+    .upload(`${uuid}.${extension}`, buffer, {
       upsert: false,
     });
 
