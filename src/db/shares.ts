@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   Share,
   ShareInsert,
@@ -7,6 +10,7 @@ import {
 import { supabase } from '../utils/supabase';
 
 export const SHARE_TABLE_NAME = 'Share';
+export const SHARE_STORAGE_NAME = 'lbt-shares';
 export const getShareToTweet = async () => {
   const { data, error } = await supabase
     .from(SHARE_TABLE_NAME)
@@ -127,3 +131,31 @@ export const getSharesForNewsletter = async (): Promise<
 
   return sharesByUniqueAuthors.slice(0, 5);
 };
+
+export const uploadShareImageFromRemoteURL = async (
+  imageURL: string
+): Promise<string> => {
+  const extension = getURLExtension(imageURL);
+
+  if (!extension) {
+    throw new Error(`Failed to retrieve extension from URL: ${imageURL}`);
+  }
+  const uuid = uuidv4();
+  const response = await axios.get(imageURL, { responseType: 'arraybuffer' });
+  const buffer = Buffer.from(response.data, 'utf-8');
+  const { data, error } = await supabase.storage
+    .from(SHARE_STORAGE_NAME)
+    .upload(`covers/${uuid}.${extension}`, buffer, {
+      upsert: false,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  return data.path;
+};
+
+function getURLExtension(url: string) {
+  return url.split(/[#?]/)[0].split('.').pop()?.trim();
+}

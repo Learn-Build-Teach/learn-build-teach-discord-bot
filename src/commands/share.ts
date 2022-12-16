@@ -8,7 +8,7 @@ import { isValidUrl } from '../utils/helpers';
 import ogs from 'open-graph-scraper';
 import { EMOJI_NAMES } from '../consts';
 import { getOrCreateDiscordUser } from '../utils/discordUser';
-import { createShare } from '../db/shares';
+import { createShare, uploadShareImageFromRemoteURL } from '../db/shares';
 import { discordClient } from '../utils/discord';
 import { addNewShareToCache } from '../utils/shareCache';
 
@@ -66,11 +66,21 @@ const shareHandler = async (
       });
     }
 
+    let storageBucketPath;
+    if (imageUrl) {
+      try {
+        storageBucketPath = await uploadShareImageFromRemoteURL(imageUrl);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     const createdShare = await createShare({
       discordUserId: user.id,
       link,
       title,
       imageUrl,
+      storageBucketPath,
       description,
       tweetable: false,
       tweeted: false,
