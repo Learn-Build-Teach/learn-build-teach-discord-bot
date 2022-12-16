@@ -111,6 +111,7 @@ export interface Share {
   title: string;
   description?: string;
   imageUrl?: string;
+  storageBucketPath?: string;
   tweetable: boolean;
   emailable: boolean;
   tweeted: boolean;
@@ -133,6 +134,7 @@ export interface ShareInsert {
   title: string;
   description?: string;
   imageUrl: string;
+  storageBucketPath?: string;
   tweetable?: boolean;
   emailable?: boolean;
   tweeted?: boolean;
@@ -147,6 +149,7 @@ export interface ShareUpdate {
   title?: string;
   description?: string;
   imageUrl?: string;
+  storageBucketPath?: string;
   tweetable?: boolean;
   emailable?: boolean;
   tweeted?: boolean;
