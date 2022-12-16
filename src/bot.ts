@@ -128,8 +128,8 @@ discordClient.on('messageReactionAdd', async (reaction, user) => {
       actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} approved for Twitter.`;
     } else if (emoji.name === EMOJI_NAMES.REJECT_EMOJI) {
       await updateShare(shareInfo.shareId, {
-        emailable: true,
-        tweetable: true,
+        emailable: false,
+        tweetable: false,
       });
       actionMessage = `Share ${shareInfo.shareId} from ${shareInfo.sharerUsername} rejected for Twitter and Email.`;
     } else if (emoji.name === EMOJI_NAMES.EMAIL_SENT_EMOJI) {
