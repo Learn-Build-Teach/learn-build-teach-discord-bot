@@ -89,6 +89,7 @@ export const createShare = async (
     .select('link')
     .eq('link', share.link);
 
+  // If the shared data is empty, i.e., the link doesn't already exist, add it.
   if (!shared.data || shared.data.length === 0) {
     const res = await supabase
       .from(SHARE_TABLE_NAME)
