@@ -87,7 +87,7 @@ const shareHandler = async (
       emailable: false,
       emailed: false,
     });
-    if (!createdShare) {
+    if (!createdShare || createdShare === null) {
       return interaction.reply({
         content: 'This link is already shared',
       });
