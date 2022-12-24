@@ -83,19 +83,28 @@ export const markShareAsEmailed = async (id: string): Promise<Share> => {
 
 export const createShare = async (
   share: ShareInsert
-): Promise<ShareWithUsername> => {
-  const res = await supabase
+): Promise<ShareWithUsername | null> => {
+  const shared = await supabase
     .from(SHARE_TABLE_NAME)
-    .insert(share)
-    .select(
-      `id, createdAt, link, title, description, imageUrl, tweetable, 
-    user:discordUserId(username)`
-    );
-  if (res.error) {
-    throw res.error;
+    .select('link')
+    .eq('link', share.link);
+
+  if (!shared.data || shared.data.length === 0) {
+    const res = await supabase
+      .from(SHARE_TABLE_NAME)
+      .insert(share)
+      .select(
+        `id, createdAt, link, title, description, imageUrl, tweetable, 
+      user:discordUserId(username)`
+      );
+    if (res.error) {
+      throw res.error;
+    }
+
+    return res.data[0] as ShareWithUsername;
   }
 
-  return res.data[0] as ShareWithUsername;
+  return null;
 };
 
 export const getSharesForNewsletter = async (): Promise<
