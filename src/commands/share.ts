@@ -88,12 +88,9 @@ const shareHandler = async (
       emailed: false,
     });
     if (!createdShare) {
-      const shareReviewChannel = discordClient.channels.cache.get(
-        process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
-      ) as TextChannel;
-      if (shareReviewChannel) {
-        shareReviewChannel.send('This link is already shared');
-      }
+      return interaction.reply({
+        content: 'This link is already shared',
+      });
     }
     addNewShareToCache(createdShare);
     const embed = new MessageEmbed()
