@@ -15,7 +15,7 @@ export const generateNewsletterHTML = async () => {
 ${recentYouTubeVideos
   .map(
     (video: any) => `
-<h2><a href="${video.id}">${video.title}</a></h2>
+<h2><a href="https://www.youtube.com/watch?v=${video.id}">${video.title}</a></h2>
 <img src="${video.thumbnails.high.url}"/>
 `
   )

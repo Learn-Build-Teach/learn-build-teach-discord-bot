@@ -10,6 +10,7 @@ import {
 import { supabase } from '../utils/supabase';
 
 export const SHARE_TABLE_NAME = 'Share';
+
 export const SHARE_STORAGE_NAME = 'lbt-shares';
 export const getShareToTweet = async () => {
   const { data, error } = await supabase
