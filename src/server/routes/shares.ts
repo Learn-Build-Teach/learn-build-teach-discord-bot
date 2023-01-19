@@ -41,7 +41,10 @@ router.get('/nextTweet', async (req: Request, res: Response) => {
       retVal.body.err = 'Something went wrong: (';
     } else {
       const tweet = await getTweetFromShare(share);
-      retVal.body.data = tweet;
+      retVal.body.data = {
+        tweet,
+        share,
+      };
       retVal.status = 200;
     }
   } catch (error) {

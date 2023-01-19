@@ -7,8 +7,9 @@ import { Share } from './types/types';
 
 const tweetNextShare = async () => {
   console.info('Looking for shares to tweet');
+  let share;
   try {
-    const share = await getShareToTweet();
+    share = await getShareToTweet();
     if (!share) return;
 
     const tweet = await getTweetFromShare(share);
@@ -20,11 +21,17 @@ const tweetNextShare = async () => {
       console.info('Sending tweet');
       await sendTweet(tweet, share.imageUrl || '');
       await sendEmailAlert('Tweet Sent', `Tweet: ${tweet}`);
-      markShareAsTweeted(share.id);
     }
   } catch (err) {
     console.error(err);
     console.error('Something went wrong trying to send a tweet');
+  } finally {
+    //?  mark share as tweeted regardless of if it was successful
+    //? this way we avoid an infinite loop of trying to tweet
+    //? the same one over and over
+    if (share) {
+      await markShareAsTweeted(share.id);
+    }
   }
 };
 
