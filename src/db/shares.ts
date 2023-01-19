@@ -16,6 +16,7 @@ export const getShareToTweet = async () => {
   const { data, error } = await supabase
     .from(SHARE_TABLE_NAME)
     .select()
+    .order('createdAt', { ascending: false })
     .eq('tweetable', true)
     .eq('tweeted', false)
     .limit(1);
