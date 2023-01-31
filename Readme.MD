@@ -1,6 +1,45 @@
 # Learn Build Teach Discord Bot
 
-This bot allows [Learn Build Teach Discord](https://discord.gg/vM2bagU) members to share a piece of content (article, video, etc.) that will potentially be shared on Twitter and in the James Q Quick email newsletter.
+This bot allows [Learn Build Teach Discord](https://discord.gg/vM2bagU) members to share content, give kudos to other members, etc.
+
+For a quick a overview of how to create a Discord Bot with Node.js here are a few resources.
+
+- [Discord Bot Tutorial | JavaScript & Node.js](https://www.youtube.com/watch?v=pDQAn18-2go&ab_channel=Andy%27sTechTutorials)
+- [Create a Discord Bot with Node.js](https://www.youtube.com/watch?v=BmKXBVdEV0g&ab_channel=TraversyMedia)
+- [Code a Discord Bot with JavaScript - Host for Free in the Cloud](https://www.youtube.com/watch?v=7rU_KyudGBY&t=14s&ab_channel=freeCodeCamp.org)
+
+## Code overview
+
+### Commands
+
+Individual commands have their own file inside of the `/src/commands` directory. Each command should export an object with three properties.
+
+- callback - a callback function that is triggered when the command is used
+- name - the name of the command
+- description - short description of what the command does
+
+The callback function accepts one parameter which is a `Command Interaction`. Check out [Creating Slash Commands Documentation](https://discordjs.guide/creating-your-bot/slash-commands.html#before-you-continue) for more info.
+
+Here is an example.
+
+```javascript
+const resetProfile = async (interaction: CommandInteraction) => {
+  //some logic
+};
+export default {
+  callback: resetProfile,
+  name: 'resetprofile',
+  description: 'Reset your profile settings',
+};
+```
+
+## Server
+
+The backend is a Node.js and Express app. This is used to handle API requests that are deteailed in the `/src/server/routes` directory.
+
+## Utils
+
+These are utility files for interacting with Discord, Supabase, Twitter, etc.
 
 ## How to run
 
@@ -15,25 +54,49 @@ npm install
 You can get the API keys from the following websites
 
 - [Discord](https://discord.com/developers/applications)
+- [Supabase](https://supabase.com/)
 - [Discord Guide](https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js)
 - [Twitter API Docs](https://developer.twitter.com/en/docs/twitter-api)
-- [PlanetScale Connection String](https://docs.planetscale.com/concepts/connection-strings)
-- [Running MySql locally (instead of planetscale)](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing)
 
 ### 3) Set the environment variables
 
+In a `.env` file, make sure to include the requied environment variables listed below.
+
+You will need to create your own test server in Discord as well as a project in Supabase. We are thinking through easier ways to help with this process if you have ideas.
+
+**_Required Varaiables_**
+
 ```env
-DISCORD_GUILD_ID=""
-DISCORD_BOT_TOKEN=""
-COMMANDS_DIR="" #OPTIONAL
-# ADD ONLY IF YOU WANT TO DO TWEET STUFF
-SEND_TWEETS=""
-TWITTER_CONSUMER_KEY=""
-TWITTER_CONSUMER_SECRET=""
-TWITTER_ACCESS_TOKEN_KEY=""
-TWITTER_ACCESS_TOKEN_SECRET=""
-# CONNECT TO PLANETSCALE(MYSQL) DATABASE
-DATABASE_URL=""
+#Supabase
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_PROJECT_URL=
+
+#Discord
+DISCORD_BOT_TOKEN=
+DISCORD_GUILD_ID=
+```
+
+**_Optional Variables_**
+
+```env
+#Api - used for authentication on API requests
+SERVER_API_KEY=
+
+#Email alerts - used to send email alerts based on errors
+EMAIL_ALERTS_ON=
+EMAIL_ALERTS_RECIPIENT=
+EMAIL_ALERTS_SENDER=
+SENDGRID_API_KEY=
+
+#Twitter - used for sending automatic tweets of content
+SEND_TWEETS=
+TWITTER_ACCESS_TOKEN_KEY=
+TWITTER_ACCESS_TOKEN_SECRET=
+TWITTER_CONSUMER_KEY=
+TWITTER_CONSUMER_SECRET=
+
+#Discord Admin - used for reviewing shared content
+DISCORD_ADMIN_SHARE_REVIEW_CHANNEL= #(optional)
 ```
 
 ### 4) Run the bot
@@ -44,7 +107,11 @@ npm run dev
 
 ## Commands
 
-### updateProfile
+### `/profile`
+
+Get profile details about you or another discord member.
+
+### `/updateProfile`
 
 Update your profile with the following flags. I will use these pieces of information to help share your content.
 
@@ -55,22 +122,20 @@ Update your profile with the following flags. I will use these pieces of informa
 - `github`: your Github username
 - `website`: your personal website URL
 
-### profile
-
-Get profile details about you or another discord member.
-
-### resetProfile
+### `/resetProfile`
 
 Clear your existing profile in case your display name has changed, you entered incorrect info, etc.
 
-### share
+### `/share`
 
-Share a piece of content (article, video, etc.) by including a valid URL. I will consider sharing this on Twitter and/or my newsletter. You can (optionally) include a suggested tweet text after the URL.
+Share a piece of content (article, video, etc.) by including a valid URL. These pieces of content will considered for sharing on Twitter and/or the James Q Quick newsletter. You can (optionally) include a suggested tweet text after the URL.
 
 ex. `/share https://www.jamesqquick.com/ This is a suggested tweet text`
 
-### kudo
+### `/kudo`
 
-Give Kudos to another user
+Give Kudos to another user. Kudos will be automatically given when reacting to a post using the following emojis: 'learn', 'build', and 'teach'.
 
-If have emojis named 'learn' | 'build' | 'teach' those will also give a kudo
+### `/kudosLeaderboard`
+
+View the Kudos Leaderboard.

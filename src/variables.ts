@@ -20,14 +20,6 @@ interface EnvironmentVariables {
   YOUTUBE_API_KEY?: string;
 }
 
-if (!process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL) {
-  console.error(
-    'DISCORD_ADMIN_SHARE_REVIEW_CHANNEL environment variable is required'
-  );
-  throw new Error(
-    'DISCORD_ADMIN_SHARE_REVIEW_CHANNEL environment variable is required'
-  );
-}
 if (!process.env.DISCORD_BOT_TOKEN) {
   console.error('DISCORD_BOT_TOKEN environment variable is required');
   throw new Error('DISCORD_BOT_TOKEN environment variable is required');

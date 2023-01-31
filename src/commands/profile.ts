@@ -5,7 +5,6 @@ import {
   GuildMember,
 } from 'discord.js';
 
-import { getDiscordUserById } from '../db/discordUser';
 import { getOrCreateDiscordUser } from '../utils/discordUser';
 import { profileSocialOptions } from './updateProfile';
 
