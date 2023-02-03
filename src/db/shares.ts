@@ -84,13 +84,13 @@ export const markShareAsEmailed = async (id: string): Promise<Share> => {
 export const createShare = async (
   share: ShareInsert
 ): Promise<ShareWithUsername | null> => {
-  const shared = await supabase
+  const { data } = await supabase
     .from(SHARE_TABLE_NAME)
     .select('link')
     .eq('link', share.link);
 
   // If the shared data is empty, i.e., the link doesn't already exist, add it.
-  if (!shared.data || shared.data.length === 0) {
+  if (!data || data.length === 0) {
     const res = await supabase
       .from(SHARE_TABLE_NAME)
       .insert(share)
@@ -105,6 +105,7 @@ export const createShare = async (
     return res.data[0] as ShareWithUsername;
   }
 
+  console.info('This link was already shared...');
   return null;
 };
 

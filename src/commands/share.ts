@@ -89,7 +89,7 @@ const shareHandler = async (
     });
     if (!createdShare || createdShare === null) {
       return interaction.reply({
-        content: 'This link is already shared',
+        content: 'This link was already shared',
       });
     }
     addNewShareToCache(createdShare);
