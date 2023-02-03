@@ -87,6 +87,11 @@ const shareHandler = async (
       emailable: false,
       emailed: false,
     });
+    if (!createdShare || createdShare === null) {
+      return interaction.reply({
+        content: 'This link was already shared',
+      });
+    }
     addNewShareToCache(createdShare);
     const embed = new MessageEmbed()
       .setTitle(title)
