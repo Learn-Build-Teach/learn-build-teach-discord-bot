@@ -8,3 +8,6 @@ import './tweeter';
 
 //run the express server
 import './server/index';
+
+//run the event scheduler
+import './discordEventScheduler';

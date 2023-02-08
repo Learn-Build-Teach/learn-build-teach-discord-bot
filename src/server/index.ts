@@ -4,6 +4,7 @@ import shareRoutes from './routes/shares';
 import kudoRoutes from './routes/kudos';
 import jqqnewsletterRoutes from './routes/jqqNewsletter';
 import discordUserRoutes from './routes/discordUser';
+import { variables } from '../variables';
 const app = express();
 app.use(express.json());
 
@@ -23,7 +24,7 @@ app.use('/api/kudos', kudoRoutes);
 app.use('/api/discordUsers', discordUserRoutes);
 app.use('/api/jqqnewsletter', jqqnewsletterRoutes);
 
-const port = process.env.PORT || 3000;
+const port = variables.PORT || 3000;
 
 app.listen(port, () => {
   console.info(`listening on port, ${port}`);

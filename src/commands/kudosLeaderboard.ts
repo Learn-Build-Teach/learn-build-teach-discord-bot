@@ -1,17 +1,22 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import {
+  CommandInteraction,
+  EmbedBuilder,
+  EmbedField,
+  SlashCommandBuilder,
+} from 'discord.js';
 import { getKudosLeaderboard } from '../db/kudos';
-import { EmbedField } from './profile';
 
 import { EMOJI_NAMES, kudoEmojis } from '../consts';
-import { discordClient } from '../utils/discord';
+import { discordClient, SlashCommand } from '../utils/discord';
 import { Leader } from '../types/types';
 
-const handleLoadKudosLeaderboard = async (interaction: CommandInteraction) => {
+const execute = async (interaction: CommandInteraction) => {
   try {
     const leaders = await getKudosLeaderboard();
-
-    const embed = new MessageEmbed()
-      .setAuthor(`Kudos Leaders`)
+    const embed = new EmbedBuilder()
+      .setAuthor({
+        name: '`Kudos Leaders`',
+      })
       .addFields(createLeaderboardFields(leaders));
 
     return interaction.reply({ embeds: [embed] });
@@ -23,16 +28,6 @@ const handleLoadKudosLeaderboard = async (interaction: CommandInteraction) => {
     });
   }
 };
-export default {
-  callback: handleLoadKudosLeaderboard,
-  name: 'kudosleaderboard',
-  description: 'View a leaderboard of kudo recipients',
-  options: [],
-};
-
-const customEmojis = discordClient.emojis.cache.filter((emoji) => {
-  return kudoEmojis.includes(emoji.name || '');
-});
 
 const createLeaderboardFields = (leaders: Leader[]): EmbedField[] => {
   const fields: EmbedField[] = [];
@@ -40,12 +35,17 @@ const createLeaderboardFields = (leaders: Leader[]): EmbedField[] => {
     fields.push({
       name: leaders[i].username || 'Unknown',
       value: buildLeaderValueField(leaders[i]),
+      inline: false,
     });
   }
   return fields;
 };
 
 const buildLeaderValueField = (leader: Leader): string => {
+  const customEmojis = discordClient.emojis.cache.filter((emoji) => {
+    return kudoEmojis.includes(emoji.name || '');
+  });
+
   const kudos = [
     {
       emoji: customEmojis.find(
@@ -68,8 +68,18 @@ const buildLeaderValueField = (leader: Leader): string => {
   ]
     .filter((kudo) => kudo.points > 0)
     .sort((a, b) => b.points - a.points);
-
   return kudos
     .map((kudo) => `${kudo.points} <:${kudo.emoji?.name}:${kudo.emoji?.id}>`)
     .join(' ');
 };
+
+const data = new SlashCommandBuilder()
+  .setName('kudosleaderboard')
+  .setDescription('View a leaderboard of kudo recipients');
+
+const command: SlashCommand = {
+  data,
+  execute,
+};
+
+export default command;

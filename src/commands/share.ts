@@ -1,7 +1,8 @@
 import {
   CommandInteraction,
   CommandInteractionOptionResolver,
-  MessageEmbed,
+  EmbedBuilder,
+  SlashCommandBuilder,
   TextChannel,
 } from 'discord.js';
 import { isValidUrl } from '../utils/helpers';
@@ -9,10 +10,15 @@ import ogs from 'open-graph-scraper';
 import { EMOJI_NAMES } from '../consts';
 import { getOrCreateDiscordUser } from '../utils/discordUser';
 import { createShare, uploadShareImageFromRemoteURL } from '../db/shares';
-import { discordClient } from '../utils/discord';
+import {
+  discordClient,
+  SlashCommand,
+  SlashCommandHandler,
+} from '../utils/discord';
 import { addNewShareToCache } from '../utils/shareCache';
+import { variables } from '../variables';
 
-const shareHandler = async (
+const execute: SlashCommandHandler = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
 ) => {
@@ -87,8 +93,13 @@ const shareHandler = async (
       emailable: false,
       emailed: false,
     });
+    if (!createdShare || createdShare === null) {
+      return interaction.reply({
+        content: 'This link was already shared',
+      });
+    }
     addNewShareToCache(createdShare);
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle(title)
       .setDescription(description || '')
       .addFields(
@@ -97,9 +108,9 @@ const shareHandler = async (
         { name: 'sharerUsername', value: username }
       )
       .setThumbnail(imageUrl)
-      .setAuthor(`Share from ${username}`);
+      .setAuthor({ name: `Share from ${username}` });
     const shareReviewChannel = discordClient.channels.cache.get(
-      process.env.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
+      variables.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
     ) as TextChannel;
     if (shareReviewChannel) {
       shareReviewChannel
@@ -129,16 +140,19 @@ const shareHandler = async (
   }
 };
 
-export default {
-  callback: shareHandler,
-  name: 'share',
-  description: 'Share a link to a piece of content that YOU created.',
-  options: [
-    {
-      name: 'link',
-      description: `Link to your content`,
-      required: true,
-      type: 'STRING',
-    },
-  ],
+const data = new SlashCommandBuilder()
+  .setName('share')
+  .setDescription('Share a piece of content that YOU created.');
+data.addStringOption((option) =>
+  option
+    .setName('link')
+    .setDescription(`Link to your content`)
+    .setRequired(true)
+);
+
+const command: SlashCommand = {
+  data,
+  execute,
 };
+
+export default command;

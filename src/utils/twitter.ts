@@ -1,12 +1,13 @@
 import dotenv from 'dotenv';
 import Twitter from 'twitter';
 import axios from 'axios';
+import { variables } from '../variables';
 dotenv.config();
 const twitterClient = new Twitter({
-  consumer_key: process.env.TWITTER_CONSUMER_KEY || '',
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET || '',
-  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY || '',
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET || '',
+  consumer_key: variables.TWITTER_CONSUMER_KEY || '',
+  consumer_secret: variables.TWITTER_CONSUMER_SECRET || '',
+  access_token_key: variables.TWITTER_ACCESS_TOKEN_KEY || '',
+  access_token_secret: variables.TWITTER_ACCESS_TOKEN_SECRET || '',
 });
 
 export const sendTweet = async (status: string, imageUrl?: string) => {
