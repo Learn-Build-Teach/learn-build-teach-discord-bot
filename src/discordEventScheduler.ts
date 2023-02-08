@@ -14,6 +14,7 @@ export const startEventScheduler = async () => {
   }
 };
 
+//TODO: check to see if one already exists
 const scheduleWinOfTheWeek = async () => {
   console.info('Scheduling Learn Build Teach Wins of the Week event');
   const name = 'Learn Build Teach Wins of the Week';
@@ -44,4 +45,8 @@ const getNextDayOfWeek = (date: Date, dayOfWeek: number) => {
   return nextDay;
 };
 const EVERY_SUNDAY_NIGHT_CRON = '00 0 * * 0';
-cron.schedule(EVERY_SUNDAY_NIGHT_CRON, scheduleWinOfTheWeek);
+
+if (variables.ENABLE_EVENTS_SCHEDULER === 'TRUE') {
+  console.log('schedule em');
+  cron.schedule(EVERY_SUNDAY_NIGHT_CRON, scheduleWinOfTheWeek);
+}

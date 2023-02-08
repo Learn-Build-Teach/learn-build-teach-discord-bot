@@ -21,6 +21,7 @@ interface EnvironmentVariables {
   SUPABASE_SERVICE_ROLE_KEY: string;
   YOUTUBE_API_KEY?: string;
   PORT?: string;
+  ENABLE_EVENTS_SCHEDULER?: string;
 }
 
 if (!process.env.DISCORD_BOT_TOKEN) {
@@ -68,4 +69,5 @@ export const variables: EnvironmentVariables = {
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
   PORT: process.env.PORT,
+  ENABLE_EVENTS_SCHEDULER: process.env.ENABLE_EVENTS_SCHEDULER,
 };
