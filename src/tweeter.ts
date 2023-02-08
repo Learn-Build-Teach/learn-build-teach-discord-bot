@@ -4,6 +4,7 @@ import { getDiscordUserById } from './db/discordUser';
 import cron from 'node-cron';
 import { sendEmailAlert } from './utils/email';
 import { Share } from './types/types';
+import { variables } from './variables';
 
 const tweetNextShare = async () => {
   console.info('Looking for shares to tweet');
@@ -17,7 +18,7 @@ const tweetNextShare = async () => {
     if (!tweet) return;
     console.info('Potential tweet', tweet);
 
-    if (process.env.SEND_TWEETS === 'TRUE') {
+    if (variables.SEND_TWEETS === 'TRUE') {
       console.info('Sending tweet');
       await sendTweet(tweet, share.imageUrl || '');
       await sendEmailAlert('Tweet Sent', `Tweet: ${tweet}`);

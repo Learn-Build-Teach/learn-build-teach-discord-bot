@@ -1,29 +1,32 @@
 import {
-  MessageEmbed,
+  EmbedBuilder,
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
+  SlashCommandBuilder,
+  EmbedField,
 } from 'discord.js';
+import { SlashCommand } from '../utils/discord';
 
 import { getOrCreateDiscordUser } from '../utils/discordUser';
-import { profileSocialOptions } from './updateProfile';
+import { socials } from './updateProfile';
 
 //defining user as type any so we can dynamically pull values
 const createUserProfileFields = (user: any): EmbedField[] => {
   const fields: EmbedField[] = [];
-  for (let i = 0; i < profileSocialOptions.length; i++) {
-    const option = profileSocialOptions[i];
-    const optionName = option.name;
+  for (let i = 0; i < socials.length; i++) {
+    const optionName = socials[i];
     if (user[optionName]) {
       fields.push({
         name: optionName.toUpperCase(),
         value: user[optionName],
+        inline: false,
       });
     }
   }
   return fields;
 };
-const getProfile = async (
+const execute = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
 ) => {
@@ -38,11 +41,11 @@ const getProfile = async (
     const user = await getOrCreateDiscordUser(targetUser.id);
     if (user) {
       //TODO: update to include new fields
-      const embed = new MessageEmbed()
-        .setAuthor(
-          `${targetUser.username}'s profile`,
-          targetUser.displayAvatarURL()
-        )
+      const embed = new EmbedBuilder()
+        .setAuthor({
+          name: `${targetUser.username}'s profile`,
+          iconURL: targetUser.displayAvatarURL(),
+        })
         .addFields(createUserProfileFields(user));
 
       return interaction.reply({ embeds: [embed] });
@@ -63,21 +66,19 @@ const getProfile = async (
   }
 };
 
-export interface EmbedField {
-  name: string;
-  value: string;
-}
+const data = new SlashCommandBuilder()
+  .setName('profile')
+  .setDescription('View a profile.');
+data.addMentionableOption((option) =>
+  option
+    .setName('username')
+    .setDescription(`Tag the user you are looking for`)
+    .setRequired(false)
+);
 
-export default {
-  callback: getProfile,
-  name: 'profile',
-  description: "Get a user's profile details",
-  options: [
-    {
-      name: 'username',
-      description: `Tag the user you are looking for.`,
-      required: false,
-      type: 'MENTIONABLE',
-    },
-  ],
+const command: SlashCommand = {
+  data,
+  execute,
 };
+
+export default command;
