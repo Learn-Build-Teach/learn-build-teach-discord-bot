@@ -1,7 +1,10 @@
-import { CommandInteraction } from 'discord.js';
+import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { getDiscordUserById, resetDiscordUser } from '../db/discordUser';
+import { SlashCommand, SlashCommandHandler } from '../utils/discord';
 
-const resetProfile = async (interaction: CommandInteraction) => {
+const execute: SlashCommandHandler = async (
+  interaction: CommandInteraction
+) => {
   const userId = interaction.user.id;
   try {
     const existingUser = await getDiscordUserById(userId);
@@ -25,8 +28,13 @@ const resetProfile = async (interaction: CommandInteraction) => {
   }
 };
 
-export default {
-  callback: resetProfile,
-  name: 'resetprofile',
-  description: 'Reset your profile settings',
+const data = new SlashCommandBuilder()
+  .setName('resetprofile')
+  .setDescription('Reset your profile');
+
+const command: SlashCommand = {
+  data,
+  execute,
 };
+
+export default command;

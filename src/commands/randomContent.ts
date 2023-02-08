@@ -1,11 +1,17 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import {
+  CommandInteraction,
+  EmbedBuilder,
+  SlashCommandBuilder,
+} from 'discord.js';
 import { ShareWithUsername } from '../types/types';
+import { SlashCommand, SlashCommandHandler } from '../utils/discord';
 import { getRandomShareFromCache } from '../utils/shareCache';
 
-const getRandomContent = async (interaction: CommandInteraction) => {
+const execute: SlashCommandHandler = async (
+  interaction: CommandInteraction
+) => {
   try {
     const randomShare = await getRandomShareFromCache();
-    console.log(randomShare);
     const embed = createShareEmbed(randomShare);
     return interaction.reply({
       embeds: [embed],
@@ -19,18 +25,26 @@ const getRandomContent = async (interaction: CommandInteraction) => {
   }
 };
 
-const createShareEmbed = (share: ShareWithUsername): MessageEmbed => {
-  return new MessageEmbed()
+const createShareEmbed = (share: ShareWithUsername): EmbedBuilder => {
+  return new EmbedBuilder()
     .setColor('#0099ff')
     .setTitle(share.title)
     .setDescription(share.description || '')
     .setURL(share.link)
-    .addField('Author', `By @${share.user.username}`, true)
+    .addFields({
+      name: 'Author',
+      value: `By @${share.user.username}`,
+    })
     .setTimestamp(new Date(share.createdAt));
 };
 
-export default {
-  callback: getRandomContent,
-  name: 'randomcontent',
-  description: 'Get a random piece of content.',
+const data = new SlashCommandBuilder()
+  .setName('randomcontent')
+  .setDescription('Get a random piece of content');
+
+const command: SlashCommand = {
+  data,
+  execute,
 };
+
+export default command;

@@ -1,12 +1,26 @@
 import {
   CommandInteraction,
   CommandInteractionOptionResolver,
+  SlashCommandBuilder,
 } from 'discord.js';
 import { updateDiscordUser } from '../db/discordUser';
+import { SlashCommand, SlashCommandHandler } from '../utils/discord';
 import { getOrCreateDiscordUser } from '../utils/discordUser';
 import { isValidUrl } from '../utils/helpers';
 
-const updateProfile = async (
+export const socials = [
+  'twitter',
+  'instagram',
+  'youtube',
+  'github',
+  'twitch',
+  'website',
+  'tiktok',
+  'linkedin',
+  'polywork',
+];
+
+const execute: SlashCommandHandler = async (
   interaction: CommandInteraction,
   options: CommandInteractionOptionResolver
 ) => {
@@ -17,9 +31,8 @@ const updateProfile = async (
     username,
   };
 
-  for (let i = 0; i < profileSocialOptions.length; i++) {
-    const commandOption = profileSocialOptions[i];
-    const optionName = commandOption.name;
+  for (let i = 0; i < socials.length; i++) {
+    const optionName = socials[i];
     const optionValue = options.getString(optionName) || '';
 
     //if it wasn't passed, skip it
@@ -52,66 +65,22 @@ const updateProfile = async (
   }
 };
 
-export const profileSocialOptions = [
-  {
-    name: 'twitter',
-    description: `Your Twitter Url`,
-    required: false,
-    type: 'STRING',
-  },
-  {
-    name: 'instagram',
-    description: `Your Instagram Url`,
-    required: false,
-    type: 'STRING',
-  },
-  {
-    name: 'youtube',
-    description: `Your YouTube Url`,
-    required: false,
-    type: 'STRING',
-  },
-  {
-    name: 'github',
-    description: `Your Github Url`,
-    required: false,
-    type: 'STRING',
-  },
-  {
-    name: 'twitch',
-    description: `Your Twitch Url`,
-    required: false,
-    type: 'STRING',
-  },
-  {
-    name: 'website',
-    description: `Your website Url`,
-    required: false,
-    type: 'STRING',
-  },
-  {
-    name: 'tiktok',
-    description: `Your TikTok Url`,
-    required: false,
-    type: 'STRING',
-  },
-  {
-    name: 'linkedin',
-    description: `Your LinkedIn Url`,
-    required: false,
-    type: 'STRING',
-  },
-  {
-    name: 'polywork',
-    description: `Your Polywork Url`,
-    required: false,
-    type: 'STRING',
-  },
-];
+const data = new SlashCommandBuilder()
+  .setName('updateprofile')
+  .setDescription('Update your profile');
 
-export default {
-  callback: updateProfile,
-  name: 'updateprofile',
-  description: 'Update your profile.',
-  options: profileSocialOptions,
+socials.forEach((social) => {
+  data.addStringOption((option) =>
+    option
+      .setName(social)
+      .setDescription(`Your ${social} Url`)
+      .setRequired(false)
+  );
+});
+
+const command: SlashCommand = {
+  data,
+  execute,
 };
+
+export default command;
