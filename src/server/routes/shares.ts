@@ -1,4 +1,8 @@
-import { getRecentShares, getShareToTweet } from '../../db/shares';
+import {
+  getRecentShares,
+  getSharesForNewsletter,
+  getShareToTweet,
+} from '../../db/shares';
 import { ReturnValue } from '../models';
 import express, { Request, Response } from 'express';
 import { getRandomShareFromCache } from '../../utils/shareCache';
@@ -11,6 +15,8 @@ router.get('', async (req: Request, res: Response) => {
   try {
     const limit = parseInt(String(req.query.limit)) || 20;
     const random = String(req.query.random) === 'true';
+    const isNewsletter = String(req.query.newsletter) === 'true';
+
     if (limit > 50) {
       retVal.status == 400;
       retVal.body.err = 'Inavlid request. Limit shoult be less than 50';
@@ -18,6 +24,9 @@ router.get('', async (req: Request, res: Response) => {
       if (random) {
         const randomShare = await getRandomShareFromCache();
         retVal.body.data = randomShare;
+      } else if (isNewsletter) {
+        const recentShares = await getSharesForNewsletter();
+        retVal.body.data = recentShares;
       } else {
         const recentShares = await getRecentShares(limit);
         retVal.body.data = recentShares;

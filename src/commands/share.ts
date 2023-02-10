@@ -101,7 +101,7 @@ const execute: SlashCommandHandler = async (
     addNewShareToCache(createdShare);
     const embed = new EmbedBuilder()
       .setTitle(title)
-      .setDescription(description || '')
+      .setDescription(description || title)
       .addFields(
         { name: 'shareId', value: createdShare.id },
         { name: 'shareLink', value: createdShare.link },

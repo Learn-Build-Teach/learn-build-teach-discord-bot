@@ -7,12 +7,10 @@ import { addXpToDiscordUser } from './db/discordUser';
 import { KudoCategory } from './types/types';
 import { discordClient } from './utils/discord';
 import { variables } from './variables';
-// import { startEventScheduler } from './discordEventScheduler';
 dotenv.config();
 
 discordClient.on('ready', async () => {
   console.info('The Learn Build Teach bot is running!');
-  //   startEventScheduler();
 });
 
 discordClient.on('messageReactionAdd', async (reaction, user) => {

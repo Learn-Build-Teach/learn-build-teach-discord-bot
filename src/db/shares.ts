@@ -142,7 +142,7 @@ export const getSharesForNewsletter = async (): Promise<
     []
   );
 
-  return sharesByUniqueAuthors.slice(0, 5);
+  return sharesByUniqueAuthors;
 };
 
 export const uploadShareImageFromRemoteURL = async (
