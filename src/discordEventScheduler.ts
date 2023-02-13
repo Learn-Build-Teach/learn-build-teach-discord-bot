@@ -46,10 +46,8 @@ const getNextDayOfWeek = (date: Date, dayOfWeek: number) => {
 };
 
 const DEFAULT_CRON = '00 0 * * 0';
+const cronStr = variables.EVENT_SCHEDULER_CRON || DEFAULT_CRON;
 if (variables.ENABLE_EVENTS_SCHEDULER === 'TRUE') {
-  console.log('schedule em');
-  cron.schedule(
-    variables.EVENT_SCHEDULER_CRON || DEFAULT_CRON,
-    scheduleWinOfTheWeek
-  );
+  console.log(`Event scheduler will run based on: ${cronStr}`);
+  cron.schedule(cronStr, scheduleWinOfTheWeek);
 }
