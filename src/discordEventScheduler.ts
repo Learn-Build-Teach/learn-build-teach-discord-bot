@@ -44,9 +44,12 @@ const getNextDayOfWeek = (date: Date, dayOfWeek: number) => {
   nextDay.setDate(date.getDate() + ((7 + dayOfWeek - date.getDay()) % 7));
   return nextDay;
 };
-const EVERY_SUNDAY_NIGHT_CRON = '00 0 * * 0';
 
+const DEFAULT_CRON = '00 0 * * 0';
 if (variables.ENABLE_EVENTS_SCHEDULER === 'TRUE') {
   console.log('schedule em');
-  cron.schedule(EVERY_SUNDAY_NIGHT_CRON, scheduleWinOfTheWeek);
+  cron.schedule(
+    variables.EVENT_SCHEDULER_CRON || DEFAULT_CRON,
+    scheduleWinOfTheWeek
+  );
 }

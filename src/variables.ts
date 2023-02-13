@@ -22,6 +22,7 @@ interface EnvironmentVariables {
   YOUTUBE_API_KEY?: string;
   PORT?: string;
   ENABLE_EVENTS_SCHEDULER?: string;
+  EVENT_SCHEDULER_CRON?: string;
 }
 
 if (!process.env.DISCORD_BOT_TOKEN) {
@@ -70,4 +71,5 @@ export const variables: EnvironmentVariables = {
   YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
   PORT: process.env.PORT,
   ENABLE_EVENTS_SCHEDULER: process.env.ENABLE_EVENTS_SCHEDULER,
+  EVENT_SCHEDULER_CRON: process.env.EVENT_SCHEDULER_CRON,
 };
