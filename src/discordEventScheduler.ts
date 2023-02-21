@@ -24,7 +24,6 @@ export const scheduleWinOfTheWeek = async () => {
   const nextFriday = getNextDayOfWeek(new Date(), 5);
   nextFriday.setHours(15);
   nextFriday.setMinutes(0);
-  console.log(nextFriday);
 
   const event = await guild?.scheduledEvents.create({
     name,

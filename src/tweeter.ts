@@ -6,7 +6,7 @@ import { sendEmailAlert } from './utils/email';
 import { Share } from './types/types';
 import { variables } from './variables';
 
-const tweetNextShare = async () => {
+export const tweetNextShare = async () => {
   console.info('Looking for shares to tweet');
   let share;
   try {
@@ -43,7 +43,7 @@ export const getTweetFromShare = async (share: Share) => {
 
   const twitterUsername = existingUser?.twitter;
   const taggedUser = twitterUsername
-    ? `@${twitterUsername.replace('@', '')}`
+    ? `@${twitterUsername}`
     : existingUser.username;
   return `Check out "${share.title}" from ${taggedUser} of the #LearnBuildTeach community! #bot \n\n ${share.link}`;
 };
