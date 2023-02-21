@@ -11,6 +11,3 @@ import './server/index';
 
 //run the event scheduler
 import './discordEventScheduler';
-import { scheduleWinOfTheWeek } from './discordEventScheduler';
-
-scheduleWinOfTheWeek();

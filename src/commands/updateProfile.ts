@@ -4,21 +4,92 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { updateDiscordUser } from '../db/discordUser';
+import { ProfileSocialConfig, SocialType } from '../types/types';
 import { SlashCommand, SlashCommandHandler } from '../utils/discord';
 import { getOrCreateDiscordUser } from '../utils/discordUser';
-import { isValidUrl } from '../utils/helpers';
+import { isValidHandle, isValidUrl } from '../utils/helpers';
 
-export const socials = [
-  'twitter',
-  'instagram',
-  'youtube',
-  'github',
-  'twitch',
-  'website',
-  'tiktok',
-  'linkedin',
-  'polywork',
-];
+const HANDLE_VALIDATION_MESSAGE = `Please enter a valid handle, not a URL, and no '@'.`;
+const URL_VALIDATION_MESSAGE = 'Please enter a valid URL.';
+export const socialConfigs = new Map<string, ProfileSocialConfig>([
+  [
+    'twitter',
+    {
+      validator: isValidHandle,
+      validationMessage: 'Twitter: ' + HANDLE_VALIDATION_MESSAGE,
+      type: SocialType.handle,
+      urlPrefix: 'https://twitter.com/',
+    },
+  ],
+  [
+    'instagram',
+    {
+      validator: isValidHandle,
+      validationMessage: 'Instagram: ' + HANDLE_VALIDATION_MESSAGE,
+      type: SocialType.handle,
+      urlPrefix: 'https://instagram.com/',
+    },
+  ],
+  [
+    'youtube',
+    {
+      validator: isValidUrl,
+      validationMessage: 'YouTube: ' + URL_VALIDATION_MESSAGE,
+      type: SocialType.handle,
+    },
+  ],
+  [
+    'github',
+    {
+      validator: isValidHandle,
+      validationMessage: 'Github: ' + HANDLE_VALIDATION_MESSAGE,
+      type: SocialType.handle,
+      urlPrefix: 'https://github.com/',
+    },
+  ],
+  [
+    'twitch',
+    {
+      validator: isValidHandle,
+      validationMessage: 'Twitch: ' + HANDLE_VALIDATION_MESSAGE,
+      type: SocialType.handle,
+      urlPrefix: 'https://www.twitch.tv/',
+    },
+  ],
+  [
+    'website',
+    {
+      validator: isValidUrl,
+      validationMessage: 'Website: ' + URL_VALIDATION_MESSAGE,
+      type: SocialType.URL,
+    },
+  ],
+  [
+    'tiktok',
+    {
+      validator: isValidHandle,
+      validationMessage: 'TikTok: ' + HANDLE_VALIDATION_MESSAGE,
+      type: SocialType.handle,
+      urlPrefix: 'https://www.tiktok.com/@',
+    },
+  ],
+  [
+    'linkedin',
+    {
+      validator: isValidUrl,
+      validationMessage: 'LinkedIn: ' + URL_VALIDATION_MESSAGE,
+      type: SocialType.URL,
+    },
+  ],
+  [
+    'polywork',
+    {
+      validator: isValidHandle,
+      validationMessage: 'Polywork: ' + URL_VALIDATION_MESSAGE,
+      type: SocialType.URL,
+    },
+  ],
+]);
 
 const execute: SlashCommandHandler = async (
   interaction: CommandInteraction,
@@ -31,20 +102,20 @@ const execute: SlashCommandHandler = async (
     username,
   };
 
-  for (let i = 0; i < socials.length; i++) {
-    const optionName = socials[i];
-    const optionValue = options.getString(optionName) || '';
+  for (const [socialName, socialConfig] of socialConfigs) {
+    const optionValue = options.getString(socialName) || '';
 
     //if it wasn't passed, skip it
     if (!optionValue) continue;
 
-    if (!isValidUrl(optionValue)) {
+    const validator = socialConfig.validator;
+    if (!validator(optionValue)) {
       return interaction.reply({
-        content: `Please enter a valid url for your ${optionName} account.`,
+        content: socialConfig.validationMessage,
         ephemeral: true,
       });
     }
-    userUpdates[optionName] = optionValue;
+    userUpdates[socialName] = optionValue;
   }
   try {
     await getOrCreateDiscordUser(id, username);
@@ -69,14 +140,14 @@ const data = new SlashCommandBuilder()
   .setName('updateprofile')
   .setDescription('Update your profile');
 
-socials.forEach((social) => {
+for (const [socialName, socialConfig] of socialConfigs) {
   data.addStringOption((option) =>
     option
-      .setName(social)
-      .setDescription(`Your ${social} Url`)
+      .setName(socialName)
+      .setDescription(`Your ${socialName} ${socialConfig.type}`)
       .setRequired(false)
   );
-});
+}
 
 const command: SlashCommand = {
   data,

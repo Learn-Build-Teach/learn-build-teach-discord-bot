@@ -9,17 +9,17 @@ import {
 import { SlashCommand } from '../utils/discord';
 
 import { getOrCreateDiscordUser } from '../utils/discordUser';
-import { socials } from './updateProfile';
+import { socialConfigs } from './updateProfile';
 
 //defining user as type any so we can dynamically pull values
 const createUserProfileFields = (user: any): EmbedField[] => {
   const fields: EmbedField[] = [];
-  for (let i = 0; i < socials.length; i++) {
-    const optionName = socials[i];
+  for (const [socialName, socialConfig] of socialConfigs) {
+    const optionName = socialName;
     if (user[optionName]) {
       fields.push({
         name: optionName.toUpperCase(),
-        value: user[optionName],
+        value: (socialConfig.urlPrefix || '') + user[optionName],
         inline: false,
       });
     }

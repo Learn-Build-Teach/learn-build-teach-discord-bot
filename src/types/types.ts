@@ -16,6 +16,21 @@ export interface DiscordUser {
   xp: number;
 }
 
+// eslint-disable-next-line no-unused-vars
+export enum SocialType {
+  // eslint-disable-next-line no-unused-vars
+  handle = 'handle',
+  // eslint-disable-next-line no-unused-vars
+  URL = 'URL',
+}
+export interface ProfileSocialConfig {
+  // eslint-disable-next-line no-unused-vars
+  validator(str: string): boolean;
+  validationMessage: string;
+  type: SocialType;
+  urlPrefix?: string;
+}
+
 export interface DiscordUserInsert {
   id?: string;
   createdAt?: string;

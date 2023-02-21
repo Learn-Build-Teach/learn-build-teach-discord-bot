@@ -1,4 +1,4 @@
-const isValidUrl = (str: string): boolean => {
+export const isValidUrl = (str: string): boolean => {
   if (!str) return false;
   try {
     new URL(str);
@@ -9,4 +9,6 @@ const isValidUrl = (str: string): boolean => {
   }
 };
 
-export { isValidUrl };
+export const isValidHandle = (handle: string): boolean => {
+  return !!handle && !isValidUrl(handle) && !handle.includes('@');
+};
