@@ -22,7 +22,7 @@ export const scheduleWinOfTheWeek = async () => {
     'No win is too small. Take a few minutes to reflect positively on what you accomplished this week and share with the group.';
   const guild = await getDiscordGuild();
   const nextFriday = getNextDayOfWeek(new Date(), 5);
-  nextFriday.setHours(16);
+  nextFriday.setHours(15);
   nextFriday.setMinutes(0);
   console.log(nextFriday);
 
