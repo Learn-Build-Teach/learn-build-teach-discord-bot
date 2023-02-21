@@ -43,9 +43,7 @@ export default class DiscordClient extends Client {
 }
 
 export type SlashCommandHandler = (
-  // eslint-disable-next-line no-unused-vars
   interaction: CommandInteraction,
-  // eslint-disable-next-line no-unused-vars
   options: CommandInteractionOptionResolver
 ) => any | Promise<any>;
 

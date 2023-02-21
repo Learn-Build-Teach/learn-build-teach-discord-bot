@@ -16,15 +16,11 @@ export interface DiscordUser {
   xp: number;
 }
 
-// eslint-disable-next-line no-unused-vars
 export enum SocialType {
-  // eslint-disable-next-line no-unused-vars
   handle = 'handle',
-  // eslint-disable-next-line no-unused-vars
   URL = 'URL',
 }
 export interface ProfileSocialConfig {
-  // eslint-disable-next-line no-unused-vars
   validator(str: string): boolean;
   validationMessage: string;
   type: SocialType;
@@ -80,11 +76,8 @@ export interface Kudo {
 
 //TODO: can I get around disabling eslint?
 export enum KudoCategory {
-  // eslint-disable-next-line no-unused-vars
   LEARN = 'LEARN',
-  // eslint-disable-next-line no-unused-vars
   BUILD = 'BUILD',
-  // eslint-disable-next-line no-unused-vars
   TEACH = 'TEACH',
 }
 
