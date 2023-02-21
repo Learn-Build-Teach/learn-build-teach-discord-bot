@@ -15,15 +15,16 @@ export const startEventScheduler = async () => {
 };
 
 //TODO: check to see if one already exists
-const scheduleWinOfTheWeek = async () => {
+export const scheduleWinOfTheWeek = async () => {
   console.info('Scheduling Learn Build Teach Wins of the Week event');
   const name = 'Learn Build Teach Wins of the Week';
   const description =
     'No win is too small. Take a few minutes to reflect positively on what you accomplished this week and share with the group.';
   const guild = await getDiscordGuild();
   const nextFriday = getNextDayOfWeek(new Date(), 5);
-  nextFriday.setHours(9);
+  nextFriday.setHours(16);
   nextFriday.setMinutes(0);
+  console.log(nextFriday);
 
   const event = await guild?.scheduledEvents.create({
     name,
@@ -39,7 +40,7 @@ const scheduleWinOfTheWeek = async () => {
   );
 };
 
-const getNextDayOfWeek = (date: Date, dayOfWeek: number) => {
+const getNextDayOfWeek = (date: Date, dayOfWeek: number): Date => {
   const nextDay = new Date(date.getTime());
   nextDay.setDate(date.getDate() + ((7 + dayOfWeek - date.getDay()) % 7));
   return nextDay;
