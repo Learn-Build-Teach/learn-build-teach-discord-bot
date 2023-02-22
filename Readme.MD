@@ -67,13 +67,16 @@ You will need to create your own test server in Discord as well as a project in 
 **_Required Varaiables_**
 
 ```env
-#Supabase
-SUPABASE_SERVICE_ROLE_KEY=<SUPABASE_SERVICE_ROLE_KEY>
-SUPABASE_PROJECT_URL=<SUPABASE_PROJECT_URL>
+# api
+SERVER_API_KEY=
 
-#Discord
-DISCORD_BOT_TOKEN=<DISCORD_BOT_TOKEN>
-DISCORD_GUILD_ID=<DISCORD_GUILD_ID>
+# discord
+DISCORD_BOT_TOKEN=
+DISCORD_GUILD_ID=
+
+# supabase
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_PROJECT_URL=
 ```
 
 **_Optional Variables_**
@@ -122,12 +125,15 @@ Get profile details about you or another discord member.
 
 Update your profile with the following flags. I will use these pieces of information to help share your content.
 
-- `twitter`: your Twitter handle
-- `twitch`: your Twitch username
-- `youtube`: your YouTube URL
-- `instagram`: your Instagram username
-- `github`: your Github username
-- `website`: your personal website URL
+- `twitter`: Your Twitter handle
+- `instagram`: Your Instagram handle
+- `youtube`: Your YouTube URL
+- `github`: Your Github handle
+- `twitch`: Your Twitch handle
+- `website`: Your website URL
+- `tiktok`: Your TikTok handle
+- `linkedin`: Your LinkedIn handle
+- `polywork`: Your Polywork handle
 
 ### `/resetProfile`
 
