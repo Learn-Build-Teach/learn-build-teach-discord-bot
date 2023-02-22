@@ -53,7 +53,7 @@ export const socialConfigs = new Map<string, ProfileSocialConfig>([
       validator: isValidHandle,
       validationMessage: 'Twitch: ' + HANDLE_VALIDATION_MESSAGE,
       type: SocialType.handle,
-      urlPrefix: 'https://www.twitch.tv/',
+      urlPrefix: 'https://twitch.tv/',
     },
   ],
   [
@@ -70,23 +70,25 @@ export const socialConfigs = new Map<string, ProfileSocialConfig>([
       validator: isValidHandle,
       validationMessage: 'TikTok: ' + HANDLE_VALIDATION_MESSAGE,
       type: SocialType.handle,
-      urlPrefix: 'https://www.tiktok.com/@',
+      urlPrefix: 'https://tiktok.com/@',
     },
   ],
   [
     'linkedin',
     {
-      validator: isValidUrl,
-      validationMessage: 'LinkedIn: ' + URL_VALIDATION_MESSAGE,
-      type: SocialType.URL,
+      validator: isValidHandle,
+      validationMessage: 'LinkedIn: ' + HANDLE_VALIDATION_MESSAGE,
+      type: SocialType.handle,
+      urlPrefix: 'https://linkedin.com/in/',
     },
   ],
   [
     'polywork',
     {
       validator: isValidHandle,
-      validationMessage: 'Polywork: ' + URL_VALIDATION_MESSAGE,
-      type: SocialType.URL,
+      validationMessage: 'Polywork: ' + HANDLE_VALIDATION_MESSAGE,
+      type: SocialType.handle,
+      urlPrefix: 'https://polywork.com/',
     },
   ],
 ]);
