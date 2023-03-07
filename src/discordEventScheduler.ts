@@ -39,6 +39,38 @@ export const scheduleWinOfTheWeek = async () => {
   );
 };
 
+export const scheduleCommunityHour = async () => {
+  console.info('Scheduling Community Chat Hour event');
+  const name = 'Community Chat Hour';
+  const description = `Let's take an hour to chat about: what you're working on, something you learned, questions you have, etc.`;
+  const guild = await getDiscordGuild();
+  const nextThursday = getNextDayOfWeek(new Date(), 4);
+  nextThursday.setHours(17);
+  nextThursday.setMinutes(0);
+
+  const event = await guild?.scheduledEvents.create({
+    name,
+    description,
+    scheduledStartTime: nextThursday,
+    privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
+    entityType: GuildScheduledEventEntityType.Voice,
+    channel: variables.DISCORD_GENERAL_VOICE_ID,
+  });
+  console.info(
+    '🚀 ~ file: discordEventScheduler.ts:35 ~ scheduleCommunityHour ~ successfully created event:',
+    event
+  );
+};
+
+const scheduleEvents = () => {
+  try {
+    scheduleWinOfTheWeek();
+    scheduleCommunityHour();
+  } catch (error) {
+    console.error('Failed to schedule events');
+  }
+};
+
 const getNextDayOfWeek = (date: Date, dayOfWeek: number): Date => {
   const nextDay = new Date(date.getTime());
   nextDay.setDate(date.getDate() + ((7 + dayOfWeek - date.getDay()) % 7));
@@ -49,5 +81,5 @@ const DEFAULT_CRON = '00 0 * * 0';
 const cronStr = variables.EVENT_SCHEDULER_CRON || DEFAULT_CRON;
 if (variables.ENABLE_EVENTS_SCHEDULER === 'TRUE') {
   console.log(`Event scheduler will run based on: ${cronStr}`);
-  cron.schedule(cronStr, scheduleWinOfTheWeek);
+  cron.schedule(cronStr, scheduleEvents);
 }
