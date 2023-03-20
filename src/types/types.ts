@@ -173,3 +173,10 @@ export interface Leader {
   teachPoints: number;
   id: string;
 }
+
+export interface DiscussionQuestion {
+  id: string;
+  createdAt: string;
+  question: string;
+  asked: boolean;
+}
