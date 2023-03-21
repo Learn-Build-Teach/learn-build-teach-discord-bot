@@ -180,3 +180,7 @@ export interface DiscussionQuestion {
   question: string;
   asked: boolean;
 }
+
+export interface DiscussionQuestionInsert {
+  question: string;
+}

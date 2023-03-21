@@ -2,10 +2,7 @@
 import './variables';
 import { startBot } from './bot';
 import { variables } from './variables';
-import {
-  postDiscussionQuestion,
-  startDiscussionScheduler,
-} from './discordWeeklyQuestionPoster';
+import { startDiscussionScheduler } from './discordWeeklyQuestionPoster';
 import { startEventScheduler } from './discordEventScheduler';
 import { startTweetScheduler } from './tweeter';
 
