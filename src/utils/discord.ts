@@ -1,4 +1,5 @@
 import {
+  Channel,
   Client,
   ClientOptions,
   Collection,
@@ -85,4 +86,11 @@ export const getDiscordGuild = async (): Promise<Guild | undefined> => {
   }
 };
 
-//
+export const getDiscordChannel = async (
+  channelID: string
+): Promise<Channel | null> => {
+  const channelFromCache = await discordClient.channels.cache.get(channelID);
+  if (channelFromCache) return channelFromCache;
+
+  return await discordClient.channels.fetch(channelID);
+};
