@@ -23,7 +23,6 @@ export const getUnaskedQuestion = async () => {
   if (error) {
     throw error;
   }
-  console.log(questions[0]);
   return questions[0] as DiscussionQuestion;
 };
 
