@@ -10,7 +10,6 @@ import { variables } from './variables';
 export const postDiscussionQuestion = async () => {
   try {
     const question = await getUnaskedQuestion();
-
     if (!question) {
       return console.error('Failed to find a question to post');
     }
@@ -19,11 +18,16 @@ export const postDiscussionQuestion = async () => {
     )) as ForumChannel;
     if (!channel) {
       console.error('Failed to find discussions channel');
+      return;
     }
+    const now = new Date();
+    const month = now.toLocaleString('default', { month: 'long' });
+    const day = now.getDate();
+    const year = now.getFullYear();
     await channel.threads.create({
-      name: question.question,
+      name: `Discussion question of the week - ${month} ${day}, ${year}`,
       message: {
-        content: 'What are your thoughts? 👇',
+        content: `${question.question} 👇`,
       },
     });
     console.info(`Discussion question posted: ${question.question}`);
@@ -35,11 +39,11 @@ export const postDiscussionQuestion = async () => {
 
 //0: 0 seconds
 //0: 0 minutes (i.e., the beginning of the hour)
-//10: 10 am
+//15: 3 pm UTC
 //*: any day of the month
 //*: any month
 //1: Monday (0 = Sunday, 1 = Monday, 2 = Tuesday, ..., 6 = Saturday)
-const cronStr = '0 10 * * 1';
+const cronStr = '0 15 * * 1';
 export const startDiscussionScheduler = async () => {
   cron.schedule(cronStr, postDiscussionQuestion);
 };
