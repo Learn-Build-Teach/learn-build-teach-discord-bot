@@ -26,7 +26,6 @@ router.get('/async', async (req: Request, res: Response) => {
   try {
     retVal.body.data = { totalMembers: getMembers() };
   } catch (error) {
-    console.error(error);
     retVal.status = 500;
     retVal.body.err = 'Something went wrong :(';
     const parsedHeaders = H.parseHeaders(req.headers);
