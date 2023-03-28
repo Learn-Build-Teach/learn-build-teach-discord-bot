@@ -6,14 +6,6 @@ import { getDiscordGuild } from './utils/discord';
 import cron from 'node-cron';
 import { variables } from './variables';
 
-export const startEventScheduler = async () => {
-  try {
-    await scheduleWinOfTheWeek();
-  } catch (err) {
-    console.error('Failed to schedule wins of the week event');
-  }
-};
-
 //TODO: check to see if one already exists
 export const scheduleWinOfTheWeek = async () => {
   console.info('Scheduling Learn Build Teach Wins of the Week event');
@@ -77,9 +69,8 @@ const getNextDayOfWeek = (date: Date, dayOfWeek: number): Date => {
   return nextDay;
 };
 
-const DEFAULT_CRON = '00 0 * * 0';
-const cronStr = variables.EVENT_SCHEDULER_CRON || DEFAULT_CRON;
-if (variables.ENABLE_EVENTS_SCHEDULER === 'TRUE') {
-  console.log(`Event scheduler will run based on: ${cronStr}`);
+export const startEventScheduler = async () => {
+  const DEFAULT_CRON = '00 0 * * 0';
+  const cronStr = variables.EVENT_SCHEDULER_CRON || DEFAULT_CRON;
   cron.schedule(cronStr, scheduleEvents);
-}
+};

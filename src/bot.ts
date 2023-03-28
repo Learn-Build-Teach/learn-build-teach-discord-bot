@@ -131,4 +131,6 @@ discordClient.on('message', async (message: Message) => {
   }
 });
 
-discordClient.login(variables.DISCORD_BOT_TOKEN);
+export const startBot = async () => {
+  discordClient.login(variables.DISCORD_BOT_TOKEN);
+};

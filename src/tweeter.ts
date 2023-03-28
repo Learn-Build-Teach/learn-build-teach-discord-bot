@@ -4,7 +4,6 @@ import { getDiscordUserById } from './db/discordUser';
 import cron from 'node-cron';
 import { sendEmailAlert } from './utils/email';
 import { Share } from './types/types';
-import { variables } from './variables';
 
 export const tweetNextShare = async () => {
   console.info('Looking for shares to tweet');
@@ -18,11 +17,8 @@ export const tweetNextShare = async () => {
     if (!tweet) return;
     console.info('Potential tweet', tweet);
 
-    if (variables.SEND_TWEETS === 'TRUE') {
-      console.info('Sending tweet');
-      await sendTweet(tweet, share.imageUrl || '');
-      await sendEmailAlert('Tweet Sent', `Tweet: ${tweet}`);
-    }
+    await sendTweet(tweet, share.imageUrl || '');
+    await sendEmailAlert('Tweet Sent', `Tweet: ${tweet}`);
   } catch (err) {
     console.error(err);
     console.error('Something went wrong trying to send a tweet');
@@ -48,5 +44,8 @@ export const getTweetFromShare = async (share: Share) => {
   return `Check out "${share.title}" from ${taggedUser} of the #LearnBuildTeach community! #bot \n\n ${share.link}`;
 };
 
-//tweet available share (if there is one) every morning at 8am GMT
-cron.schedule('0 8 * * *', tweetNextShare);
+export const startTweetScheduler = async () => {
+  //tweet available share (if there is one) every morning at 8am GMT
+  const cronStr = '0 8 * * *';
+  cron.schedule(cronStr, tweetNextShare);
+};

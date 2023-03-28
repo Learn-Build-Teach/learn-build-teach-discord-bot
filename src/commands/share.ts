@@ -11,7 +11,7 @@ import { EMOJI_NAMES } from '../consts';
 import { getOrCreateDiscordUser } from '../utils/discordUser';
 import { createShare, uploadShareImageFromRemoteURL } from '../db/shares';
 import {
-  discordClient,
+  getDiscordChannel,
   SlashCommand,
   SlashCommandHandler,
 } from '../utils/discord';
@@ -109,9 +109,9 @@ const execute: SlashCommandHandler = async (
       )
       .setThumbnail(imageUrl)
       .setAuthor({ name: `Share from ${username}` });
-    const shareReviewChannel = discordClient.channels.cache.get(
+    const shareReviewChannel = (await getDiscordChannel(
       variables.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
-    ) as TextChannel;
+    )) as TextChannel;
     if (shareReviewChannel) {
       shareReviewChannel
         .send({ embeds: [embed] })
