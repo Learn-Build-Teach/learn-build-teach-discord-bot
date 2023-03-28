@@ -109,6 +109,10 @@ TWITTER_CONSUMER_SECRET=<CONSUMER_KEY>
 
 #Discord Admin - used for reviewing shared content
 DISCORD_ADMIN_SHARE_REVIEW_CHANNEL=<REVIEW_CHANNEL_ID>
+
+#Highlight
+HIGHLIGHT_PROJECT_ID=<YOUR_PROJECT_ID>
+
 ```
 
 ### 4) Run the bot
