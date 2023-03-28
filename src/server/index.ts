@@ -8,7 +8,7 @@ import serverInsightsRoutes from './routes/serverInsights';
 import { variables } from '../variables';
 import { H, Handlers } from '@highlight-run/node';
 
-H.init({ projectID: '7e32y6d1' });
+H.init({ projectID: variables.HIGHLIGHT_PROJECT_ID || '' });
 
 const app = express();
 app.use(express.json());
@@ -30,7 +30,10 @@ app.use('/api/discordUsers', discordUserRoutes);
 app.use('/api/jqqnewsletter', jqqnewsletterRoutes);
 app.use('/api/server-insights', serverInsightsRoutes);
 
-const highlightErrorHandler = Handlers.errorHandler({ projectID: '7e32y6d1' });
+const highlightErrorHandler = Handlers.errorHandler({
+  projectID: variables.HIGHLIGHT_PROJECT_ID || '',
+});
+
 app.use(highlightErrorHandler);
 
 const port = variables.PORT || 3000;

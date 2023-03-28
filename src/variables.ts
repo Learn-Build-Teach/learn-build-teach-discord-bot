@@ -25,6 +25,7 @@ interface EnvironmentVariables {
   EVENT_SCHEDULER_CRON?: string;
   DISCORD_DISCUSSIONS_CHANNEL_ID?: string;
   POST_WEEKLY_DISCUSSION_QUESTION?: boolean;
+  HIGHLIGHT_PROJECT_ID?: string;
 }
 
 if (!process.env.DISCORD_BOT_TOKEN) {
@@ -78,4 +79,5 @@ export const variables: EnvironmentVariables = {
   POST_WEEKLY_DISCUSSION_QUESTION:
     process.env.POST_WEEKLY_DISCUSSION_QUESTION === 'TRUE' || false,
   DISCORD_DISCUSSIONS_CHANNEL_ID: process.env.DISCORD_DISCUSSIONS_CHANNEL_ID,
+  HIGHLIGHT_PROJECT_ID: process.env.HIGHLIGHT_PROJECT_ID,
 };
