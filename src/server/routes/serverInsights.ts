@@ -9,9 +9,6 @@ const getMembers = function () {
   discordClient.guilds.cache.forEach((guild) => {
     totalMembers += guild.memberCount;
   });
-  if (Math.random() < 0.5) {
-    throw new Error("James's code sucks");
-  }
   return totalMembers;
 };
 
@@ -21,22 +18,12 @@ router.get('/', (req: Request, res: Response) => {
   res.status(retVal.status).json(retVal.body);
 });
 
-router.get('/async', async (req: Request, res: Response) => {
-  const retVal = new ReturnValue();
-  try {
-    retVal.body.data = { totalMembers: getMembers() };
-  } catch (error) {
-    retVal.status = 500;
-    retVal.body.err = 'Something went wrong :(';
-    const parsedHeaders = H.parseHeaders(req.headers);
-    H.consumeError(
-      error as Error,
-      parsedHeaders?.secureSessionId,
-      parsedHeaders?.requestId
-    );
-  } finally {
-    res.status(retVal.status).json(retVal.body);
-  }
-});
+//Error handling manually with highlight for async callbacks
+// const parsedHeaders = H.parseHeaders(req.headers);
+//     H.consumeError(
+//       error as Error,
+//       parsedHeaders?.secureSessionId,
+//       parsedHeaders?.requestId
+//     );
 
 export default router;
