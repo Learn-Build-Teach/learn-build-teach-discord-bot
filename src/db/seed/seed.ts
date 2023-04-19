@@ -1,5 +1,6 @@
 import { saveDiscussionQuestions } from '../DiscussionQuestion';
 import { discussionQuestions } from './discussionQuestions';
+import { createDiscordUsersTable } from './tables';
 
 const seedDiscussionQuestions = async () => {
   try {
@@ -13,3 +14,8 @@ const seedDiscussionQuestions = async () => {
 export const seed = async () => {
   await seedDiscussionQuestions();
 };
+
+(async () => {
+  await createDiscordUsersTable();
+  // await seed();
+})();
