@@ -34,5 +34,4 @@ export const postStandupReminder = async () => {
 const cronStr = '0 1 * * 1-5';
 export const startBootcampPoster = async () => {
   cron.schedule(cronStr, postStandupReminder);
-  setTimeout(postStandupReminder, 1000);
 };
