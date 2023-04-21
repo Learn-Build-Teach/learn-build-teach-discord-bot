@@ -1,7 +1,7 @@
 import { ReturnValue } from '../models';
 import express, { Request, Response } from 'express';
 import { discordClient } from '../../utils/discord';
-import { H } from '@highlight-run/node';
+// import { H } from '@highlight-run/node';
 const router = express.Router();
 
 const getMembers = function () {

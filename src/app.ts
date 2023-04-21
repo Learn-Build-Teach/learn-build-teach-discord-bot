@@ -8,6 +8,7 @@ import { startTweetScheduler } from './tweeter';
 
 //run the express server
 import './server/index';
+import { startBootcampPoster } from './discordCreatorBootcamp';
 
 const load = async () => {
   await startBot();
@@ -25,6 +26,9 @@ const load = async () => {
     await startEventScheduler();
     console.info('event scheduler started.');
   }
+
+  await startBootcampPoster();
+  console.info('bootcamp poster started.');
 
   if (!variables.SEND_TWEETS) {
     console.info('Tweeter is not turned on');
