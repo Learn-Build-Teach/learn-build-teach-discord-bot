@@ -19,7 +19,7 @@ export const postStandupReminder = async () => {
     const year = now.getFullYear();
 
     await channel.threads.create({
-      name: `Daily Dtandup Reminder ⏰ - ${month} ${day}, ${year}`,
+      name: `Daily Standup Reminder ⏰ - ${month} ${day}, ${year}`,
       message: {
         content: `What did you do yesterday?
         What are you doing today?
