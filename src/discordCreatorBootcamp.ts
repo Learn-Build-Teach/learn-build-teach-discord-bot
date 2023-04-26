@@ -18,14 +18,14 @@ export const postStandupReminder = async () => {
     const day = now.getDate();
     const year = now.getFullYear();
 
-    await channel.threads.create({
-      name: `Daily Standup Reminder ⏰ - ${month} ${day}, ${year}`,
-      message: {
-        content: `What did you do yesterday?
-        What are you doing today?
-        What are your blockers?`,
-      },
+    const thread = await channel.threads.create({
+      name: `${month} ${day}, ${year} ⏰ - Daily Standup`,
+      message: {},
     });
+    const bootcampRoleId = variables.DISCORD_BOOTCAMP_ROLE_ID;
+    await thread.send(
+      `What did you do yesterday? \nWhat are you doing today? \nWhat are your blockers? \n\n <@&${bootcampRoleId}> 👇`
+    );
   } catch (error) {
     console.error(error, 'Failed to post standup reminder');
   }
@@ -34,4 +34,5 @@ export const postStandupReminder = async () => {
 const cronStr = '0 1 * * 1-5';
 export const startBootcampPoster = async () => {
   cron.schedule(cronStr, postStandupReminder);
+  //   setTimeout(postStandupReminder, 1000);
 };
