@@ -27,7 +27,7 @@ const load = async () => {
     console.info('event scheduler started.');
   }
 
-  await startBootcampPoster();
+  //   await startBootcampPoster();
   console.info('bootcamp poster started.');
 
   if (!variables.SEND_TWEETS) {
