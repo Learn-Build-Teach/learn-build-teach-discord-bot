@@ -184,3 +184,32 @@ export interface DiscussionQuestion {
 export interface DiscussionQuestionInsert {
   question: string;
 }
+
+//Wins
+export interface Win {
+  id: string;
+  createdAt: string;
+  category: string;
+  text: string;
+  tweetable: boolean;
+  emailable: boolean;
+  tweeted: boolean;
+  emailed: boolean;
+  discordUserId: string;
+}
+
+export interface WinWithUsername extends Win {
+  user: WithUsername;
+}
+
+export interface WinInsert {
+  id?: string;
+  createdAt?: string;
+  category: string;
+  text: string;
+  tweetable?: boolean;
+  emailable?: boolean;
+  tweeted?: boolean;
+  emailed?: boolean;
+  discordUserId: string;
+}
