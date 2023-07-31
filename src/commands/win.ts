@@ -1,20 +1,10 @@
 import {
   CommandInteraction,
   CommandInteractionOptionResolver,
-  EmbedBuilder,
   SlashCommandBuilder,
-  TextChannel,
 } from 'discord.js';
-import { EMOJI_NAMES } from '../consts';
 import { getOrCreateDiscordUser } from '../utils/discordUser';
-// import { createShare, uploadShareImageFromRemoteURL } from '../db/shares';
-import {
-  getDiscordChannel,
-  SlashCommand,
-  SlashCommandHandler,
-} from '../utils/discord';
-// import { addNewShareToCache } from '../utils/shareCache';
-import { variables } from '../variables';
+import { SlashCommand, SlashCommandHandler } from '../utils/discord';
 import { KudoCategory } from '../types/types';
 import { createWin } from '../db/wins';
 
@@ -23,6 +13,7 @@ const execute: SlashCommandHandler = async (
   options: CommandInteractionOptionResolver
 ) => {
   const win = options.getString('win') || '';
+  const category = options.getString('category', true);
 
   try {
     const { id, username } = interaction.user;
@@ -44,6 +35,7 @@ const execute: SlashCommandHandler = async (
     const createdWin = await createWin({
       discordUserId: user.id,
       text: win,
+      category,
       tweetable: false,
       tweeted: false,
       emailable: false,
