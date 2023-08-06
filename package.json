@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "start:server": "node dist/server/index.js",
+    "deploy-commands": "npm run build && node dist/deployCommands.js",
     "dev": "ts-node-dev --respawn --debounce=100 --exit-child --files src/app.ts",
     "build": "tsc",
     "test": "jest",

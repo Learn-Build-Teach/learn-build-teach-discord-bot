@@ -46,37 +46,9 @@ const execute: SlashCommandHandler = async (
         content: 'Failed to share this win',
       });
     }
-    // addNewShareToCache(createdShare);
-    // const embed = new EmbedBuilder()
-    //   .setTitle(title)
-    //   .setDescription(description || title)
-    //   .addFields(
-    //     { name: 'shareId', value: createdShare.id },
-    //     { name: 'shareLink', value: createdShare.link },
-    //     { name: 'sharerUsername', value: username }
-    //   )
-    //   .setThumbnail(imageUrl)
-    //   .setAuthor({ name: `Share from ${username}` });
-    // const shareReviewChannel = (await getDiscordChannel(
-    //   variables.DISCORD_ADMIN_SHARE_REVIEW_CHANNEL || ''
-    // )) as TextChannel;
-    // if (shareReviewChannel) {
-    //   shareReviewChannel
-    //     .send({ embeds: [embed] })
-    //     .then(function (message) {
-    //       message.react(EMOJI_NAMES.APPROVE_EMOJI);
-    //       message.react(EMOJI_NAMES.EMAIL_APPROVED_EMOJI);
-    //       message.react(EMOJI_NAMES.TWITTER_APPROVED_EMOJI);
-    //       message.react(EMOJI_NAMES.REJECT_EMOJI);
-    //     })
-    //     .catch(function (err) {
-    //       console.error('Error reacting to message.');
-    //       console.error(err);
-    //     });
-    // }
 
     return interaction.reply({
-      content: `Thank you for sharing your win!`,
+      content: `(${category}) Win from <@${user.id}> - "${win}" 🔥🔥🔥`,
     });
   } catch (err) {
     console.error('Something went wrong in sharing the win.');
