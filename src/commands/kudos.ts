@@ -56,12 +56,7 @@ const data = new SlashCommandBuilder()
   .setName('kudos')
   .setDescription('Give kudos to a community member');
 data
-  .addMentionableOption((option) =>
-    option
-      .setName('user')
-      .setDescription(`Tag the user you want to give kudos to.`)
-      .setRequired(false)
-  )
+
   .addStringOption((option) =>
     option
       .setName('for')
@@ -74,6 +69,12 @@ data
       .setDescription('Learning, building or teaching')
       .setRequired(true)
       .addChoices(...choices)
+  )
+  .addMentionableOption((option) =>
+    option
+      .setName('user')
+      .setDescription(`Tag the user you want to give kudos to.`)
+      .setRequired(false)
   );
 
 const command: SlashCommand = {

@@ -8,7 +8,7 @@ import { startTweetScheduler } from './tweeter';
 
 //run the express server
 import './server/index';
-import { startBootcampPoster } from './discordCreatorBootcamp';
+// import { startBootcampPoster } from './discordCreatorBootcamp';
 
 const load = async () => {
   await startBot();

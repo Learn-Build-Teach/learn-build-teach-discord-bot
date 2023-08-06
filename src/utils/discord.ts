@@ -6,6 +6,7 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
   Guild,
+  GuildMember,
   IntentsBitField,
   Partials,
   SlashCommandBuilder,
@@ -58,6 +59,7 @@ export const discordClient = new DiscordClient({
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.GuildMessageReactions,
+    IntentsBitField.Flags.GuildMembers,
   ],
   partials: [
     Partials.Message,
@@ -93,4 +95,31 @@ export const getDiscordChannel = async (
   if (channelFromCache) return channelFromCache;
 
   return await discordClient.channels.fetch(channelID);
+};
+
+export const getMembersByRole = async (
+  roleID: string
+): Promise<Collection<string, GuildMember>> => {
+  const guild = await getDiscordGuild();
+
+  if (!guild) {
+    console.error('Could not find guild');
+    throw new Error('Could not find guild');
+  }
+  const role = await guild?.roles.fetch(roleID);
+  const allGuildMembers = await guild.members.fetch();
+  const roleMembers = allGuildMembers.filter((member) => {
+    return member.roles.cache.has(role?.id || '');
+  });
+  return roleMembers;
+};
+
+export const kickMember = async (memberId: string) => {
+  const guild = await getDiscordGuild();
+  if (!guild) {
+    console.error('Could not find guild');
+    throw new Error('Could not find guild');
+  }
+  const member = await guild.members.fetch(memberId);
+  await member.kick();
 };

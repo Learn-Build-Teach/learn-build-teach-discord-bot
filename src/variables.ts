@@ -28,11 +28,17 @@ interface EnvironmentVariables {
   POST_WEEKLY_DISCUSSION_QUESTION?: boolean;
   HIGHLIGHT_PROJECT_ID?: string;
   DISCORD_BOOTCAMP_ROLE_ID?: string;
+  DISCORD_CLIENT_ID: string;
 }
 
 if (!process.env.DISCORD_BOT_TOKEN) {
   console.error('DISCORD_BOT_TOKEN environment variable is required');
   throw new Error('DISCORD_BOT_TOKEN environment variable is required');
+}
+
+if (!process.env.DISCORD_CLIENT_ID) {
+  console.error('DISCORD_CLIENT_ID environment variable is required');
+  throw new Error('DISCORD_CLIENT_ID environment variable is required');
 }
 if (!process.env.DISCORD_GUILD_ID) {
   console.error('DISCORD_GUILD_ID environment variable is required');
@@ -84,4 +90,5 @@ export const variables: EnvironmentVariables = {
   DISCORD_BOOTCAMP_CHANNEL_ID: process.env.DISCORD_BOOTCAMP_CHANNEL_ID,
   HIGHLIGHT_PROJECT_ID: process.env.HIGHLIGHT_PROJECT_ID,
   DISCORD_BOOTCAMP_ROLE_ID: process.env.DISCORD_BOOTCAMP_ROLE_ID,
+  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
 };
