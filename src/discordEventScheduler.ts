@@ -31,10 +31,10 @@ export const scheduleWinOfTheWeek = async () => {
   );
 };
 
-export const scheduleCommunityHour = async () => {
+export const scheduleLeetCodeLiveCoding = async () => {
   console.info('Scheduling Community Chat Hour event');
-  const name = 'Community Chat Hour';
-  const description = `Let's take an hour to chat about: what you're working on, something you learned, questions you have, etc.`;
+  const name = 'LeetCode Live Coding';
+  const description = `Let's solve some LeetCode problems!`;
   const guild = await getDiscordGuild();
   const nextThursday = getNextDayOfWeek(new Date(), 4);
   nextThursday.setHours(16);
@@ -49,7 +49,7 @@ export const scheduleCommunityHour = async () => {
     channel: variables.DISCORD_GENERAL_VOICE_ID,
   });
   console.info(
-    '🚀 ~ file: discordEventScheduler.ts:35 ~ scheduleCommunityHour ~ successfully created event:',
+    '🚀 ~ file: discordEventScheduler.ts:35 ~ scheduleLeetCodeLiveCoding ~ successfully created event:',
     event
   );
 };
@@ -57,7 +57,7 @@ export const scheduleCommunityHour = async () => {
 const scheduleEvents = () => {
   try {
     scheduleWinOfTheWeek();
-    scheduleCommunityHour();
+    scheduleLeetCodeLiveCoding();
   } catch (error) {
     console.error('Failed to schedule events');
   }
