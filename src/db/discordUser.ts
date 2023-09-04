@@ -14,7 +14,7 @@ export const getDiscordUserById = async (
   if (res.error) {
     throw res.error;
   }
-  return res.data[0] || null;
+  return (res.data as DiscordUser[])[0];
 };
 
 export const addXpToDiscordUser = async (id: string) => {

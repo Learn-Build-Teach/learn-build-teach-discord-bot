@@ -12,7 +12,8 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "seed": "ts-node-dev src/db/seed/seed.ts"
   },
   "keywords": [],
   "author": "@jamesqquick",
@@ -29,6 +30,7 @@
     "express": "^4.17.1",
     "node-cron": "^2.0.3",
     "open-graph-scraper": "^4.11.0",
+    "pg": "^8.10.0",
     "quick-chat-bot": "^0.9.1",
     "rss-parser": "^3.12.0",
     "ts-node": "^10.9.1",
@@ -47,6 +49,7 @@
     "@types/node": "^17.0.21",
     "@types/node-cron": "^3.0.1",
     "@types/open-graph-scraper": "^4.8.1",
+    "@types/pg": "^8.6.6",
     "@types/twitter": "^1.7.1",
     "@types/uuid": "^9.0.0",
     "@types/xml2js": "^0.4.11",
