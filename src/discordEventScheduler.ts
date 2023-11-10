@@ -14,7 +14,7 @@ export const scheduleWinOfTheWeek = async () => {
     'No win is too small. Take a few minutes to reflect positively on what you accomplished this week and share with the group.';
   const guild = await getDiscordGuild();
   const nextFriday = getNextDayOfWeek(new Date(), 5);
-  nextFriday.setHours(14);
+  nextFriday.setHours(15);
   nextFriday.setMinutes(0);
 
   const event = await guild?.scheduledEvents.create({
@@ -37,7 +37,7 @@ export const scheduleLeetCodeLiveCoding = async () => {
   const description = `Let's solve some LeetCode problems!`;
   const guild = await getDiscordGuild();
   const nextThursday = getNextDayOfWeek(new Date(), 4);
-  nextThursday.setHours(16);
+  nextThursday.setHours(17);
   nextThursday.setMinutes(0);
 
   const event = await guild?.scheduledEvents.create({
