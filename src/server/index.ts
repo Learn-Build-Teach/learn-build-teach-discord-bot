@@ -5,6 +5,7 @@ import kudoRoutes from './routes/kudos';
 import jqqnewsletterRoutes from './routes/jqqNewsletter';
 import discordUserRoutes from './routes/discordUser';
 import serverInsightsRoutes from './routes/serverInsights';
+import eventRoutes from './routes/events';
 import { variables } from '../variables';
 import { H, Handlers } from '@highlight-run/node';
 
@@ -29,6 +30,7 @@ app.use('/api/kudos', kudoRoutes);
 app.use('/api/discordUsers', discordUserRoutes);
 app.use('/api/jqqnewsletter', jqqnewsletterRoutes);
 app.use('/api/server-insights', serverInsightsRoutes);
+app.use('/api/events', eventRoutes);
 
 const highlightErrorHandler = Handlers.errorHandler({
   projectID: variables.HIGHLIGHT_PROJECT_ID || '',
