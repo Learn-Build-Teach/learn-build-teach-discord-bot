@@ -7,7 +7,11 @@ const getEvents = async function () {
   let events: any = [];
   discordClient.guilds.cache.forEach(async (guild) => {
     events = guild.scheduledEvents.cache.map((event) => {
-      return { ...event, url: event.url };
+      return {
+        ...event,
+        url: event.url,
+        coverImageURL: event.coverImageURL({ size: 512 }),
+      };
     });
   });
   return events;
