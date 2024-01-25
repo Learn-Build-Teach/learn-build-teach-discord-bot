@@ -20,12 +20,12 @@ const load = async () => {
     console.info('weekly discussion question poster started.');
   }
 
-  if (!variables.ENABLE_EVENTS_SCHEDULER) {
-    console.info('Event scheduler is not turned on');
-  } else {
-    await startEventScheduler();
-    console.info('event scheduler started.');
-  }
+  //   if (!variables.ENABLE_EVENTS_SCHEDULER) {
+  //     console.info('Event scheduler is not turned on');
+  //   } else {
+  //     await startEventScheduler();
+  //     console.info('event scheduler started.');
+  //   }
 
   //   await startBootcampPoster();
   console.info('bootcamp poster started.');
