@@ -17,8 +17,8 @@ router.get('/', async (req: Request, res: Response) => {
 
   const totalMembers = guild.memberCount;
   const onlineMembers = guild.members.cache.filter((member) => {
-    console.log(member.id);
-    return member.presence?.status == 'online' && !member.user.bot;
+    const status = member.presence?.status;
+    return status !== undefined && status != 'offline' && !member.user.bot;
   }).size;
 
   retVal.body.data = { totalMembers, onlineMembers };
