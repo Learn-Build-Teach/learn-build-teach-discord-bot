@@ -3,7 +3,6 @@ import './variables';
 import { startBot } from './bot';
 import { variables } from './variables';
 import { startDiscussionScheduler } from './discordWeeklyQuestionPoster';
-import { startEventScheduler } from './discordEventScheduler';
 import { startTweetScheduler } from './tweeter';
 
 //run the express server

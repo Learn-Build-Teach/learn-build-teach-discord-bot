@@ -1,20 +1,26 @@
 import { ReturnValue } from '../models';
 import express, { Request, Response } from 'express';
-import { discordClient } from '../../utils/discord';
+import { getGuildById } from '../../utils/discord';
+import { variables } from '../../variables';
 // import { H } from '@highlight-run/node';
 const router = express.Router();
 
-const getMembers = function () {
-  let totalMembers = 0;
-  discordClient.guilds.cache.forEach((guild) => {
-    totalMembers += guild.memberCount;
-  });
-  return totalMembers;
-};
-
-router.get('/', (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   const retVal = new ReturnValue();
-  retVal.body.data = { totalMembers: getMembers() };
+
+  const guild = await getGuildById(variables.DISCORD_GUILD_ID);
+  if (!guild) {
+    retVal.status = 500;
+    retVal.body.err = 'Could not find guild';
+    return res.status(retVal.status).json(retVal.body);
+  }
+
+  const totalMembers = guild.memberCount;
+  const onlineMembers = guild.members.cache.filter(
+    (member) => member.presence?.status !== 'online'
+  ).size;
+
+  retVal.body.data = { totalMembers, onlineMembers };
   res.status(retVal.status).json(retVal.body);
 });
 

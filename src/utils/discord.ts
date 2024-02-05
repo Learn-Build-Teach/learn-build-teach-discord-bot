@@ -123,3 +123,11 @@ export const kickMember = async (memberId: string) => {
   const member = await guild.members.fetch(memberId);
   await member.kick();
 };
+
+export const getGuildById = async (guildId: string) => {
+  const guild = discordClient.guilds.cache.get(guildId);
+  if (!guild) {
+    return await discordClient.guilds.fetch(guildId);
+  }
+  return guild;
+};
