@@ -5,6 +5,7 @@ import {
   Collection,
   CommandInteraction,
   CommandInteractionOptionResolver,
+  GatewayIntentBits,
   Guild,
   GuildMember,
   IntentsBitField,
@@ -60,6 +61,7 @@ export const discordClient = new DiscordClient({
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.GuildMessageReactions,
     IntentsBitField.Flags.GuildMembers,
+    GatewayIntentBits.GuildPresences,
   ],
   partials: [
     Partials.Message,
